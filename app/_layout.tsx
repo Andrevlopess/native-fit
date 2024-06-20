@@ -13,8 +13,16 @@ import {
 } from '@expo-google-fonts/inter';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import 'react-native-reanimated';
+import { PortalProvider } from '@gorhom/portal';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-export default function RootLayout() {
+
+
+const unstable_settings = {
+  initialRouteName: '/(app)/home'
+}
+
+function RootLayout() {
   const [loaded, error] = useFonts({
     Inter_900Black
     , Inter_700Bold
@@ -36,18 +44,17 @@ export default function RootLayout() {
 
 
 
-
-
-
-
   const queryClient = new QueryClient();
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <QueryClientProvider client={queryClient}>
-
-      <Stack screenOptions={{ headerShown: false }} />
+      <PortalProvider>
+        <Stack screenOptions={{ headerShown: false }} initialRouteName='(app)' />
+      </PortalProvider>
     </QueryClientProvider>
 
     // </ThemeProvider>
   );
 }
+
+export default gestureHandlerRootHOC(RootLayout);

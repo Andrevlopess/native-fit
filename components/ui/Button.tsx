@@ -3,7 +3,7 @@ import { s } from '@/styles/global';
 import React, { ForwardedRef, forwardRef } from 'react';
 import { ActivityIndicator, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
-type Variant = 'primary' | 'secondary' | 'ghost';
+type Variant = 'primary' | 'secondary' | 'tertiary' | 'ghost';
 type Size = 'small' | 'medium' | 'large';
 
 type VariantStyles =
@@ -15,24 +15,25 @@ interface IButton extends TouchableOpacityProps {
     isLoading?: boolean;
     variant?: Variant;
     size?: Size;
+    rounded?: boolean;
     textStyles?: StyleProp<TextStyle>
 }
 
-function Button({ text, isLoading, textStyles, size = 'medium', variant = 'primary', ...props }: IButton,
+function Button({ text, isLoading, textStyles, size = 'medium', variant = 'primary', rounded = false, ...props }: IButton,
     ref: ForwardedRef<TouchableOpacity>) {
 
     const disabled = props.disabled;
 
     const paddingBySize: Record<Size, StyleProp<ViewStyle>[]> = {
-        small: [s.p8],
+        small: [s.p12],
         medium: [s.p16],
         large: [s.p18]
     }
 
-    const fontSizeBySize: Record<Size, StyleProp<TextStyle>[]> = {
-        small: [s.textBase],
-        medium: [s.textLG],
-        large: [s.textXL]
+    const textStylesBySize: Record<Size, StyleProp<TextStyle>[]> = {
+        small: [s.textSM, s.semibold],
+        medium: [s.textLG, s.bold],
+        large: [s.textXL, s.extrabold]
     }
 
     const variantStyles: VariantStyles = {
@@ -40,23 +41,34 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
             container: [
                 disabled ? s.bgGray300 : s.bgIndigo600,
                 paddingBySize[size],
-                s.radius12,
+                rounded ? s.radiusFull : s.radius12,
                 s.itemsCenter,
                 s.justifyCenter,
                 s.flexRow,
             ],
-            text: [fontSizeBySize[size], s.textWhite, s.bold, s.px12]
+            text: [textStylesBySize[size], s.textWhite, s.px12]
         },
         secondary: {
             container: [
                 disabled ? s.bgGray50 : s.bgBlack,
                 paddingBySize[size],
-                s.radius12,
+                rounded ? s.radiusFull : s.radius12,
                 s.itemsCenter,
                 s.justifyCenter,
 
             ],
-            text: [disabled ? s.textStone400 : s.textWhite, fontSizeBySize[size], s.bold, s.px12]
+            text: [disabled ? s.textStone400 : s.textWhite, textStylesBySize[size], s.px12]
+        },
+        tertiary: {
+            container: [
+                disabled ? s.bgGray50 : s.bgGray100,
+                paddingBySize[size],
+                rounded ? s.radiusFull : s.radius12,
+                s.itemsCenter,
+                s.justifyCenter,
+
+            ],
+            text: [disabled ? s.textStone400 : s.textGray500, textStylesBySize[size]]
         },
         ghost: {
             container: [
@@ -65,7 +77,7 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
                 s.itemsCenter,
                 s.justifyCenter,
             ],
-            text: [fontSizeBySize[size], s.bold, s.px12, disabled ? s.textStone400 : s.textIndigo600]
+            text: [textStylesBySize[size], s.px12, disabled ? s.textStone400 : s.textIndigo600]
         }
     }
 
