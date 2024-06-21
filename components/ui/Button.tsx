@@ -16,7 +16,7 @@ interface IButton extends TouchableOpacityProps {
     variant?: Variant;
     size?: Size;
     rounded?: boolean;
-    textStyles?: StyleProp<TextStyle>
+    textStyles?: StyleProp<TextStyle>;
 }
 
 function Button({ text, isLoading, textStyles, size = 'medium', variant = 'primary', rounded = false, ...props }: IButton,
@@ -93,13 +93,15 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
                 variantStyles[variant].container,
                 props.style
             ]}>
-            {props.children && props.children}
-            {text &&
-                isLoading
-                ? <ActivityIndicator color={COLORS.white} size={28} />
-                : <Text style={[variantStyles[variant].text, textStyles]}>
-                    {text}
-                </Text>
+            {props.children
+                ? props.children
+                : text &&
+                    isLoading
+                    ? <ActivityIndicator color={COLORS.white} size={28} />
+                    : <Text style={[variantStyles[variant].text, textStyles]}>
+                        {text}
+                    </Text>}
+            {
             }
         </TouchableOpacity>
     )
