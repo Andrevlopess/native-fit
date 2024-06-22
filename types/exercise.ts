@@ -4,8 +4,8 @@ type BodyPart = 'costas' | 'cardio' | 'peito' | 'antebraço' | "panturrilha" | '
 export interface IExercise {
   id: string;
   name: string;
-  body_part: String;
-  target_muscle: string;
+  bodypart: String;
+  target: string;
   equipment: string;
-  gif_url: string;
+  gifurl: string;
 }

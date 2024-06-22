@@ -1,10 +1,10 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { s } from '@/styles/global'
-import { Stack, router } from 'expo-router'
-import WorkoutsList from '@/components/WorkoutsList'
-import Button from '@/components/ui/Button'
 import FeaturedExercices from '@/components/FeaturedExercices'
+import LogoImage from '@/components/LogoImage'
+import WorkoutsList from '@/components/WorkoutsList'
+import { s } from '@/styles/global'
+import { Stack } from 'expo-router'
+import React from 'react'
+import { ScrollView } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 export default function HomeIndexScreen() {
@@ -15,7 +15,8 @@ export default function HomeIndexScreen() {
     <>
       <Stack.Screen
         options={{
-          title: ''
+          title: '',
+          headerLeft: () => <LogoImage />,
         }}
       />
 
@@ -25,6 +26,7 @@ export default function HomeIndexScreen() {
       >
         <WorkoutsList />
         <FeaturedExercices />
+        
       </Animated.ScrollView>
     </>
   )

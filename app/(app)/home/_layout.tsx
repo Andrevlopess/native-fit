@@ -8,7 +8,7 @@ export default function HomeLayout() {
       screenOptions={{
 
         headerShadowVisible: false,
-        headerLeft: () => <LogoImage />,
+        
         headerLargeTitle: true
       }} />
   );

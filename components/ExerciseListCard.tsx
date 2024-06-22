@@ -30,7 +30,7 @@ export default function ExerciseListCard({ exercise, width = SCREEN_WIDTH }: Exe
 
 
             <TouchableOpacity activeOpacity={0.8}>
-                <Image source={exercise.gif_url} style={[
+                <Image source={exercise.gifurl} style={[
                     s.bgGray50,
                     s.border1, s.borderGray100,
                     s.p12, s.radius14,
@@ -43,7 +43,7 @@ export default function ExerciseListCard({ exercise, width = SCREEN_WIDTH }: Exe
                         numberOfLines={2}>
                         {exercise.name}
                     </Text>
-                    <Text style={[s.medium, s.textGray400]}>{exercise.body_part}</Text>
+                    <Text style={[s.medium, s.textGray400]}>{exercise.bodypart}</Text>
                 </View>
 
 

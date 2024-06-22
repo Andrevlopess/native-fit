@@ -57,7 +57,7 @@ const SectionIndicatorComponent = ({ index, scrollX }: { index: number, scrollX:
     return <Animated.View style={[
         s.bgIndigo500,
         s.radiusFull,
-        stepsIndicatorsAnimation, {height: 6}]} />
+        stepsIndicatorsAnimation, { height: 6 }]} />
 
 }
 
@@ -114,7 +114,9 @@ export default function WorkoutsList() {
         <View style={[s.gap4]}>
             <View style={[s.justifyBetween, s.itemsCenter, s.flexRow, s.px12]}>
                 <Text style={[s.extrabold, s.text2XL]}>Treino de hoje</Text>
-                <Button text='Ver todos' variant='tertiary' size='small' rounded />
+                <Link asChild href={'/(app)/home/workouts'}>
+                    <Button text='Ver todos' variant='tertiary' size='small' rounded />
+                </Link>
             </View>
 
             <Animated.FlatList

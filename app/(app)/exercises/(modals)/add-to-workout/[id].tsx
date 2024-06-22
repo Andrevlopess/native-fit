@@ -5,13 +5,13 @@ import { s } from '@/styles/global'
 
 const CancelButton = () => (
     <TouchableOpacity onPress={() => router.back()}>
-        <Text style={[s.regular, s.textBase]}>Cancelar</Text>
+        <Text style={[s.regular, s.textBase, s.p12]}>Cancelar</Text>
     </TouchableOpacity>
 )
 
 export default function AddToWorkoutScreen() {
 
-    const {id} = useLocalSearchParams()
+    const { id } = useLocalSearchParams<{ id: string }>()
 
 
     return (
@@ -25,7 +25,7 @@ export default function AddToWorkoutScreen() {
 
 
             <View style={[s.flex1, s.itemsCenter, s.justifyCenter]}>
-                <Text>teste</Text>
+                <Text>{id}</Text>
             </View>
 
         </>
