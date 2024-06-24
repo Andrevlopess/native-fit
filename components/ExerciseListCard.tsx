@@ -14,7 +14,7 @@ interface ExerciseListCardProps {
     exercise: IExercise
 }
 
-export default function ExerciseListCard({ exercise, width = SCREEN_WIDTH }: ExerciseListCardProps) {
+export default function ExerciseListCard({ exercise, width }: ExerciseListCardProps) {
     return (
         <Link
             href={`/(app)/exercises/${exercise.id}`}

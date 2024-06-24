@@ -29,7 +29,7 @@ export default function AppLayout() {
                     },
                     tabBarHideOnKeyboard: true,
                     tabBarInactiveTintColor: COLORS.textGray,
-                    tabBarActiveTintColor: COLORS.blue,
+                    tabBarActiveTintColor: COLORS.indigo,
                     tabBarLabelStyle: [],
                     // tabBarShowLabel: false,
                 }}

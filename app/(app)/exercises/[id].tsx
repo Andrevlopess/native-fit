@@ -30,7 +30,6 @@ export default function ExerciseDetailsScreen() {
                 .rpc('get-exercise-details', { exercise_id: id })
                 .single()
 
-
             if (error) throw error;
 
             return data as IExercise;
@@ -87,42 +86,40 @@ export default function ExerciseDetailsScreen() {
     }));
 
 
-    // console.log(details?.gif_url);
-    
-
     return (
         <>
 
             <Stack.Screen options={{
                 title: '',
-                header: ({ back, navigation }) => {
-                    return (
-                        <Animated.View
-                            style={[
-                                s.bgWhite,
-                                s.p16,
-                                s.flexRow,
-                                s.gap12,
-                                s.itemsCenter,
-                                s.borderBottom1,
-                                { paddingTop: top },
-                                headerBackground]}>
-                            <TouchableOpacity
-                                activeOpacity={0.8}
-                                style={[
-                                    s.radiusFull,
-                                    s.p8,
-                                    s.bgWhite]}
-                                onPress={() => navigation.goBack()}>
-                                <ArrowLeft color={COLORS.black} />
-                            </TouchableOpacity>
-                            <Animated.Text numberOfLines={1} style={[s.bold, s.flex1, s.textLG, headerTitleAnimation]}>
-                                {details?.name}
-                            </Animated.Text>
-                        </Animated.View>
+                // header: ({ back, navigation }) => {
+                //     return (
+                //         <Animated.View
+                //             style={[
+                //                 s.bgWhite,
+                //                 s.p16,
+                //                 s.flexRow,
+                //                 s.gap12,
+                //                 s.itemsCenter,
+                //                 s.borderBottom1,
+                //                 { paddingTop: top },
+                //                 headerBackground]}>
+                //             <TouchableOpacity
+                //                 activeOpacity={0.8}
+                //                 style={[
+                //                     s.radiusFull,
+                //                     s.p8,
+                //                     s.bgWhite]}
+                //                 onPress={() => navigation.goBack()}>
+                //                 <ArrowLeft color={COLORS.black} />
+                //             </TouchableOpacity>
+                //             <Animated.Text numberOfLines={1} style={[s.bold, s.flex1, s.textLG, headerTitleAnimation]}>
+                //                 {details?.name}
+                //             </Animated.Text>
+                //         </Animated.View>
 
-                    )
-                },
+                //     )
+                // },
+                
                 // headerTransparent: true,
             }} />
 
