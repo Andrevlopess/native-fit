@@ -17,19 +17,14 @@ import { PortalProvider } from '@gorhom/portal';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 
-
-const unstable_settings = {
-  initialRouteName: '/(app)/home'
-}
-
 function RootLayout() {
   const [loaded, error] = useFonts({
-    Inter_900Black
-    , Inter_700Bold
-    , Inter_600SemiBold
-    , Inter_400Regular
-    , Inter_500Medium
-    , Inter_800ExtraBold
+    'DMSans-Black': require('@/assets/fonts/DMSans-Black.ttf'),
+    'DMSans-Bold': require('@/assets/fonts/DMSans-Bold.ttf'),
+    'DMSans-Medium': require('@/assets/fonts/DMSans-Medium.ttf'),
+    'DMSans-Regular': require('@/assets/fonts/DMSans-Regular.ttf'),
+    'DMSans-SemiBold': require('@/assets/fonts/DMSans-SemiBold.ttf'),
+    // 'DMSans-SemiBold': require('@/assets/fonts/DMSans-SemiBold.ttf'),
   });
 
 
@@ -49,7 +44,7 @@ function RootLayout() {
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <QueryClientProvider client={queryClient}>
       <PortalProvider>
-        <Stack screenOptions={{ headerShown: false }} initialRouteName='(app)' />
+        <Stack screenOptions={{ headerShown: false }} initialRouteName='(app)'/>
       </PortalProvider>
     </QueryClientProvider>
 

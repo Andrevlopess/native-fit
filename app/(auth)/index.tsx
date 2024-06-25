@@ -1,13 +1,10 @@
-import { View, Text } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
-import { s } from '@/styles/global'
-import Input from '@/components/ui/Input'
+import ExerciseListCard from '@/components/ExerciseListCard'
 import Button from '@/components/ui/Button'
-import { Link, Stack, router } from 'expo-router'
-import Modal from '@/components/ui/Modal'
+import { s } from '@/styles/global'
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import Animated, { LinearTransition, CurvedTransition, EntryExitTransition, FadeIn, FadeInUp, FadeOutUp, SlideOutUp, SlideOutDown, FadeOutDown } from 'react-native-reanimated'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/constants/Dimensions'
+import { Stack, router } from 'expo-router'
+import React, { useEffect, useRef, useState } from 'react'
+import Animated from 'react-native-reanimated'
 
 export default function AuthIndexScreen() {
 
@@ -49,6 +46,18 @@ export default function AuthIndexScreen() {
 
             </Animated.View>
 
+
+
+            <ExerciseListCard exercise={{
+                "id": "65683a57-b5bd-4ce5-bbfd-f7cecd1649db",
+                "name": "Puxada Paralela Assistida De Perto",
+                "equipment": "Graviton",
+                "bodypart": "Costas",
+                "target": "Dorsal",
+                "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_0015.gif"
+            }} />
+
+
             {/* <Modal
                 ref={ref}
                 index={1}
@@ -65,7 +74,7 @@ export default function AuthIndexScreen() {
                     }
             </Modal> */}
 
-            <Animated.View
+            {/* <Animated.View
 
                 layout={LinearTransition.springify().stiffness(500).damping(60)}
                 style={[s.p12, s.gap12, s.bgWhite, s.border1, {
@@ -85,7 +94,7 @@ export default function AuthIndexScreen() {
                     <View style={[s.bgGray200, s.m12, { minHeight: SCREEN_WIDTH }]} />
 
                 }
-            </Animated.View>
+            </Animated.View> */}
         </>
     )
 }

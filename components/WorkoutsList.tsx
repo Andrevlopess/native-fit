@@ -113,7 +113,7 @@ export default function WorkoutsList() {
     return (
         <View style={[s.gap4]}>
             <View style={[s.justifyBetween, s.itemsCenter, s.flexRow, s.px12]}>
-                <Text style={[s.extrabold, s.text2XL]}>Treino de hoje</Text>
+                <Text style={[s.bold, s.text2XL]}>Treino de hoje</Text>
                 <Link asChild href={'/(app)/home/workouts'}>
                     <Button text='Ver todos' variant='tertiary' size='small' rounded />
                 </Link>

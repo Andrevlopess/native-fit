@@ -1,5 +1,6 @@
 import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
+import { device } from '@/utils/device'
 import { Search } from 'lucide-react-native'
 import React, { useRef, useState } from 'react'
 import { TextInput, TextInputProps, View } from 'react-native'
@@ -9,6 +10,7 @@ import Animated, { FadeInLeft, FadeInRight, LinearTransition } from 'react-nativ
 export default function SearchInput(props: TextInputProps) {
 
 
+    if (device.ios) return null
 
     return (
 
@@ -17,6 +19,7 @@ export default function SearchInput(props: TextInputProps) {
             <TextInput
                 {...props}
                 returnKeyType='search'
+                autoCapitalize='none'
                 enablesReturnKeyAutomatically
                 style={[s.textBase, s.medium, s.flex1, { lineHeight: 20 }]}
                 cursorColor={COLORS.textGray}

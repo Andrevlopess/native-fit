@@ -80,7 +80,7 @@ export default function AppLayout() {
                     }}
                 />
 
-                {/* <Tabs.Screen name="(modals)/*" options={{ href: null }} /> */}
+                {/* <Tabs.Screen name="index" options={{ href: null }} /> */}
             </Tabs>
         </>
     );

@@ -3456,32 +3456,45 @@ export const s = StyleSheet.create({
     lineHeight: 96,
   },
   // font weight
-  thin: {
-    fontFamily: "Inter_100Thin",
-  },
-  extralight: {
-    fontFamily: "Inter_200ExtraLight",
-  },
-  light: {
-    fontFamily: "Inter_300Light",
-  },
+
+  // thin: {
+  //   fontFamily: "Inter_100Thin",
+  // },
+  // extralight: {
+  //   fontFamily: "Inter_200ExtraLight",
+  // },
+  // light: {
+  //   fontFamily: "Inter_300Light",
+  // },
+    // extrabold: {
+  //   fontFamily: "Inter_800ExtraBold",
+  // },
+
   regular: {
-    fontFamily: "Inter_400Regular",
+    // fontFamily: "Inter_400Regular",
+    fontFamily: "DMSans-Regular",
+    letterSpacing: -0.6,
   },
   medium: {
-    fontFamily: "Inter_500Medium",
+    // fontFamily: "Inter_500Medium",
+    fontFamily: "DMSans-Medium",
+    letterSpacing: -0.6,
   },
   semibold: {
-    fontFamily: "Inter_600SemiBold",
+    // fontFamily: "Inter_600SemiBold",
+    fontFamily: "DMSans-SemiBold",
+    letterSpacing: -0.6,
   },
   bold: {
-    fontFamily: "Inter_700Bold",
+    // fontFamily: "Inter_700Bold",
+    fontFamily: "DMSans-Bold",
+    letterSpacing: -0.6,
   },
-  extrabold: {
-    fontFamily: "Inter_800ExtraBold",
-  },
+
   black: {
-    fontFamily: "Inter_900Black",
+    // fontFamily: "Inter_900Black",
+    fontFamily: "DMSans-Black",
+    letterSpacing: -0.6,
   },
 
   bgSnowWhite: {
@@ -3519,6 +3532,29 @@ export const s = StyleSheet.create({
   },
   absolute: {
     position: "absolute",
+  },
+
+  shadow1: {
+    shadowColor: "#a3a3a3",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
+  },
+  shadow3: {
+    shadowColor: "#a3a3a3",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
   },
   shadow6: {
     shadowColor: "#171717",

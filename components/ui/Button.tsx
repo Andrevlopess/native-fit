@@ -1,14 +1,18 @@
 import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
 import React, { ForwardedRef, forwardRef } from 'react';
-import { ActivityIndicator, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
+import { ActivityIndicator, ColorValue, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
 type Variant = 'primary' | 'secondary' | 'tertiary' | 'ghost';
 type Size = 'small' | 'medium' | 'large';
 
 type VariantStyles =
     Record<Variant,
-        { container: StyleProp<ViewStyle>, text: StyleProp<TextStyle> }>;
+        {
+            container: StyleProp<ViewStyle>,
+            text: StyleProp<TextStyle>
+            activityIndicator: { color: ColorValue | undefined }
+        }>;
 
 interface IButton extends TouchableOpacityProps {
     text?: string;
@@ -24,7 +28,7 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
 
     const disabled = props.disabled;
 
-    const paddingBySize: Record<Size, StyleProp<ViewStyle>[]> = {
+    const sizedStyles: Record<Size, StyleProp<ViewStyle>[]> = {
         small: [s.p12],
         medium: [s.p16],
         large: [s.p18]
@@ -33,51 +37,61 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
     const textStylesBySize: Record<Size, StyleProp<TextStyle>[]> = {
         small: [s.textSM, s.semibold],
         medium: [s.textLG, s.bold],
-        large: [s.textXL, s.extrabold]
+        large: [s.textXL, s.bold]
+    }
+
+    const activityIndicatorSizes: Record<Size, number> = {
+        large: 32,
+        medium: 28,
+        small: 24
     }
 
     const variantStyles: VariantStyles = {
         primary: {
             container: [
                 disabled ? s.bgGray300 : s.bgIndigo600,
-                paddingBySize[size],
+                sizedStyles[size],
                 rounded ? s.radiusFull : s.radius12,
                 s.itemsCenter,
                 s.justifyCenter,
                 s.flexRow,
             ],
-            text: [textStylesBySize[size], s.textWhite, s.px12]
+            text: [textStylesBySize[size], s.textWhite, s.px12],
+            activityIndicator: { color: COLORS.white }
         },
         secondary: {
             container: [
                 disabled ? s.bgGray50 : s.bgBlack,
-                paddingBySize[size],
+                sizedStyles[size],
                 rounded ? s.radiusFull : s.radius12,
                 s.itemsCenter,
                 s.justifyCenter,
 
             ],
-            text: [disabled ? s.textStone400 : s.textWhite, textStylesBySize[size], s.px12]
+            text: [disabled ? s.textStone400 : s.textWhite, textStylesBySize[size], s.px12],
+            activityIndicator: { color: COLORS.white }
         },
         tertiary: {
             container: [
                 disabled ? s.bgGray50 : s.bgGray100,
-                paddingBySize[size],
+                sizedStyles[size],
                 rounded ? s.radiusFull : s.radius12,
                 s.itemsCenter,
                 s.justifyCenter,
 
             ],
-            text: [disabled ? s.textStone400 : s.textGray500, textStylesBySize[size]]
+            text: [disabled ? s.textStone400 : s.textGray500, textStylesBySize[size]],
+            activityIndicator: { color: COLORS.textGray }
         },
         ghost: {
             container: [
-                paddingBySize[size],
+                sizedStyles[size],
                 // s.py8,
                 s.itemsCenter,
                 s.justifyCenter,
             ],
-            text: [textStylesBySize[size], s.px12, disabled ? s.textStone400 : s.textIndigo600]
+            text: [textStylesBySize[size], s.px12, disabled ? s.textStone400 : s.textIndigo600],
+            activityIndicator: { color: COLORS.indigo }
         }
     }
 
@@ -97,7 +111,9 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
                 ? props.children
                 : text &&
                     isLoading
-                    ? <ActivityIndicator color={COLORS.white} size={28} />
+                    ? <ActivityIndicator 
+                    color={variantStyles[variant].activityIndicator.color} 
+                    size={activityIndicatorSizes[size]} />
                     : <Text style={[variantStyles[variant].text, textStyles]}>
                         {text}
                     </Text>}
