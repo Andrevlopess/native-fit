@@ -19,6 +19,7 @@ const FeaturedExercisesSection = ({ exercises }: { exercises: IExercise[] }) => 
                     key={`${index}${exercise.id}`}
                     exercise={exercise}
                     width={CARD_WIDTH}
+                    showsAddButton
                 />
             ))}
         </View>

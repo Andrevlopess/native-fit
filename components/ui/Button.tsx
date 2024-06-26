@@ -29,13 +29,13 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
     const disabled = props.disabled;
 
     const sizedStyles: Record<Size, StyleProp<ViewStyle>[]> = {
-        small: [s.p12],
+        small: [s.px12, s.py10],
         medium: [s.p16],
         large: [s.p18]
     }
 
     const textStylesBySize: Record<Size, StyleProp<TextStyle>[]> = {
-        small: [s.textSM, s.semibold],
+        small: [s.textBase, s.semibold],
         medium: [s.textLG, s.bold],
         large: [s.textXL, s.bold]
     }

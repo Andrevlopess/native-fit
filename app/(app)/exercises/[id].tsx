@@ -1,89 +1,61 @@
-import ErrorView from '@/components/views/ErrorView';
+
 import LoadingView from '@/components/views/LoadingView';
-import NotFoundView from '@/components/views/NotFoundView';
-import COLORS from '@/constants/Colors';
+import MessageView from '@/components/views/MessageView';
+
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
-import { supabase } from '@/lib/supabase';
+import { useFetchExerciseDetails } from '@/hooks/useFetchExerciseDetails';
+import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
-import { IExercise } from '@/types/exercise';
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
-import { Image } from 'expo-image';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
-import Animated, { FadeIn, interpolate, interpolateColor, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
-
+const IMAGE_SIZE = SCREEN_WIDTH - 24;
 
 export default function ExerciseDetailsScreen() {
 
     const { id } = useLocalSearchParams<{ id: string }>();
-    const { top } = useSafeAreaInsets();
 
-    async function ExerciseDetils(id: string | undefined) {
-        try {
-
-            let { data, error } = await supabase
-                .rpc('get-exercise-details', { exercise_id: id })
-                .single()
-
-            if (error) throw error;
-
-            return data as IExercise;
-        } catch (error) {
-            if (!axios.isAxiosError(error)) throw error;
-            throw new Error(error.response?.data.error || 'Ocorreu um erro inesperado!');
-        }
+    if (!id) {
+        return <MessageView
+            message='Este exercício não existe'
+            description='Não sabemos como conseguiu chegar até aqui!' />
     }
 
-
-    const { data: details, isPending, error, isError } = useQuery({
-        queryKey: ['exercise-details', id],
-        queryFn: ({ queryKey }) => ExerciseDetils(queryKey[1])
-    })
+    const { data: details, isError, isPending, error } = useFetchExerciseDetails(id)
 
 
     const imageHeight = SCREEN_WIDTH / 1.2
     // animations
-    const sv = useSharedValue<number>(0);
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: (event) => {
-            "worklet";
-            sv.value = event.contentOffset.y;
-            // console.log(sv.value);
-        },
-    });
-    const headerTitleAnimation = useAnimatedStyle(() => ({
-        opacity: interpolate(sv.value, [imageHeight / 2, imageHeight * 0.7], [0, 1]),
-    }))
 
-    const imageAnimation = useAnimatedStyle(() => ({
-        transform: [{
-            translateY: interpolate(sv.value,
-                [-imageHeight, 0, imageHeight],
-                [-imageHeight / 2, 0, imageHeight * 0.7])
-        }, {
-            scale: interpolate(sv.value, [-imageHeight, 0, imageHeight], [2, 1, 1])
-        }]
-    }));
-    const parallaxTextAnim = useAnimatedStyle(() => ({
-        opacity: interpolate(sv.value, [-imageHeight / 2, 0, imageHeight], [0, 1, 1])
-    }));
-    const headerBackground = useAnimatedStyle(() => ({
-        backgroundColor: interpolateColor(
-            sv.value,
-            [imageHeight / 2, imageHeight * 0.7],
-            ['#FFFFFF00', '#FFFFFF']
-        ),
-        borderColor: interpolateColor(
-            sv.value,
-            [imageHeight / 2, imageHeight * 0.7],
-            ['#CCCCCC00', "#CCCCCC50"]
-        ),
-    }));
+    const { offset, scrollHandler } = useScrollValue();
+
+
+    // const imageAnimation = useAnimatedStyle(() => ({
+    //     transform: [{
+    //         translateY: interpolate(sv.value,
+    //             [-imageHeight, 0, imageHeight],
+    //             [-imageHeight / 2, 0, imageHeight * 0.7])
+    //     }, {
+    //         scale: interpolate(sv.value, [-imageHeight, 0, imageHeight], [2, 1, 1])
+    //     }]
+    // }));
+    // const parallaxTextAnim = useAnimatedStyle(() => ({
+    //     opacity: interpolate(sv.value, [-imageHeight / 2, 0, imageHeight], [0, 1, 1])
+    // }));
+    // const headerBackground = useAnimatedStyle(() => ({
+    //     backgroundColor: interpolateColor(
+    //         sv.value,
+    //         [imageHeight / 2, imageHeight * 0.7],
+    //         ['#FFFFFF00', '#FFFFFF']
+    //     ),
+    //     borderColor: interpolateColor(
+    //         sv.value,
+    //         [imageHeight / 2, imageHeight * 0.7],
+    //         ['#CCCCCC00', "#CCCCCC50"]
+    //     ),
+    // }));
 
 
     return (
@@ -119,7 +91,7 @@ export default function ExerciseDetailsScreen() {
 
                 //     )
                 // },
-                
+
                 // headerTransparent: true,
             }} />
 
@@ -127,37 +99,38 @@ export default function ExerciseDetailsScreen() {
             {isPending
                 ? <LoadingView />
                 : isError
-                    ? <ErrorView
-                        title='Ocorreu um erro!'
+                    ? <MessageView
+                        message='Ocorreu um erro!'
                         description={error.message}
                     />
                     : details
                         ? <Animated.ScrollView
                             entering={FadeIn}
-                            // contentInsetAdjustmentBehavior='automatic'
                             onScroll={scrollHandler}
                             style={[s.flex1, s.bgWhite]}
+                            contentContainerStyle={[s.gap12, s.p12]}>
 
-                            contentContainerStyle={[s.gap12]}>
-                            {/* <Image
-                                style={[{
-                                    height: SCREEN_WIDTH, width: SCREEN_WIDTH
-                                }]}
-                                source={details.gif_url}
-                            /> */}
+                            <View
+                                style={[s.bgWhite,
+                                // s.shadow3,
+                                s.border1,
+                                s.borderGray100,
+                                s.mxAuto,
+                                { height: IMAGE_SIZE, width: IMAGE_SIZE }]}>
 
-                            <Animated.Image
-                                style={[{ height: SCREEN_WIDTH, width: SCREEN_WIDTH }, imageAnimation]}
-                                source={{
-                                    uri: details.gifurl
-                                }}
-                            />
+                                <Animated.Image
+                                    source={{ uri: details.gifurl }}
+                                    style={{ height: IMAGE_SIZE, width: IMAGE_SIZE }} />
+                            </View>
 
-                            <Text>teste</Text>
-                            <Text style={[s.bold, s.textCenter, s.textGray400]}>teste{details.name}</Text>
+                            <Text style={[s.bold, s.text2XL]}>{details.name}</Text>
+                            <Text style={[s.bold, s.text2XL]}>{details.bodypart}</Text>
+                            <Text style={[s.bold, s.text2XL]}>{details.equipment}</Text>
+                            <Text style={[s.bold, s.text2XL]}>{details.target}</Text>
+
                         </Animated.ScrollView>
-                        : <NotFoundView
-                            title='Exercício não encontrado'
+                        : <MessageView
+                            message='Exercício não encontrado'
                             description='Não encontramos o exercício que você queria!' />
             }
 

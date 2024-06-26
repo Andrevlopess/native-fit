@@ -15,6 +15,7 @@ const CARD_WIDTH = SCREEN_WIDTH - padding * 4
 interface WorkoutCardProps {
 
 }
+
 const WorkoutCard = ({ name, id }: IWorkout) => {
     return (
 

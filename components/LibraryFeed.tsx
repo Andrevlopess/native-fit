@@ -1,17 +1,11 @@
-import { supabase } from '@/lib/supabase'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
-import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
 import React from 'react'
-import { Animated, View } from 'react-native'
+import { View } from 'react-native'
 import FeaturedExercices from './FeaturedExercices'
 import LoadingView from './views/LoadingView'
-import { SCREEN_WIDTH } from '@gorhom/bottom-sheet'
-import { FadeIn } from 'react-native-reanimated'
-import ErrorView from './views/ErrorView'
-import NotFoundView from './views/NotFoundView'
-import ExerciseListCard from './ExerciseListCard'
+import NotFoundView from './views/MessageView'
+import MessageView from './views/MessageView'
 
 export default function LibraryFeed() {
     // async function featuredExercises() {
@@ -251,8 +245,8 @@ export default function LibraryFeed() {
             {false //isPending
                 ? <LoadingView />
                 : false // isError
-                    ? <ErrorView
-                        title='Ocorreu um erro!'
+                    ? <MessageView
+                        message='Ocorreu um erro!'
                         description={'error.message'}
                     />
                     : true
@@ -272,8 +266,8 @@ export default function LibraryFeed() {
                             </View> */}
 
                         </>
-                        : <NotFoundView
-                            title='Exercício não encontrado'
+                        : <MessageView
+                            message='Exercício não encontrado'
                             description='Não encontramos o exercício que você queria!' />
             }
 

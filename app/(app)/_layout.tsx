@@ -8,6 +8,7 @@ import {
     Home,
     LibraryBig,
     LibrarySquare,
+    Search,
     UserRound
 } from "lucide-react-native";
 import React from "react";
@@ -53,6 +54,20 @@ export default function AppLayout() {
                 />
                 <Tabs.Screen
                     name="exercises"
+                    options={{
+                        title: "",
+                        headerShown: false,
+                        tabBarIcon: ({ color, focused }) => (
+                            <Search
+                                strokeWidth={focused ? 1.8 : 1.5}
+                                size={30}
+                                color={color}
+                            />
+                        )
+                    }}
+                />
+                <Tabs.Screen
+                    name="workouts"
                     options={{
                         title: "",
                         headerShown: false,
