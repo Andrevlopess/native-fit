@@ -102,7 +102,7 @@ export default function SwipeableExerciseListCard({ exercise, action }: Exercise
                 break;
             case 'right':
 
-                router.push(`/(app)/workouts/add-to-workout/${exercise.id}`)
+                router.navigate(`/(app)/(modals)/add-to-workout/${exercise.id}`)
                 break;
             default:
                 break;

@@ -5,7 +5,7 @@ import axios from "axios";
 
 const ITEMS_PER_PAGE = 20;
 
-export const useSearchExercises = (search: string) => {
+export const useSearchExercises = (search: string, filter: string) => {
   async function fetchSearchedExercises({
     queryKey,
     pageParam,
@@ -14,14 +14,16 @@ export const useSearchExercises = (search: string) => {
     pageParam: unknown;
   }) {
     try {
-      let { data, error } = await supabase.rpc("search-exercises", {
+
+      const { data, error } = await supabase.rpc("search-exercises", {
+        filter: queryKey[2],
         page_num: pageParam,
         page_size: ITEMS_PER_PAGE,
         query: queryKey[1],
       });
 
       if (error) throw error;
-
+    
       return data as IExercise[];
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
@@ -32,12 +34,13 @@ export const useSearchExercises = (search: string) => {
   }
 
   const { data: results, ...rest } = useInfiniteQuery({
-    queryKey: ["searched-exercises", search],
+    queryKey: ["search-exercises", search, filter],
     queryFn: fetchSearchedExercises,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) =>
       lastPage.length > 0 ? allPages.length + 1 : undefined,
-    // enabled: !!search,
+    enabled: !!search || !!filter,
+    retry: false,
   });
 
   const exercises = results?.pages.map((page) => page).flat();

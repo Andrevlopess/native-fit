@@ -1,3 +1,4 @@
+import { Search } from "lucide-react-native";
 import { supabase } from "@/lib/supabase";
 import { IWorkout } from "@/types/workout";
 import { useQuery } from "@tanstack/react-query";
@@ -6,7 +7,12 @@ import { useEffect } from "react";
 
 const UUID = "84f13dde-923f-4aa7-a706-4d2810f12c3c";
 
-export const useFetchWorkouts = (search?: string) => {
+interface useFetchWorkoutsParams {
+  search?: string;
+  filter?: string;
+}
+
+export const useFetchWorkouts = (search?: string, filter?: string) => {
   async function fetchWorkouts(search: string) {
     try {
       let { data: workouts, error } = await supabase

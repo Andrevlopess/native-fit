@@ -47,7 +47,7 @@ export default function FeaturedExercices({ exercises, title }: IFeaturedExercic
     const renderItem = ({ item }: { item: IExercise[] }) => <FeaturedExercisesSection exercises={item} />
 
     return (
-        <View style={[s.gap4]}>
+        <View style={[s.gap4, s.mt12]}>
 
             <Text style={[s.semibold, s.textXL, s.px12]}>{title}</Text>
 

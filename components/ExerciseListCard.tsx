@@ -22,8 +22,8 @@ export default function ExerciseListCard({ exercise, width, showsAddButton}: Exe
             push
             style={[
                 s.flexRow,
-                s.gap20,
-                s.itemsCenter,
+                s.gap16,
+                // s.itemsCenter,
                 s.bgWhite,
                 s.px12,
                 s.py8,
@@ -46,14 +46,12 @@ export default function ExerciseListCard({ exercise, width, showsAddButton}: Exe
                     <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
                 </View>
 
-
-
                 {showsAddButton &&
                     <Link
                         style={[s.mrAuto, s.myAuto, s.bgGray100, s.radiusFull, s.p8]}
                         asChild
-                        href={`/(app)/workouts/add-to-workout/${exercise.id}`}>
-                        <TouchableOpacity>
+                        href={`/(app)/(modals)/add-to-workout/${exercise.id}`}>
+                        <TouchableOpacity activeOpacity={0.8}>
                             <PlusCircle color={COLORS.textGray} strokeWidth={2.5} />
                         </TouchableOpacity>
                     </Link>

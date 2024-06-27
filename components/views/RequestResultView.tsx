@@ -30,19 +30,7 @@ import { CircleX } from "lucide-react-native";
 //     { children, NotFoundComponent, EmptyComponent, ...request }: RequestResultsViewProps) {
 //     return (
 //         <>
-//             {request.isPending
-//                 ? <LoadingView />
-//                 : request.isError
-//                     ? <ErrorView
-//                         title='Ocorreu um erro!'
-//                         description={request.error.message}
-//                     />
-//                     : request.hasData
-//                         ? { children }
-//                         : request.hasSearch
-//                             ? { NotFoundComponent }
-//                             : { EmptyComponent }
-//             }
+//          
 //         </>
 
 
@@ -53,7 +41,7 @@ interface RequestResultsViewProps extends PropsWithChildren {
     isError: boolean;
     hasData: boolean;
     hasSearch: boolean;
-    error: DefaultError | null;
+    ErrorComponent?: React.ReactNode,
     NotFoundComponent?: React.ReactNode;
     EmptyComponent?: React.ReactNode;
 }
@@ -62,35 +50,38 @@ export default function RequestResultsView({
     children,
     NotFoundComponent,
     EmptyComponent,
+    ErrorComponent,
     ...request
 }: RequestResultsViewProps) {
 
 
 
-    console.log(request);
-    
-
     if (request.isPending)
         return <LoadingView />;
 
-
     if (request.isError)
-        return <MessageView
-            icon={CircleX}
-            message="Ocorreu um erro!"
-            description={request?.error?.message || 'Estamos resolvendo, tente novamente mais tarde.'} />;
+        return <>
+            {ErrorComponent
+                || <MessageView
+                    icon={CircleX}
+                    message="Ocorreu um erro!"
+                    description='Estamos resolvendo, tente novamente mais tarde.' />}
+        </>
 
     if (request.hasData)
         return <>{children}</>;
 
 
     if (request.hasSearch)
-        return <>{NotFoundComponent || <MessageView message="Sem resultados" description="Que pena! Não encontramos o que você procura!" />}</>;
+        return <>{NotFoundComponent
+            || <MessageView message="Sem resultados" description="Que pena! Não encontramos o que você procura!" />}</>;
 
 
     return <>{EmptyComponent ||
         <MessageView
             message="Sem resultados"
             description="Que pena! Não encontramos o que você procura!" />}</>;
+
+
 }
 

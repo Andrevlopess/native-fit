@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import 'react-native-reanimated';
 import { PortalProvider } from '@gorhom/portal';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
+import { StatusBar } from 'react-native';
 
 
 function RootLayout() {
@@ -44,6 +45,7 @@ function RootLayout() {
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <QueryClientProvider client={queryClient}>
       <PortalProvider>
+        <StatusBar barStyle='dark-content'/>
         <Stack screenOptions={{ headerShown: false }} initialRouteName='(app)'/>
       </PortalProvider>
     </QueryClientProvider>

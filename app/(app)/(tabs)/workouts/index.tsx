@@ -1,6 +1,7 @@
 import LogoImage from '@/components/LogoImage'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
+import { BadgesControl } from '@/components/ui/BadgesControl'
 import Button from '@/components/ui/Button'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
@@ -12,12 +13,16 @@ import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IWorkout } from '@/types/workout'
 import { Link, Stack } from 'expo-router'
-import { Inbox, Plus, SearchX } from 'lucide-react-native'
+import { CircleX, Inbox, Plus, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeIn } from 'react-native-reanimated'
 
-
+const EmptyComponent = () =>
+    <MessageView
+        icon={Inbox}
+        message='Você ainda não criou nenhum treino!'
+        description='Começe criando um treino para se exercitar' />
 
 const WorkoutListCard = ({ workout: { id, name, description } }: { workout: IWorkout }) => {
     return (
@@ -37,40 +42,31 @@ const WorkoutListCard = ({ workout: { id, name, description } }: { workout: IWor
     )
 }
 
-const BadgesControl = () => {
 
-    const badges = ['Musculação', 'Cardio', 'Alongamentos', 'Perna', 'Costas']
-    const renderItem = ({ item }: { item: string }) =>
-        <Button
-            text={item}
-            variant='tertiary'
-            size='small'
-            style={[s.px12]}
-        />
-
-
-    return (
-        <FlatList
-            data={badges}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={[s.bgWhite, s.py8]}
-            contentContainerStyle={[s.gap8]}
-            renderItem={renderItem}
-            keyExtractor={item => item}
-        />
-    )
-}
-
+const badges = ['Musculação', 'Cardio', 'Alongamentos', 'Perna', 'Costas']
 
 export default function MyWorkoutsScreen() {
 
 
     const { offset, scrollHandler } = useScrollValue();
-    const [search, setSearch] = useState('')
-    const debouncedSearch = useDebounce(search, 500);
-    
-    const { data: workouts, isPending, isError, error } = useFetchWorkouts(debouncedSearch.trim());
+    const [filter, setFilter] = useState('Cardio')
+    const [search, setSearch] = useState('');
+    const debouncedSearch = useDebounce(search, 500).trim();
+
+    const { data: workouts, isPending, isError, error } = useFetchWorkouts(debouncedSearch, filter);
+
+
+    const NotFoundComponent = () =>
+        <MessageView
+            icon={SearchX}
+            message='Sem resultados'
+            description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
+        />
+    const ErrorComponent = () =>
+        <MessageView
+            icon={CircleX}
+            message="Ocorreu um erro!"
+            description={error?.message || 'Estamos tentando resolver este problema!'} />
 
 
     return (
@@ -116,64 +112,18 @@ export default function MyWorkoutsScreen() {
                     // onFocus={() => scrollRef.current?.scrollTo({ y: 60 })}
                     // onBlur={() => scrollRef.current?.scrollTo({ y: 0 })}
                     />
-                    <BadgesControl />
+                    <BadgesControl badges={badges} onSelect={console.log} selectedBadge='none'/>
                 </View>
 
-
-
-                {/* {isPending
-                    ? <LoadingView />
-                    : isError
-                        ? <ErrorView
-                            title='Ocorreu um erro!'
-                            description={error.message}
-                        />
-                        : workouts.length
-                            ? <View style={[s.px12, s.gap8]}>
-                                {workouts.map((workout, i) =>
-                                    <WorkoutListCard
-                                        workout={workout}
-                                        key={`${i}, ${workout.id}`} />)}
-                            </View>
-                            : search
-                                ? <NotFoundView
-                                    title='Exercício não encontrado'
-                                    description='Não encontramos o exercício que você queria!' />
-                                : <Text> tu ainda nao criou nada chefe</Text>
-                } */}
-
-                {/* <RequestResultsView
-                    isError={isError}
-                    isPending={isPending}
-                    error={error}
-                    hasData={!!workouts?.length}
-                    hasSearch={!!search}
-                >
-                    <View style={[s.px12, s.gap8]}>
-                        {workouts?.map((workout, i) =>
-                            <WorkoutListCard
-                                workout={workout}
-                                key={`${i}, ${workout.id}`} />)}
-                    </View>
-                </RequestResultsView> */}
 
                 <RequestResultsView
                     isError={isError}
                     isPending={isPending}
-                    error={error}
                     hasData={!!workouts?.length}
-                    hasSearch={!!search}
-                    EmptyComponent={
-                        <MessageView
-                            icon={Inbox}
-                            message='Você ainda não criou nenhum treino!'
-                            description='Começe criando um treino para se exercitar' />}
-                    NotFoundComponent={
-                        <MessageView
-                            icon={SearchX}
-                            message='Sem resultados'
-                            description={`Não econtramos nada para '${search}', tente buscar por outro!`}
-                        />}
+                    hasSearch={!!debouncedSearch}
+                    EmptyComponent={<EmptyComponent />}
+                    NotFoundComponent={<NotFoundComponent />}
+                    ErrorComponent={<ErrorComponent />}
                 >
                     <View style={[s.px12, s.gap8]}>
                         {workouts?.map((workout, i) => (
@@ -181,8 +131,6 @@ export default function MyWorkoutsScreen() {
                         ))}
                     </View>
                 </RequestResultsView>
-
-
 
 
 
