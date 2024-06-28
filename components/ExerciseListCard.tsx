@@ -50,7 +50,9 @@ export default function ExerciseListCard({ exercise, width, showsAddButton}: Exe
                     <Link
                         style={[s.mrAuto, s.myAuto, s.bgGray100, s.radiusFull, s.p8]}
                         asChild
-                        href={`/(app)/(modals)/add-to-workout/${exercise.id}`}>
+                        href={`/(app)/(modals)/add-to-workout/${exercise.id}`}
+                        // href={`/(app)/teste`}
+                        >
                         <TouchableOpacity activeOpacity={0.8}>
                             <PlusCircle color={COLORS.textGray} strokeWidth={2.5} />
                         </TouchableOpacity>

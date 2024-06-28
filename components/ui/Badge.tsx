@@ -1,4 +1,6 @@
+import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
+import { Check } from 'lucide-react-native';
 import React from 'react';
 import { StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
@@ -17,7 +19,7 @@ export function Badge({ text, isSelected, ...props }: BagdeProps) {
 
 
     const DefaultStyles: Styles = {
-        container: [s.radius12, s.px16, s.py4, s.flexRow, s.gap4],
+        container: [s.radius12, s.px20, s.py8, s.flexRow, s.gap4],
         text: [s.medium, s.textBase]
     }
 

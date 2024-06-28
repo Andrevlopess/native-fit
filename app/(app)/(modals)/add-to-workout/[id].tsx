@@ -10,7 +10,7 @@ import { device } from '@/utils/device'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Inbox, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity } from 'react-native'
 
 const CancelButton = () => (
     <TouchableOpacity onPress={() => router.back()}>
@@ -27,8 +27,6 @@ const EmptyComponent = () =>
 
 export default function AddToWorkoutScreen() {
     const { id } = useLocalSearchParams<{ id: string }>();
-
-    console.log('recived', id);
 
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
@@ -65,16 +63,22 @@ export default function AddToWorkoutScreen() {
                         ? {
                             hideNavigationBar: false,
                             hideWhenScrolling: false,
-                            placement: `automatic`,
+                            // placement: `automatic`,
                             placeholder: 'Encontrar treino',
                             onChangeText: ({ nativeEvent }) => setSearch(nativeEvent.text)
                         }
                         : undefined
             }} />
 
-            <View style={[s.flex1, s.bgWhite, s.p12, s.gap12]}>
+            <ScrollView
+                contentInsetAdjustmentBehavior='automatic'
+                style={[s.flex1, s.bgWhite]}
+                contentContainerStyle={[s.p12, s.gap12]}
 
-                <Button text='Novo treino' variant='secondary' size='small' />
+            >
+
+
+                <Button text='Novo treino' variant='secondary' size='small' asLink='/new-workout' />
                 <SearchInput
                     onChangeText={setSearch}
                     placeholder='Encontrar treino'
@@ -91,12 +95,10 @@ export default function AddToWorkoutScreen() {
                     NotFoundComponent={<NotFoundComponent />}
                     ErrorComponent={<ErrorComponent />}
                 >
-                    <Button text='Novo treino' variant='secondary' size='small' />
-
                     <WorkoutSelectableList workouts={workouts || []} exerciseId={id} />
                 </RequestResultsView>
 
-            </View>
+            </ScrollView>
 
         </>
     )

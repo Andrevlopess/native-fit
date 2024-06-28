@@ -1,5 +1,5 @@
 import ExerciseListCard from '@/components/ExerciseListCard'
-import Button from '@/components/ui/Button'
+import  Button  from '@/components/ui/Button'
 import { s } from '@/styles/global'
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { Stack, router } from 'expo-router'
@@ -35,8 +35,11 @@ export default function AuthIndexScreen() {
                 style={[s.bgWhite, s.flex1, s.p12, s.justifyEnd]}>
 
                 <Button
+                    text="Acessar meus treinos with link"
+                    asLink='/(app)/home' />
+                <Button
                     text="Acessar meus treinos"
-                    onPress={() => router.push('/(app)/home')} />
+                    onPress={() => router.push('/(app)/home')}  />
 
                 <Button
                     text="Criar minha conta"

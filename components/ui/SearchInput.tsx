@@ -24,7 +24,6 @@ export default function SearchInput(props: TextInputProps) {
                 style={[s.textBase, s.medium, s.flex1, { lineHeight: 20 }]}
                 cursorColor={COLORS.textGray}
                 placeholderTextColor={COLORS.textGray}
-                placeholder='Busque por um exercício'
             />
         </View>
 

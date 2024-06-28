@@ -62,21 +62,22 @@ const Input = ({
       )}
 
 
+      {label && (
+        <Animated.Text
+          style={[s.semibold, s.textGray500, s.textLG, s.px4, labelStyles]}
+        >
+          {label}
+        </Animated.Text>
+      )}
+
       <View
         style={[
           s.radius12,
           s.border1,
-          s.p16,
+          s.p12,
           error ? s.borderRed500 : s.borderGray200,
         ]}
       >
-        {/* {label && (
-          <Animated.Text
-            style={[s.semibold, s.textGray500, s.textLG,labelStyles]}
-          >
-            {label}
-          </Animated.Text>
-        )} */}
 
         <TextInput
           {...props}

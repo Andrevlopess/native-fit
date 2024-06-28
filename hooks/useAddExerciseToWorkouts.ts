@@ -17,7 +17,6 @@ export const useAddExerciseToWorkout = (exerciseId: string) => {
 
       if (error) throw error;
 
-      console.log(data);
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
       throw new Error(

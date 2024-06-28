@@ -31,7 +31,7 @@ export default function AppLayout() {
                     tabBarHideOnKeyboard: true,
                     tabBarInactiveTintColor: COLORS.textGray,
                     tabBarActiveTintColor: COLORS.indigo,
-                    tabBarLabelStyle: [],
+                    headerShadowVisible: false,
                     // tabBarShowLabel: false,
                 }}
                 screenListeners={{

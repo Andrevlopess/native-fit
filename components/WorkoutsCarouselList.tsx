@@ -64,36 +64,36 @@ const SectionIndicatorComponent = ({ index, scrollX }: { index: number, scrollX:
 
 
 
-export default function WorkoutsList() {
+export default function WorkoutsCarouselList() {
 
     const workouts: IWorkout[] = [
         {
             id: '1',
-            created_at: 'as',
+            createdAt: 'as',
             description: 'teste',
             name: 'teste',
-            owner_id: 'teste'
+            ownerId: 'teste'
         },
         {
             id: '2',
-            created_at: 'as',
+            createdAt: 'as',
             description: 'teste',
             name: 'teste',
-            owner_id: 'teste'
+            ownerId: 'teste'
         },
         {
             id: '3',
-            created_at: 'as',
+            createdAt: 'as',
             description: 'teste',
             name: 'teste',
-            owner_id: 'teste'
+            ownerId: 'teste'
         },
         {
             id: '4',
-            created_at: 'as',
+            createdAt: 'as',
             description: 'teste',
             name: 'teste',
-            owner_id: 'teste'
+            ownerId: 'teste'
         },
     ]
 
@@ -115,7 +115,7 @@ export default function WorkoutsList() {
         <View style={[s.gap4]}>
             <View style={[s.justifyBetween, s.itemsCenter, s.flexRow, s.px12]}>
                 <Text style={[s.bold, s.text2XL]}>Treino de hoje</Text>
-                <Link asChild href={'/(app)/home/workouts'}>
+                <Link asChild href={'/new-workout'}>
                     <Button text='Ver todos' variant='tertiary' size='small' rounded />
                 </Link>
             </View>

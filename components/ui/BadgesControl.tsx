@@ -7,12 +7,15 @@ interface BadgesControlProps {
     badges: string[];
     onSelect: (bagde: string) => void
     selectedBadge: string;
+    disabled?: boolean;
+
 }
 
-export function BadgesControl({ badges, selectedBadge, onSelect }: BadgesControlProps) {
+export function BadgesControl({ badges, selectedBadge, disabled, onSelect }: BadgesControlProps) {
 
     const renderItem = ({ item }: { item: string }) =>
         <Badge
+            disabled={disabled}
             isSelected={selectedBadge === item}
             text={item}
             onPress={() => onSelect(selectedBadge === item ? '' : item)} />

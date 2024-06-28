@@ -1,7 +1,11 @@
 import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
-import React, { ForwardedRef, forwardRef } from 'react';
+import { Link } from 'expo-router';
+import { LinkProps } from 'expo-router/build/link/Link';
+import React, { ForwardedRef, PropsWithChildren, forwardRef } from 'react';
 import { ActivityIndicator, ColorValue, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
+
+const WithLink = ({ href, children }: LinkProps) => <Link href={href} asChild>{children}</Link>
 
 type Variant = 'primary' | 'secondary' | 'tertiary' | 'ghost';
 type Size = 'small' | 'medium' | 'large';
@@ -21,9 +25,10 @@ interface IButton extends TouchableOpacityProps {
     size?: Size;
     rounded?: boolean;
     textStyles?: StyleProp<TextStyle>;
+    asLink?: string;
 }
 
-function Button({ text, isLoading, textStyles, size = 'medium', variant = 'primary', rounded = false, ...props }: IButton,
+function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant = 'primary', rounded = false, ...props }: IButton,
     ref: ForwardedRef<TouchableOpacity>) {
 
     const disabled = props.disabled;
@@ -50,8 +55,8 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
         primary: {
             container: [
                 disabled ? s.bgGray300 : s.bgIndigo600,
-                sizedStyles[size],
                 rounded ? s.radiusFull : s.radius12,
+                sizedStyles[size],
                 s.itemsCenter,
                 s.justifyCenter,
                 s.flexRow,
@@ -62,8 +67,8 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
         secondary: {
             container: [
                 disabled ? s.bgGray50 : s.bgBlack,
-                sizedStyles[size],
                 rounded ? s.radiusFull : s.radius12,
+                sizedStyles[size],
                 s.itemsCenter,
                 s.justifyCenter,
 
@@ -74,8 +79,8 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
         tertiary: {
             container: [
                 disabled ? s.bgGray50 : s.bgGray100,
-                sizedStyles[size],
                 rounded ? s.radiusFull : s.radius12,
+                sizedStyles[size],
                 s.itemsCenter,
                 s.justifyCenter,
 
@@ -94,8 +99,34 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
             activityIndicator: { color: COLORS.indigo }
         }
     }
+    
+    if (asLink) return (
+        <Link href={asLink}
+            asChild
+            style={[
+                variantStyles[variant].container,
+                props.style
+            ]}>
+            <TouchableOpacity
+                {...props}
+                ref={ref}
+                disabled={isLoading}
+                activeOpacity={0.8}
+            >
+                {props.children
+                    ? props.children
+                    : text &&
+                        isLoading
+                        ? <ActivityIndicator
+                            color={variantStyles[variant].activityIndicator.color}
+                            size={activityIndicatorSizes[size]} />
+                        : <Text style={[variantStyles[variant].text, textStyles]}>
+                            {text}
+                        </Text>}
+            </TouchableOpacity>
+        </Link>
 
-
+    )
 
     return (
         <TouchableOpacity
@@ -111,16 +142,15 @@ function Button({ text, isLoading, textStyles, size = 'medium', variant = 'prima
                 ? props.children
                 : text &&
                     isLoading
-                    ? <ActivityIndicator 
-                    color={variantStyles[variant].activityIndicator.color} 
-                    size={activityIndicatorSizes[size]} />
+                    ? <ActivityIndicator
+                        color={variantStyles[variant].activityIndicator.color}
+                        size={activityIndicatorSizes[size]} />
                     : <Text style={[variantStyles[variant].text, textStyles]}>
                         {text}
                     </Text>}
-            {
-            }
         </TouchableOpacity>
     )
+
 }
 
 export default forwardRef(Button)

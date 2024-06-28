@@ -3,6 +3,8 @@ import LibraryFeed from '@/components/LibraryFeed'
 import LogoImage from '@/components/LogoImage'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
+import { BadgesControl } from '@/components/ui/BadgesControl'
+import Button from '@/components/ui/Button'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
@@ -15,8 +17,6 @@ import { CircleX, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
 import Animated, { useAnimatedRef, useScrollViewOffset } from 'react-native-reanimated'
-import Button from '@/components/ui/Button'
-import { BadgesControl } from '@/components/ui/BadgesControl'
 
 const badges = ['Cardio', 'Quadríceps', 'Costas', 'Peito', 'Ombro', 'Panturrilha'];
 
@@ -37,13 +37,10 @@ export default function LibraryIndexScreen() {
     isPending,
     error,
     isError,
+    isFetching,
     fetchStatus,
     fetchNextPage }
     = useSearchExercises(debouncedSearch, filter);
-
-    console.log('exerc--->',exercises, isPending);
-    
-
 
   const NotFoundComponent = () =>
     <MessageView
@@ -59,6 +56,8 @@ export default function LibraryIndexScreen() {
       description={error?.message || 'Estamos tentando resolver este problema!'} />
 
 
+      console.log(isPending);
+      
   return (
     <>
       <Stack.Screen
@@ -100,12 +99,16 @@ export default function LibraryIndexScreen() {
             // onFocus={() => scrollRef.current?.scrollTo({ y: 60 })}
             // onBlur={() => scrollRef.current?.scrollTo({ y: 0 })}
             />
-            <BadgesControl badges={badges} selectedBadge={filter} onSelect={setFilter} />
+            <BadgesControl
+              badges={badges}
+              selectedBadge={filter}
+              onSelect={setFilter}
+              disabled={isFetching} />
           </View>
 
           <RequestResultsView
             isError={isError}
-            isPending={isPending && fetchStatus === 'fetching'}
+            isPending={isFetching && fetchStatus === 'fetching'}
             hasData={!!exercises?.length}
             hasSearch={!!debouncedSearch}
             EmptyComponent={<LibraryFeed />}
@@ -135,17 +138,7 @@ export default function LibraryIndexScreen() {
               }
             </View>
           </RequestResultsView>
-
-
-
-
         </Animated.ScrollView>
-
-
-
-
-
-
       </View>
 
 

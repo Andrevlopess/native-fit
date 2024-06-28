@@ -15,7 +15,7 @@ import { IWorkout } from '@/types/workout'
 import { Link, Stack } from 'expo-router'
 import { CircleX, Inbox, Plus, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeIn } from 'react-native-reanimated'
 
 const EmptyComponent = () =>
@@ -75,29 +75,22 @@ export default function MyWorkoutsScreen() {
                 options={{
                     title: 'Meus treinos',
                     headerLeft: () => <LogoImage />,
-                    headerRight: () => <TouchableOpacity>
-                        <Plus color={COLORS.indigo} />
-                    </TouchableOpacity>,
+                    headerRight: () =>
+                        <Link
+                            asChild
+                            href={'/workouts/new-workout'}>
+                            <TouchableOpacity>
+                                <Plus color={COLORS.indigo} />
+                            </TouchableOpacity>
+                        </Link>,
                     headerTitle: ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />,
                     headerLargeTitle: true,
                     headerTitleAlign: 'center'
                 }}
             />
 
-            {/* <Animated.ScrollView
-                onScroll={scrollHandler}
-                contentInsetAdjustmentBehavior='automatic'
-                style={[s.bgWhite, s.flex1]}
-                contentContainerStyle={[s.gap12, s.p12]}
-                stickyHeaderIndices={[1]}
-            >
-                <AnimatedLargeTitle offset={offset} title='Meus treinos' />
-
-          
-            </Animated.ScrollView> */}
-
-
             <Animated.ScrollView
+                contentInsetAdjustmentBehavior='automatic'
                 entering={FadeIn}
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
@@ -107,14 +100,19 @@ export default function MyWorkoutsScreen() {
                     <AnimatedLargeTitle title='Meus treinos' offset={offset} />
                     <SearchInput
                         onChangeText={setSearch}
-                        placeholder='Busque por um exercício'
+                        placeholder='Encontrar treino'
                         value={search}
                     // onFocus={() => scrollRef.current?.scrollTo({ y: 60 })}
                     // onBlur={() => scrollRef.current?.scrollTo({ y: 0 })}
                     />
-                    <BadgesControl badges={badges} onSelect={console.log} selectedBadge='none'/>
-                </View>
+                    <BadgesControl badges={badges} onSelect={console.log} selectedBadge='none' />
+                    <Button
+                        variant='secondary'
+                        size={'small'}
+                        text="Novo treino"
+                        asLink='/new-workout' />
 
+                </View>
 
                 <RequestResultsView
                     isError={isError}

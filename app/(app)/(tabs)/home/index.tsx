@@ -1,6 +1,9 @@
 import FeaturedExercices from '@/components/FeaturedExercices'
 import LogoImage from '@/components/LogoImage'
-import WorkoutsList from '@/components/WorkoutsList'
+import WorkoutsCarouselList from '@/components/WorkoutsCarouselList'
+import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
+import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
+import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { Stack } from 'expo-router'
@@ -85,6 +88,7 @@ const exercises: IExercise[] =
 export default function HomeIndexScreen() {
 
 
+  const { offset, scrollHandler } = useScrollValue()
 
   return (
 
@@ -92,16 +96,22 @@ export default function HomeIndexScreen() {
       <Stack.Screen
         options={{
           title: 'Início',
+          headerTitleAlign: 'center',
           headerLeft: () => <LogoImage />,
+          headerTitle: ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
         }}
       />
 
       <Animated.ScrollView
+        onScroll={scrollHandler}
         contentInsetAdjustmentBehavior='automatic'
         style={[s.flex1, s.bgWhite]}
-        contentContainerStyle={[s.gap24]}
+        contentContainerStyle={[s.gap8]}
       >
-        <WorkoutsList />
+
+        <AnimatedLargeTitle title='Início' offset={offset} style={[s.px12]} />
+
+        <WorkoutsCarouselList />
         <FeaturedExercices title='Destaques' exercises={exercises} />
 
       </Animated.ScrollView>

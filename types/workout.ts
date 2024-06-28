@@ -1,7 +1,13 @@
+import { IExercise } from "./exercise";
+
 export interface IWorkout {
   id: string;
-  owner_id: string;
+  ownerId: string;
   name: string;
   description: string;
-  created_at: string;
+  createdAt: string;
+}
+export interface IWorkoutDetails extends IWorkout {
+  ownerName:string;
+  exercises: IExercise[];
 }
