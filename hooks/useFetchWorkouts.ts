@@ -15,7 +15,7 @@ interface useFetchWorkoutsParams {
 export const useFetchWorkouts = (search?: string, filter?: string) => {
   async function fetchWorkouts(search: string) {
     try {
-      let { data: workouts, error } = await supabase
+      const { data: workouts, error } = await supabase
         .from("workouts")
         .select()
         .eq("owner_id", UUID)

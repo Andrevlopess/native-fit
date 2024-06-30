@@ -7,14 +7,11 @@ import React from 'react'
 import { Pressable, Text, View } from 'react-native'
 import Animated, { Extrapolation, SharedValue, interpolate, interpolateColor, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue, useSharedValue } from 'react-native-reanimated'
 import Button from './ui/Button'
+import { CarouselList } from './ui/CarouselList'
 
 
-const padding = 16;
-const CARD_WIDTH = SCREEN_WIDTH - padding * 4
-
-interface WorkoutCardProps {
-
-}
+const PADDING = 16;
+const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
 
 const WorkoutCard = ({ name, id }: IWorkout) => {
     return (
@@ -35,33 +32,6 @@ const WorkoutCard = ({ name, id }: IWorkout) => {
 }
 
 
-const SectionIndicatorComponent = ({ index, scrollX }: { index: number, scrollX: SharedValue<number>; }) => {
-
-    const inputRange = [
-        (index - 1) * CARD_WIDTH,
-        index * CARD_WIDTH,
-        (index + 1) * CARD_WIDTH,
-    ];
-
-
-    const stepsIndicatorsAnimation = useAnimatedStyle(() => {
-        return {
-            width: interpolate(scrollX.value, inputRange, [6, 24, 6], Extrapolation.CLAMP),
-            // height: interpolate(scrollX.value, inputRange, [6, 8, 6], Extrapolation.CLAMP),
-            backgroundColor: interpolateColor(scrollX.value, inputRange, [
-                `${COLORS.indigo}50`, `${COLORS.indigo}`, `${COLORS.indigo}50`
-            ])
-        };
-    });
-
-
-    return <Animated.View style={[
-        s.bgIndigo500,
-        s.radiusFull,
-        stepsIndicatorsAnimation, { height: 6 }]} />
-
-}
-
 
 
 export default function WorkoutsCarouselList() {
@@ -69,47 +39,37 @@ export default function WorkoutsCarouselList() {
     const workouts: IWorkout[] = [
         {
             id: '1',
-            createdAt: 'as',
+            createdat: 'as',
             description: 'teste',
             name: 'teste',
-            ownerId: 'teste'
+            ownerid: 'teste'
         },
         {
             id: '2',
-            createdAt: 'as',
+            createdat: 'as',
             description: 'teste',
             name: 'teste',
-            ownerId: 'teste'
+            ownerid: 'teste'
         },
         {
             id: '3',
-            createdAt: 'as',
+            createdat: 'as',
             description: 'teste',
             name: 'teste',
-            ownerId: 'teste'
+            ownerid: 'teste'
         },
         {
             id: '4',
-            createdAt: 'as',
+            createdat: 'as',
             description: 'teste',
             name: 'teste',
-            ownerId: 'teste'
+            ownerid: 'teste'
         },
     ]
 
 
     const renderItem = ({ item }: { item: IWorkout }) => <WorkoutCard {...item} />
 
-    const offset = useSharedValue(0);
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: (event) => {
-            "worklet";
-            offset.value = event.contentOffset.x;
-        },
-    });
-
-    // const animatedRef = useAnimatedRef<Animated.ScrollView>();
-    // const offset = useScrollViewOffset(animatedRef);
 
     return (
         <View style={[s.gap4]}>
@@ -120,25 +80,12 @@ export default function WorkoutsCarouselList() {
                 </Link>
             </View>
 
-            <Animated.FlatList
-                onScroll={scrollHandler}
-                // ref={animatedRef}
-                scrollEventThrottle={16}
-                snapToInterval={CARD_WIDTH + padding}
-                decelerationRate={'fast'}
-                contentContainerStyle={[s.gap12, s.p12, { paddingHorizontal: padding * 2 }]}
-                showsHorizontalScrollIndicator={false}
-                horizontal
+            <CarouselList
+                itemWidth={CARD_WIDTH}
+                gapBetweenItems={PADDING}
                 data={workouts}
-                keyExtractor={item => item.id}
                 renderItem={renderItem}
             />
-
-
-
-            <View style={[s.mxAuto, s.flexRow, s.gap4, s.itemsCenter]}>
-                {workouts.map((_, i) => <SectionIndicatorComponent index={i} scrollX={offset} key={i} />)}
-            </View>
         </View>
     )
 }

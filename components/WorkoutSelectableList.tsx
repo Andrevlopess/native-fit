@@ -39,8 +39,6 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
 
     const { mutate, isPending, isSuccess } = useAddExerciseToWorkout(exerciseId)
 
-
-
     function handleSubmitSelectedWorkouts(data: AddToWorkoutsValues) {
         mutate(data.addTo);
         if (isSuccess) router.back();

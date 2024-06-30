@@ -1,16 +1,24 @@
+import ExerciseListSection from '@/components/ExerciseListSection'
 import WorkoutSelectableList from '@/components/WorkoutSelectableList'
 import Button from '@/components/ui/Button'
+import { CarouselList } from '@/components/ui/CarouselList'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
+import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { useDebounce } from '@/hooks/useDebounceCallback'
 import { useFetchWorkouts } from '@/hooks/useFetchWorkouts'
 import { s } from '@/styles/global'
+import { Filter } from '@/types/exercise'
 import { device } from '@/utils/device'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Inbox, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
-import { ScrollView, Text, TouchableOpacity } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
+
+
+const PADDING = 16;
+const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
 
 const CancelButton = () => (
     <TouchableOpacity onPress={() => router.back()}>
@@ -18,40 +26,43 @@ const CancelButton = () => (
     </TouchableOpacity>
 )
 
-const EmptyComponent = () =>
-    <MessageView
-        icon={Inbox}
-        message='Você ainda não criou nenhum treino!'
-        description='Começe criando um treino para se exercitar' />
+type Section = { title: string, filter: Filter }
+const Sections: Section[] = [
+    {
+        title: 'Os melhores da musculação',
+        filter: 'peitoral'
+    },
+    // {
+    //     title: 'Aumente seu fôlego!',
+    //     filter: 'cardio'
+    // },
+    // {
+    //     title: 'Para fazer em casa',
+    //     filter: 'peso do corpo'
+    // }
+]
 
-
-export default function AddToWorkoutScreen() {
-    const { id } = useLocalSearchParams<{ id: string }>();
+export default function ExericesToAddModal() {
+    const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
 
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
 
-    const { data: workouts, isPending, isError, error } = useFetchWorkouts(debouncedSearch);
+    if (!workoutId) return <MessageView
+        message='Esta página não existe'
+        description="Como q tu chegou até aqui?" />
 
 
-    const NotFoundComponent = () =>
-        <MessageView
-            icon={SearchX}
-            message='Sem resultados'
-            description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
-        />
-    const ErrorComponent = () =>
-        <MessageView
-            icon={CircleX}
-            message="Ocorreu um erro!"
-            description={error?.message || 'Estamos tentando resolver este problema!'} />
+    const renderItem = ({ item }: { item: Section }) =>
+        <ExerciseListSection
+            title={item.title}
+            filter={item.filter} />
 
-    if (!id) return <ErrorComponent />
 
     return (
         <>
             <Stack.Screen options={{
-                title: 'Adicionar ao treino',
+                title: 'Adicionar exercícios',
                 presentation: 'modal',
                 // animation: 'fade_from_bottom',
                 headerTitleAlign: 'center',
@@ -70,36 +81,18 @@ export default function AddToWorkoutScreen() {
                         : undefined
             }} />
 
-            <ScrollView
-                contentInsetAdjustmentBehavior='automatic'
-                style={[s.flex1, s.bgWhite]}
-                contentContainerStyle={[s.p12, s.gap12]}
 
-            >
+            <View style={[s.flex1, s.bgWhite, s.gap8]}>
 
-
-                <Button text='Novo treino' variant='secondary' size='small' asLink='/new-workout' />
                 <SearchInput
                     onChangeText={setSearch}
                     placeholder='Encontrar treino'
                     value={search}
+                    containerStyles={[s.m12]}
                 />
 
-
-                <RequestResultsView
-                    isError={isError}
-                    isPending={isPending}
-                    hasData={!!workouts?.length}
-                    hasSearch={!!debouncedSearch}
-                    EmptyComponent={<EmptyComponent />}
-                    NotFoundComponent={<NotFoundComponent />}
-                    ErrorComponent={<ErrorComponent />}
-                >
-                    <WorkoutSelectableList workouts={workouts || []} exerciseId={id} />
-                </RequestResultsView>
-
-            </ScrollView>
-
+                <CarouselList data={Sections} renderItem={renderItem} />
+            </View>
         </>
     )
 }

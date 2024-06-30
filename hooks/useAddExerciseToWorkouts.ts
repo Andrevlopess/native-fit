@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 export const useAddExerciseToWorkout = (exerciseId: string) => {
+  
   async function insertExerciseToWorkouts(workoutsId: string[]) {
     const arrayToInsert = workoutsId.map((workout) => ({
       exercise_id: exerciseId,

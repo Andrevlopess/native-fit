@@ -13,7 +13,7 @@ interface ExerciseListCardProps {
     showsAddButton?: boolean;
 }
 
-export default function ExerciseListCard({ exercise, width, showsAddButton}: ExerciseListCardProps) {
+export default function ExerciseListCard({ exercise, width, showsAddButton = true}: ExerciseListCardProps) {
 
     return (
         <Link

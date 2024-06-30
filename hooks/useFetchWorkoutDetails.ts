@@ -10,6 +10,7 @@ export const useFetchWorkoutDetails = (id: string) => {
     try {
       let { data: workouts, error } = await supabase
         .rpc('workout_details', {workoutid: id})
+        .single();
 
       if (error) throw error;
 
@@ -25,7 +26,7 @@ export const useFetchWorkoutDetails = (id: string) => {
   const query = useQuery({
     queryKey: ["workout", id],
     queryFn: ({ queryKey }) => fetchWorkoutDetails(queryKey[1]),
-    retry: false,
+    // retry: false,
     // enabled: false
   });
   return query;

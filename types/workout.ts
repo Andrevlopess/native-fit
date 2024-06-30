@@ -2,12 +2,12 @@ import { IExercise } from "./exercise";
 
 export interface IWorkout {
   id: string;
-  ownerId: string;
   name: string;
   description: string;
-  createdAt: string;
+  createdat: string;
+  ownerid: string;
 }
 export interface IWorkoutDetails extends IWorkout {
-  ownerName:string;
+  ownername:string;
   exercises: IExercise[];
 }

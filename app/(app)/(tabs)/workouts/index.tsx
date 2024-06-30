@@ -129,13 +129,7 @@ export default function MyWorkoutsScreen() {
                         ))}
                     </View>
                 </RequestResultsView>
-
-
-
             </Animated.ScrollView>
-
-
-
         </>
     )
 }

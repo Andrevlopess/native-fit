@@ -3,9 +3,12 @@ import { IExercise } from "@/types/exercise";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-const ITEMS_PER_PAGE = 20;
 
-export const useSearchExercises = (search: string, filter: string) => {
+export const useSearchExercises = (
+  search: string, 
+  filter: string,
+  itemsPerPage:number = 20
+  ) => {
   async function fetchSearchedExercises({
     queryKey,
     pageParam,
@@ -18,7 +21,7 @@ export const useSearchExercises = (search: string, filter: string) => {
       const { data, error } = await supabase.rpc("search-exercises", {
         filter: queryKey[2],
         page_num: pageParam,
-        page_size: ITEMS_PER_PAGE,
+        page_size: itemsPerPage,
         query: queryKey[1],
       });
 

@@ -1,5 +1,6 @@
 import COLORS from "@/constants/Colors";
 import { s } from "@/styles/global";
+import { device } from "@/utils/device";
 import * as Haptics from 'expo-haptics';
 import { Image } from "expo-image";
 import { Tabs } from "expo-router";
@@ -35,7 +36,9 @@ export default function AppLayout() {
                     // tabBarShowLabel: false,
                 }}
                 screenListeners={{
-                    tabPress: () => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                    tabPress: () =>
+                        !device.web &&
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
                 }}
             >
                 <Tabs.Screen

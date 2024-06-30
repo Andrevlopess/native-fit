@@ -1,41 +1,9 @@
-// import workouts from '@/app/(app)/workouts';
-// import { s } from '@/styles/global';
-// import React, { PropsWithChildren } from 'react';
-// import { Text, View } from 'react-native';
-// import ErrorView from './ErrorView';
-// import LoadingView from './LoadingView';
-// import NotFoundView from './NotFoundView';
-// import { DefaultError } from '@tanstack/react-query';
 
-import { DefaultError } from "@tanstack/react-query";
-import React, { PropsWithChildren } from "react";
-import { Text } from "react-native";
-import LoadingView from "./LoadingView";
-import NotFoundView from "./MessageView";
-import MessageView from "./MessageView";
 import { CircleX } from "lucide-react-native";
+import React, { PropsWithChildren } from "react";
+import LoadingView from "./LoadingView";
+import MessageView from "./MessageView";
 
-// interface RequestResultsViewProps extends PropsWithChildren {
-//     isPending: boolean;
-//     isError: boolean;
-//     hasData: boolean;
-//     hasSearch: boolean;
-//     error: DefaultError | null;
-//     NotFoundComponent?: React.ReactNode;
-//     EmptyComponent?: React.ReactNode;
-// }
-
-
-// export default function RequestResultsView(
-//     { children, NotFoundComponent, EmptyComponent, ...request }: RequestResultsViewProps) {
-//     return (
-//         <>
-//          
-//         </>
-
-
-//     )
-// }
 interface RequestResultsViewProps extends PropsWithChildren {
     isPending: boolean;
     isError: boolean;
