@@ -18,7 +18,7 @@ export const useSearchExercises = (
   }) {
     try {
 
-      const { data, error } = await supabase.rpc("search-exercises", {
+      const { data, error } = await supabase.rpc("search_exercises", {
         filter: queryKey[2],
         page_num: pageParam,
         page_size: itemsPerPage,

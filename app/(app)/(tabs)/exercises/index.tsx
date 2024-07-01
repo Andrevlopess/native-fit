@@ -56,8 +56,8 @@ export default function LibraryIndexScreen() {
       description={error?.message || 'Estamos tentando resolver este problema!'} />
 
 
-      console.log(isPending);
-      
+  console.log(isPending);
+
   return (
     <>
       <Stack.Screen
@@ -108,7 +108,7 @@ export default function LibraryIndexScreen() {
 
           <RequestResultsView
             isError={isError}
-            isPending={isFetching && fetchStatus === 'fetching'}
+            isPending={isFetching}
             hasData={!!exercises?.length}
             hasSearch={!!debouncedSearch}
             EmptyComponent={<LibraryFeed />}
@@ -118,14 +118,15 @@ export default function LibraryIndexScreen() {
             <View style={[s.flex1, s.gap12]}>
               <Text style={[s.semibold, s.text2XL, s.px12]}>Resultados</Text>
 
-
-              {exercises?.map((exercise, index) => (
-                <SwipeableExerciseListCard
-                  exercise={exercise}
-                  key={`${exercise.id}${index}`}
-                  action={['add']}
-                />
-              ))}
+              <View style={[s.p4]}>
+                {exercises?.map((exercise, index) => (
+                  <SwipeableExerciseListCard
+                    exercise={exercise}
+                    key={`${exercise.id}${index}`}
+                    action={['add']}
+                  />
+                ))}
+              </View>
 
               {hasNextPage &&
                 <Button

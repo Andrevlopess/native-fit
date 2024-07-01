@@ -1,11 +1,10 @@
-import workouts from '@/app/(app)/(tabs)/workouts';
 import COLORS from '@/constants/Colors';
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
 import React from 'react';
 import { ListRenderItem, View } from 'react-native';
-import Animated, { Extrapolation, SharedValue, interpolate, interpolateColor, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { Extrapolation, SharedValue, interpolate, interpolateColor, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 const PADDING = 16;
 const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
@@ -39,28 +38,27 @@ interface CarouselListProps {
 
 export function CarouselList({ data, renderItem, itemWidth = CARD_WIDTH, gapBetweenItems = PADDING }: CarouselListProps) {
 
-    const { offset, scrollHandler } = useScrollValue();
-
+    const { offset, scrollHandler } = useScrollValue('x')
 
     return (
-        <View>
+        <View style={[s.flex1]}>
             <Animated.FlatList
                 onScroll={scrollHandler}
                 // ref={animatedRef}
                 scrollEventThrottle={16}
                 snapToInterval={itemWidth + gapBetweenItems}
                 decelerationRate={'fast'}
-                contentContainerStyle={[s.gap12, s.p12, { paddingHorizontal: gapBetweenItems * 2 }]}
+                contentContainerStyle={[
+                    s.gap12,
+                    s.p12,
+                    { paddingHorizontal: gapBetweenItems * 2 }]}
                 showsHorizontalScrollIndicator={false}
                 horizontal
                 data={data}
-                keyExtractor={item => item.id}
                 renderItem={renderItem}
             />
 
-
-
-            <View style={[s.mxAuto, s.flexRow, s.gap4, s.itemsCenter]}>
+            <View style={[s.mxAuto, s.flexRow, s.gap4, s.itemsCenter, { paddingBottom: 12 }]}>
                 {Array.from({ length: data.length }).map((_, index) => {
 
                     const inputRange = [

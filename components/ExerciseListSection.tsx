@@ -25,27 +25,20 @@ interface ExerciseListSectionProps {
 
 export default function ExerciseListSection({ title, filter }: ExerciseListSectionProps) {
 
-
-  const [search, setSearch] = useState('')
-  const debouncedSearch = useDebounce(search, 500).trim();
-
   const {
     exercises,
-    hasNextPage,
     isFetchingNextPage,
     isPending,
     error,
     isError,
-    isFetching,
-    fetchStatus,
     fetchNextPage }
-    = useSearchExercises(debouncedSearch, filter, 10);
+    = useSearchExercises('', filter, 15);
 
   const NotFoundComponent = () =>
     <MessageView
       icon={SearchX}
       message='Sem resultados'
-      description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
+      description={`Não econtramos nada para ${filter}`}
     />
 
   const ErrorComponent = () =>
@@ -54,43 +47,43 @@ export default function ExerciseListSection({ title, filter }: ExerciseListSecti
       message="Ocorreu um erro!"
       description={error?.message || 'Estamos tentando resolver este problema!'} />
 
-  const renderItem = ({ item }: { item: IExercise }) => <ExerciseListCard exercise={item} showsAddButton />
+  const renderItem = ({ item }: { item: IExercise }) =>
+    <ExerciseListCard
+      exercise={item}
+      width={CARD_WIDTH}
+      showsAddButton />
 
   const renderFooter = () => {
     if (!isFetchingNextPage) return null;
     return (
-
       <ActivityIndicator color={COLORS.indigo} style={[s.p12, s.mxAuto]} />
-
     );
   };
 
   return (
-    <View>
-      <Text style={[s.textXL, s.semibold]}>{title}</Text>
+    <RequestResultsView
+      isError={isError}
+      isPending={isPending}
+      hasData={!!exercises?.length}
+      EmptyComponent={<NotFoundComponent />}
+      NotFoundComponent={<NotFoundComponent />}
+      ErrorComponent={<ErrorComponent />}
+    >
+      <View style={[s.gap12]}>
 
-      <RequestResultsView
-        isError={isError}
-        isPending={isFetching && fetchStatus === 'fetching'}
-        hasData={!!exercises?.length}
-        hasSearch={false}
-        EmptyComponent={<NotFoundComponent />}
-        NotFoundComponent={<NotFoundComponent />}
-        ErrorComponent={<ErrorComponent />}
-      >
+        <Text style={[s.textXL, s.semibold]}>{title}</Text>
+
         <FlatList
           data={exercises}
           renderItem={renderItem}
-          onEndReachedThreshold={0.1}
+          keyExtractor={item => item.id}
+          // showsVerticalScrollIndicator={false}
+          // onEndReachedThreshold={2}
           onEndReached={() => fetchNextPage()}
           ListFooterComponent={renderFooter}
-          style={[s.flex1, s.gap12]}
-
         />
+      </View>
+    </RequestResultsView>
 
-
-      </RequestResultsView>
-
-    </View>
   )
 }

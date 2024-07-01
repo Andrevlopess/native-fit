@@ -8,7 +8,7 @@ interface RequestResultsViewProps extends PropsWithChildren {
     isPending: boolean;
     isError: boolean;
     hasData: boolean;
-    hasSearch: boolean;
+    hasSearch?: boolean;
     ErrorComponent?: React.ReactNode,
     NotFoundComponent?: React.ReactNode;
     EmptyComponent?: React.ReactNode;
@@ -16,6 +16,7 @@ interface RequestResultsViewProps extends PropsWithChildren {
 
 export default function RequestResultsView({
     children,
+    hasSearch = false,
     NotFoundComponent,
     EmptyComponent,
     ErrorComponent,
@@ -40,7 +41,7 @@ export default function RequestResultsView({
         return <>{children}</>;
 
 
-    if (request.hasSearch)
+    if (hasSearch)
         return <>{NotFoundComponent
             || <MessageView message="Sem resultados" description="Que pena! Não encontramos o que você procura!" />}</>;
 

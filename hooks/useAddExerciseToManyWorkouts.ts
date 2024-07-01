@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useAddExerciseToWorkout = (exerciseId: string) => {
+export const useAddExerciseToManyWorkout = (exerciseId: string) => {
   
   async function insertExerciseToWorkouts(workoutsId: string[]) {
     const arrayToInsert = workoutsId.map((workout) => ({
@@ -33,3 +33,6 @@ export const useAddExerciseToWorkout = (exerciseId: string) => {
 
   return mutation;
 };
+
+// 1 exercise -> many workouts
+// 1 workout -> one exercise'

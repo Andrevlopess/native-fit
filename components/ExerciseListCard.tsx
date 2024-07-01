@@ -58,8 +58,6 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                         </TouchableOpacity>
                     </Link>
                 }
-
-
             </Pressable>
         </Link>
 

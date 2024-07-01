@@ -5,8 +5,8 @@ import COLORS from '@/constants/Colors'
 
 export default function LoadingView() {
     return (
-        <View style={[s.itemsCenter, s.flex1, s.justifyCenter,s.bgWhite]}>
-            <ActivityIndicator color={COLORS.indigo} size={36} />
+        <View style={[s.itemsCenter, s.flex1, s.justifyCenter, s.bgWhite]}>
+            <ActivityIndicator color={COLORS.indigo} size={32} />
         </View>
     )
 }

@@ -75,14 +75,12 @@ export default function WorkoutsCarouselList() {
         <View style={[s.gap4]}>
             <View style={[s.justifyBetween, s.itemsCenter, s.flexRow, s.px12]}>
                 <Text style={[s.bold, s.text2XL]}>Treino de hoje</Text>
-                <Link asChild href={'/new-workout'}>
+                <Link asChild href={`/(app)/(modals)/exercises-to-add/48f2846e-7f8e-495d-afda-f2ff607c339a`}>
                     <Button text='Ver todos' variant='tertiary' size='small' rounded />
                 </Link>
             </View>
 
             <CarouselList
-                itemWidth={CARD_WIDTH}
-                gapBetweenItems={PADDING}
                 data={workouts}
                 renderItem={renderItem}
             />

@@ -88,7 +88,7 @@ const exercises: IExercise[] =
 export default function HomeIndexScreen() {
 
 
-  const { offset, scrollHandler } = useScrollValue()
+  const { offset, scrollHandler } = useScrollValue('y')
 
   return (
 

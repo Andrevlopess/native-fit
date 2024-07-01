@@ -7,7 +7,7 @@ function LogoImage() {
     return (
         <Image
             style={{ height: 30, width: 60 }}
-            source={require('@/assets/images/yafit.svg')}
+            // source={require('@/assets/images/yafit.svg')}
             contentFit='contain'
         />
     )

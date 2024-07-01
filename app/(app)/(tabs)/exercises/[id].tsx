@@ -29,7 +29,7 @@ export default function ExerciseDetailsScreen() {
     const imageHeight = SCREEN_WIDTH / 1.2
     // animations
 
-    const { offset, scrollHandler } = useScrollValue();
+    // const { offset, scrollHandler } = useScrollValue();
 
 
     // const imageAnimation = useAnimatedStyle(() => ({
@@ -106,7 +106,7 @@ export default function ExerciseDetailsScreen() {
                     : details
                         ? <Animated.ScrollView
                             entering={FadeIn}
-                            onScroll={scrollHandler}
+                            // onScroll={scrollHandler}
                             style={[s.flex1, s.bgWhite]}
                             contentContainerStyle={[s.gap12, s.p12]}>
 
