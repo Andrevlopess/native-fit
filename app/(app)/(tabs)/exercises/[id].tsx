@@ -60,7 +60,6 @@ export default function ExerciseDetailsScreen() {
 
     return (
         <>
-
             <Stack.Screen options={{
                 title: '',
                 // header: ({ back, navigation }) => {

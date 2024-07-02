@@ -21,6 +21,7 @@ export const WorkoutExercisesCarousel = ({ exercises }: { exercises: IExercise[]
             <CarouselList
                 data={exercises}
                 renderItem={renderItem}
+                keyExtractor={item => item.id}
                 itemWidth={ITEM_WIDTH}
                 marginHorizontal={MARGIN_HORIZONTAL}
             />

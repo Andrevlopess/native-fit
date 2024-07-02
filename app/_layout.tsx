@@ -19,6 +19,8 @@ import { StatusBar } from 'react-native';
 
 
 function RootLayout() {
+
+  const queryClient = new QueryClient();
   const [loaded, error] = useFonts({
     'DMSans-Black': require('@/assets/fonts/DMSans-Black.ttf'),
     'DMSans-Bold': require('@/assets/fonts/DMSans-Bold.ttf'),
@@ -29,24 +31,23 @@ function RootLayout() {
   });
 
 
-
   useEffect(() => {
     if (error) throw error;
   }, [error]);
-
+  
   if (!loaded) {
     return null;
   }
 
-
-
-  const queryClient = new QueryClient();
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <QueryClientProvider client={queryClient}>
       <PortalProvider>
-        <StatusBar barStyle='dark-content'/>
-        <Stack screenOptions={{ headerShown: false }} initialRouteName='(app)'/>
+        <StatusBar barStyle='dark-content' />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name='(app)'/>
+        </Stack>
+        {/* <Slot /> */}
       </PortalProvider>
     </QueryClientProvider>
 
