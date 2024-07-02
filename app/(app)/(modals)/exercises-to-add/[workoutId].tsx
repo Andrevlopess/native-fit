@@ -14,19 +14,23 @@ import { useSearchExercises } from '@/hooks/useSearchExercises'
 import { s } from '@/styles/global'
 import { Filter, IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
+import { useQueryClient } from '@tanstack/react-query'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
-import { CircleX, SearchX } from 'lucide-react-native'
+import { CircleX, Search, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const Feed = () => <>
-    <FeaturedExercices
+    {/* <FeaturedExercices
+        itemsPerSection={5}
         title='O melhor para seus quadríceps'
         exercises={bestQuadExercises} />
     <FeaturedExercices
+        itemsPerSection={5}
         title='Para queimar gordura'
-        exercises={bestCardioExercises} />
+        exercises={bestCardioExercises} /> */}
+    <MessageView icon={Search} message='Busque por um exercício' description='Procure entre as mais de 1300 atividades' />
 </>
 
 const CancelButton = () => (
@@ -43,9 +47,9 @@ const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
 export default function ExericesToAddModal() {
     const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
     const insets = useSafeAreaInsets();
-
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState('supino');
     const debouncedSearch = useDebounce(search, 500).trim();
+    const queryClient = useQueryClient();
 
     if (!workoutId)
         return <MessageView
@@ -57,17 +61,21 @@ export default function ExericesToAddModal() {
         isFetching,
         isError,
         error,
-        fetchStatus,
         fetchNextPage,
         isFetchingNextPage } =
         useSearchExercises(debouncedSearch, '', 15);
 
-    const { addExercise, isPending } = useAddExerciseToWorkout()
+
+    const { addExercise, isPending } = useAddExerciseToWorkout({
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["workout", workoutId] });
+            router.back()
+        }
+    })
+
 
     function handleAddExerciseToThisWorkout(exerciseId: string) {
-
         if (!workoutId) return;
-
         addExercise({
             exercises: [exerciseId],
             workouts: [workoutId]
@@ -118,6 +126,7 @@ export default function ExericesToAddModal() {
                     value={search}
                     containerStyles={[s.m12]}
                 />
+                {isPending && <Text>adiconando...</Text>}
 
                 <RequestResultsView
                     isError={isError}

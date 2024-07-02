@@ -1,40 +1,28 @@
 import ExerciseDetailedCard from '@/components/ExerciseDetailedCard';
+import { WorkoutExercisesCarousel } from '@/components/WorkoutExercisesCarousel';
+import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle';
+import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import Button from '@/components/ui/Button';
 import { CarouselList } from '@/components/ui/CarouselList';
 import MessageView from '@/components/views/MessageView';
 import RequestResultsView from '@/components/views/RequestResultView';
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
 import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
+import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
 import { IExercise } from '@/types/exercise';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { CircleX } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
-const WorkoutExercisesCarousel = ({ exercises }: { exercises: IExercise[] }) => {
 
-    const PADDING = 16;
-    const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
-
-    const renderItem = ({ item }: { item: IExercise }) =>
-        <ExerciseDetailedCard exercise={item} cardWitdh={CARD_WIDTH} />
-
-    return (
-        <>
-
-            <CarouselList
-                gapBetweenItems={PADDING}
-                itemWidth={CARD_WIDTH}
-                data={exercises}
-                renderItem={renderItem} />
-        </>
-    )
-}
+type SearchParams = { id: string, name: string, description: string }
 
 export default function WorkoutScreen() {
 
-    const { id } = useLocalSearchParams<{ id: string }>();
+    const { id, name, description } = useLocalSearchParams<SearchParams>();
 
     if (!id) {
         return <MessageView
@@ -46,38 +34,39 @@ export default function WorkoutScreen() {
 
     const ErrorComponent = () =>
         <MessageView
-            icon={CircleX}
             message="Ocorreu um erro!"
             description={error?.message || 'Estamos tentando resolver este problema!'} />
+
+    const { offset, scrollHandler } = useScrollValue('y')
+
 
     return (
         <>
             <Stack.Screen options={{
-                title: '',
+                title: name || details?.name || '',
+                headerTitle: ({ children }) => <AnimatedHeaderTitle offset={offset} title={children} />,
                 headerRight: () =>
                     <Link href={`/edit/${id}`} style={[s.bold, s.textIndigo600, s.textBase, s.p12]}>
                         Editar
                     </Link>
             }} />
 
-            <ScrollView style={[s.flex1, s.bgWhite]}>
+            <Animated.ScrollView
+                onScroll={scrollHandler}
+                style={[s.flex1, s.bgWhite]}
+            >
 
-                <RequestResultsView
-                    isError={isError}
-                    isPending={isPending}
-                    hasData={!!details}
-                    hasSearch={false}
-                    // EmptyComponent={<EmptyComponent />}
-                    // NotFoundComponent={<NotFoundComponent />}
-                    ErrorComponent={<ErrorComponent />}
-                >
-                    <View style={[s.px12]}>
-                        <Text style={[s.bold, s.text2XL]}>{details?.name}</Text>
-                        <Text style={[s.medium, s.textBase, s.textGray600]}>
-                            {details?.description}
-                        </Text>
+                <View style={[s.px12]}>
 
-                        <View style={[s.flexRow, s.gap4, s.itemsCenter, s.mt12]}>
+                    <AnimatedLargeTitle title={name || details?.name || ''} offset={offset} />
+
+                    <Text style={[s.medium, s.textBase, s.textGray600]}>
+                        {description}
+                    </Text>
+
+                    {
+                        details &&
+                        <View style={[s.flexRow, s.gap4, s.itemsCenter]}>
                             <Text style={[s.semibold, s.textLG, s.textGray600]}>
                                 {details?.exercises.length === 0
                                     ? 'Nenhum exercício'
@@ -90,7 +79,20 @@ export default function WorkoutScreen() {
                                 {details?.ownername}
                             </Text>
                         </View>
-                    </View>
+                    }
+
+                </View>
+
+
+                <RequestResultsView
+                    isError={isError}
+                    isPending={isPending}
+                    hasData={!!details}
+                    hasSearch={false}
+                    // EmptyComponent={<EmptyComponent />}
+                    // NotFoundComponent={<NotFoundComponent />}
+                    ErrorComponent={<ErrorComponent />}
+                >
 
                     <View style={[]}>
 
@@ -105,7 +107,7 @@ export default function WorkoutScreen() {
                         <WorkoutExercisesCarousel exercises={details?.exercises || []} />
                     </View>
                 </RequestResultsView>
-            </ScrollView>
+            </Animated.ScrollView>
         </>
     )
 }

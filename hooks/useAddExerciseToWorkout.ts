@@ -1,19 +1,6 @@
 import { supabase } from "@/lib/supabase";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import axios from "axios";
-
-interface AddExerciseToWorkoutHookParams {
-  onSuccess?: (
-    data: string,
-    variables: AddExerciseToWorkoutParams,
-    context: unknown
-  ) => void;
-  onError?: (
-    data: string,
-    variables: AddExerciseToWorkoutParams,
-    context: unknown
-  ) => void;
-}
 
 interface AddExerciseToWorkoutParams {
   exercises: string[];
@@ -21,15 +8,23 @@ interface AddExerciseToWorkoutParams {
 }
 
 export const useAddExerciseToWorkout = ({
-  onSuccess = () => {} ,
-  onError = () => {},
-}: AddExerciseToWorkoutHookParams = {}) => {
+  ...options
+}: UseMutationOptions<
+  AddExerciseToWorkoutParams,
+  Error,
+  AddExerciseToWorkoutParams
+> = {}) => {
+  async function addExerciseToWorkout({
+    workouts,
+    exercises,
+  }: AddExerciseToWorkoutParams) {
 
-  async function addExerciseToWorkout({workouts, exercises}:AddExerciseToWorkoutParams) {
-
-    const insertArray = workouts.flatMap(workout => 
-      exercises.map(exercise => ({ exercise_id: exercise, workout_id: workout }))
-    )
+    const insertArray = workouts.flatMap((workout) =>
+      exercises.map((exercise) => ({
+        exercise_id: exercise,
+        workout_id: workout,
+      }))
+    );
 
     try {
       const { data, error } = await supabase
@@ -38,6 +33,8 @@ export const useAddExerciseToWorkout = ({
         .select();
 
       if (error) throw error;
+
+      console.log(data[0]);
 
       return data[0];
     } catch (error) {
@@ -50,9 +47,9 @@ export const useAddExerciseToWorkout = ({
 
   const { mutate: addExercise, ...rest } = useMutation({
     mutationKey: ["insert-exercise"],
-    mutationFn: (values) => addExerciseToWorkout(values),
-    onSuccess: onSuccess,
-    onError: onError,
+    mutationFn: (values: AddExerciseToWorkoutParams) =>
+      addExerciseToWorkout(values),
+    ...options,
   });
 
   return { addExercise, ...rest };

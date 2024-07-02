@@ -3,26 +3,38 @@ import { IExercise } from '@/types/exercise'
 import { Image } from 'expo-image'
 import React from 'react'
 import { Text, View } from 'react-native'
+import Button from './ui/Button'
+import { Ellipsis } from 'lucide-react-native'
+import COLORS from '@/constants/Colors'
 
 
 interface ExerciseDetailedCardProps {
     exercise: IExercise;
     cardWitdh: number;
+    marginHorizontal: number
 }
-export default function ExerciseDetailedCard({ exercise, cardWitdh }: ExerciseDetailedCardProps) {
+export default function ExerciseDetailedCard({
+    exercise,
+    cardWitdh,
+    marginHorizontal }: ExerciseDetailedCardProps) {
     return (
-        <View style={[s.gap8]}>
-            <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
-
+        <View style={[s.gap8, s.flex1, { maxWidth: cardWitdh, marginHorizontal }]}>
+            <View style={[s.bgWhite, s.shadow3]}>
                 <Image
-                    source={exercise.gifurl}
-                    style={[s.radius8,
-                    { height: cardWitdh, width: cardWitdh, }
+                    source={{}}
+                    style={[s.radius8, { height: cardWitdh, width: cardWitdh, }
                     ]} />
             </View>
 
 
-            <Text style={[s.text2XL, s.bold]}>{exercise.name}</Text>
+            <View style={[s.flexRow, s.justifyBetween, s.itemsCenter, s.mtAuto, s.gap8]}>
+                <Text style={[s.textXL, s.bold,s.flex1]}>{exercise.name}</Text>
+
+                <Button rounded size='small' variant='ghost'>
+                    <Ellipsis color={COLORS.gray900} />
+                </Button>
+
+            </View>
 
             <View style={[s.py12, s.borderBottom1, s.borderGray200, s.flexRow, s.justifyBetween, s.mt12]}>
                 <Text style={[s.textGray600, s.medium]}>Músculo alvo</Text>

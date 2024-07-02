@@ -30,12 +30,13 @@ const FeaturedExercisesSection = ({ exercises }: { exercises: IExercise[] }) => 
 interface IFeaturedExercicesProps {
     title: string;
     exercises: IExercise[];
+    itemsPerSection?:number
 }
-export default function FeaturedExercices({ exercises, title }: IFeaturedExercicesProps) {
+export default function FeaturedExercices({ exercises, title, itemsPerSection = 3 }: IFeaturedExercicesProps) {
 
     const splitIntoGroupsOfThree = useCallback((arr: IExercise[]): IExercise[][] => {
         return arr.reduce<IExercise[][]>((acc, curr, index) => {
-            if (index % 3 === 0) acc.push([]);
+            if (index % itemsPerSection === 0) acc.push([]);
             acc[acc.length - 1].push(curr);
             return acc;
         }, []);
@@ -43,11 +44,10 @@ export default function FeaturedExercices({ exercises, title }: IFeaturedExercic
 
     const sections = useMemo(() => splitIntoGroupsOfThree(exercises), [exercises, splitIntoGroupsOfThree]);
 
-
     const renderItem = ({ item }: { item: IExercise[] }) => <FeaturedExercisesSection exercises={item} />
 
     return (
-        <View style={[s.gap4, s.mt12]}>
+        <View style={[s.gap4, s.mt24]}>
 
             <Text style={[s.semibold, s.textXL, s.px12]}>{title}</Text>
 

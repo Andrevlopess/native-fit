@@ -1,4 +1,5 @@
 import LogoImage from '@/components/LogoImage'
+import { WorkoutListCard } from '@/components/WorkoutListCard'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
 import { BadgesControl } from '@/components/ui/BadgesControl'
@@ -24,23 +25,6 @@ const EmptyComponent = () =>
         message='Você ainda não criou nenhum treino!'
         description='Começe criando um treino para se exercitar' />
 
-const WorkoutListCard = ({ workout: { id, name, description } }: { workout: IWorkout }) => {
-    return (
-        <Link href={`/(app)/workouts/${id}`} asChild style={[s.flex1, s.flexRow, s.gap12]}>
-            <TouchableOpacity activeOpacity={.8}>
-                <View style={[s.bgGray200, s.radius14, { height: 60, width: 60 }]} />
-                <View style={[s.gap4]}>
-                    <Text
-                        style={[s.medium, s.textBase, { lineHeight: 18 }]}
-                        numberOfLines={2}>
-                        {name}
-                    </Text>
-                    <Text style={[s.regular, s.textGray400]}>{description}</Text>
-                </View>
-            </TouchableOpacity>
-        </Link>
-    )
-}
 
 
 const badges = ['Musculação', 'Cardio', 'Alongamentos', 'Perna', 'Costas']
@@ -48,7 +32,7 @@ const badges = ['Musculação', 'Cardio', 'Alongamentos', 'Perna', 'Costas']
 export default function MyWorkoutsScreen() {
 
 
-    const { offset, scrollHandler } = useScrollValue();
+    const { offset, scrollHandler } = useScrollValue('y');
     const [filter, setFilter] = useState('Cardio')
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();

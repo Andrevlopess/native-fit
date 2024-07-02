@@ -6,19 +6,21 @@ import { Link } from 'expo-router'
 import { PlusCircle } from 'lucide-react-native'
 import React from 'react'
 import { GestureResponderEvent, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import Button from './ui/Button'
 
 interface ExerciseListAddCardProps {
     width?: number;
     exercise: IExercise;
-    onPress:(event: GestureResponderEvent) => void
+    onPress: (event: GestureResponderEvent) => void
 }
 
 export default function ExerciseListAddCard({ exercise, width, onPress }: ExerciseListAddCardProps) {
 
     return (
-
         <TouchableOpacity
+            //onpress prop
             onPress={onPress}
+            activeOpacity={0.8}
             style={[
                 s.flexRow,
                 s.gap16,
@@ -27,6 +29,7 @@ export default function ExerciseListAddCard({ exercise, width, onPress }: Exerci
                 s.px12,
                 s.py8,
                 { width }]} >
+
             <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
 
                 <Image source={exercise.gifurl} style={[s.radius8,
@@ -42,13 +45,16 @@ export default function ExerciseListAddCard({ exercise, width, onPress }: Exerci
                     {exercise.name}
                 </Text>
                 <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
+
+
+                {/* <Button text='Adicionar' size='small' variant='secondary'rounded/> */}
             </View>
 
 
             <View
-                style={[s.mrAuto, s.myAuto, s.bgGray100, s.radiusFull, s.p8]}
+                style={[s.mrAuto, s.myAuto, s.bgGray100, s.radiusFull, s.p6]}
             >
-                <PlusCircle color={COLORS.textGray} strokeWidth={2.5} />
+                <PlusCircle color={COLORS.gray900} strokeWidth={2} size={28}/>
             </View>
 
         </ TouchableOpacity>

@@ -1,27 +1,32 @@
+import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
+import { IWorkout } from '@/types/workout'
 import { Link } from 'expo-router'
 import React from 'react'
-import { Animated, Pressable, Text } from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 
-interface WorkoutCardProps {
-
+interface WorkoutListCardProps {
+    workout: IWorkout
 }
 
-export default function WorkoutListCard() {
+export const WorkoutListCard = ({ workout: { id, name, description } }: WorkoutListCardProps) => {
     return (
-        <>
-        </>
-        // <Link href={`/(app)/home/workouts/${id}`} asChild>
-        //     <Pressable>
-        //         <Animated.View style={[
-        //             s.radius18,
-        //             s.itemsEnd,
-        //             s.p12,
-        //             s.bgGray200,
-        //             { width: CARD_WIDTH, height: CARD_WIDTH }]}>
-        //             <Text>{name}</Text>
-        //         </Animated.View>
-        //     </Pressable>
-        // </Link>
+        <Link
+            href={{ pathname: `/(app)/workouts/${id}`, params: { name, description } }}
+            asChild
+            style={[s.flex1, s.flexRow, s.gap12]}
+        >
+            <Pressable>
+                <View style={[s.bgGray200, s.radius14, { height: 60, width: 60 }]} />
+                <View style={[s.gap4]}>
+                    <Text
+                        style={[s.medium, s.textBase, { lineHeight: 18 }]}
+                        numberOfLines={2}>
+                        {name}
+                    </Text>
+                    <Text style={[s.regular, s.textGray400]}>{description}</Text>
+                </View>
+            </Pressable>
+        </Link>
     )
 }

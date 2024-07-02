@@ -10,21 +10,18 @@ import Button from './ui/Button'
 import { CarouselList } from './ui/CarouselList'
 
 
-const PADDING = 16;
-const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
+const MARGIN_X = 6;
+const ITEM_WIDTH = SCREEN_WIDTH * 0.8
 
 const WorkoutCard = ({ name, id }: IWorkout) => {
     return (
-
         <Link href={`/(app)/home/workouts/${id}`} asChild>
             <Pressable>
                 <Animated.View style={[
                     s.radius18,
                     s.itemsEnd,
-                    s.p12,
                     s.bgGray200,
-                    { width: CARD_WIDTH, height: CARD_WIDTH }]}>
-                    <Text>{name}</Text>
+                    { height: ITEM_WIDTH, width: ITEM_WIDTH, marginHorizontal: MARGIN_X }]}>
                 </Animated.View>
             </Pressable>
         </Link>
@@ -65,6 +62,41 @@ export default function WorkoutsCarouselList() {
             name: 'teste',
             ownerid: 'teste'
         },
+        {
+            id: '24',
+            createdat: 'as',
+            description: 'teste',
+            name: 'teste',
+            ownerid: 'teste'
+        },
+        {
+            id: '43',
+            createdat: 'as',
+            description: 'teste',
+            name: 'teste',
+            ownerid: 'teste'
+        },
+        {
+            id: '42',
+            createdat: 'as',
+            description: 'teste',
+            name: 'teste',
+            ownerid: 'teste'
+        },
+        {
+            id: '41',
+            createdat: 'as',
+            description: 'teste',
+            name: 'teste',
+            ownerid: 'teste'
+        },
+        {
+            id: '45',
+            createdat: 'as',
+            description: 'teste',
+            name: 'teste',
+            ownerid: 'teste'
+        },
     ]
 
 
@@ -83,6 +115,8 @@ export default function WorkoutsCarouselList() {
             <CarouselList
                 data={workouts}
                 renderItem={renderItem}
+                itemWidth={ITEM_WIDTH}
+                marginHorizontal={MARGIN_X}
             />
         </View>
     )
