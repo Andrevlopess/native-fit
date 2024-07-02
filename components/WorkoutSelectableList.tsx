@@ -8,7 +8,8 @@ import { z } from 'zod';
 import { SelectableWorkoutListCard } from './WorkoutSelectableCard';
 import Button from './ui/Button';
 import { router } from 'expo-router';
-import { useAddExerciseToManyWorkout } from '@/hooks/useAddExerciseToManyWorkouts';
+import { useAddExerciseToWorkout } from '@/hooks/useAddExerciseToWorkout';
+
 
 
 const AddToWorkoutSchema = z.object({
@@ -28,7 +29,7 @@ interface WorkoutSelectableListProps {
 
 export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutSelectableListProps) {
 
-    const { control, handleSubmit} = useForm<AddToWorkoutsValues>({
+    const { control, handleSubmit } = useForm<AddToWorkoutsValues>({
         resolver: zodResolver(AddToWorkoutSchema),
         mode: 'onSubmit',
         defaultValues: {
@@ -37,10 +38,14 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
         }
     });
 
-    const { mutate, isPending, isSuccess } = useAddExerciseToManyWorkout(exerciseId)
+    const { addExercise, isPending, isSuccess } = useAddExerciseToWorkout()
 
-    function handleSubmitSelectedWorkouts(data: AddToWorkoutsValues) {
-        mutate(data.addTo);
+    function handleSubmitSelectedWorkouts({ addTo, exerciseId }: AddToWorkoutsValues) {
+        addExercise({
+            exercises: [exerciseId],
+            workouts: addTo
+        });
+
         if (isSuccess) router.back();
     }
 

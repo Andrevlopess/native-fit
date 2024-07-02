@@ -3,12 +3,12 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 
 interface AddExerciseToWorkoutHookParams {
-  onSuccess: (
+  onSuccess?: (
     data: string,
     variables: AddExerciseToWorkoutParams,
     context: unknown
   ) => void;
-  onError: (
+  onError?: (
     data: string,
     variables: AddExerciseToWorkoutParams,
     context: unknown
@@ -16,23 +16,25 @@ interface AddExerciseToWorkoutHookParams {
 }
 
 interface AddExerciseToWorkoutParams {
-  exerciseId: string[];
-  workoutId: string[];
+  exercises: string[];
+  workouts: string[];
 }
 
 export const useAddExerciseToWorkout = ({
-  onSuccess,
-  onError,
-}: AddExerciseToWorkoutHookParams) => {
+  onSuccess = () => {} ,
+  onError = () => {},
+}: AddExerciseToWorkoutHookParams = {}) => {
 
-  async function insertExerciseToWorkout(values: AddExerciseToWorkoutParams) {
+  async function addExerciseToWorkout({workouts, exercises}:AddExerciseToWorkoutParams) {
+
+    const insertArray = workouts.flatMap(workout => 
+      exercises.map(exercise => ({ exercise_id: exercise, workout_id: workout }))
+    )
+
     try {
       const { data, error } = await supabase
         .from("workout_exercises")
-        .upsert({
-          exercise_id: values.exerciseId,
-          workout_id: values.workoutId,
-        })
+        .insert(insertArray)
         .select();
 
       if (error) throw error;
@@ -46,12 +48,12 @@ export const useAddExerciseToWorkout = ({
     }
   }
 
-  const { mutate: insertExercise, ...rest } = useMutation({
+  const { mutate: addExercise, ...rest } = useMutation({
     mutationKey: ["insert-exercise"],
-    mutationFn: insertExerciseToWorkout,
+    mutationFn: (values) => addExerciseToWorkout(values),
     onSuccess: onSuccess,
     onError: onError,
   });
 
-  return { insertExercise, ...rest };
+  return { addExercise, ...rest };
 };

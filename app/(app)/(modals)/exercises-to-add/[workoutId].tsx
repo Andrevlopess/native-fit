@@ -47,10 +47,10 @@ export default function ExericesToAddModal() {
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
 
-    if (!workoutId) return <MessageView
-        message='Esta página não existe'
-        description="Como q tu chegou até aqui?" />
-
+    if (!workoutId)
+        return <MessageView
+            message='Esta página não existe'
+            description="Como q tu chegou até aqui?" />
 
     const {
         exercises,
@@ -62,17 +62,16 @@ export default function ExericesToAddModal() {
         isFetchingNextPage } =
         useSearchExercises(debouncedSearch, '', 15);
 
-    const { insertExercise, isPending } = useAddExerciseToWorkout({
-        workoutId,
-        onSuccess: () => {
-            console.log('ue')
-            router.back();
-        },
-        onError: () => alert('Erro ao adi,cionar exercício')
-    })
+    const { addExercise, isPending } = useAddExerciseToWorkout()
 
     function handleAddExerciseToThisWorkout(exerciseId: string) {
-        insertExercise(exerciseId)
+
+        if (!workoutId) return;
+
+        addExercise({
+            exercises: [exerciseId],
+            workouts: [workoutId]
+        })
     }
 
     // render components
@@ -88,8 +87,6 @@ export default function ExericesToAddModal() {
             <ActivityIndicator color={COLORS.indigo} style={[s.p12, s.mxAuto]} />
         );
     };
-
-
 
     return (
         <>
@@ -121,7 +118,6 @@ export default function ExericesToAddModal() {
                     value={search}
                     containerStyles={[s.m12]}
                 />
-                {isPending && <Text>carregando..</Text>}
 
                 <RequestResultsView
                     isError={isError}
