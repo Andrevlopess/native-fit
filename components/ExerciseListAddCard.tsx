@@ -16,14 +16,19 @@ interface ExerciseListAddCardProps {
 
 export default function ExerciseListAddCard({ exercise, width, onPress }: ExerciseListAddCardProps) {
 
+
     return (
         <TouchableOpacity
             //onpress prop
             onLongPress={() =>
-                router.push({
+                router.navigate({
                     pathname: `/(modals)/exercise-details/${exercise.id}`,
                     params: {
-                         ...exercise
+                        name: exercise.name,
+                        bodypart: exercise.bodypart,
+                        gifurl: exercise.gifurl,
+                        equipment: exercise.equipment,
+                        target: exercise.target
                     }
                 })
             }

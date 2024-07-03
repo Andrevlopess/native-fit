@@ -25,19 +25,22 @@ export default function ExerciseDetailsModal() {
         }>();
 
 
+        console.log(params.name);
+        
 
     return (
         <>
         
         <Stack.Screen options={{
-                title: params.name,
+                title: params.name || 'tomanocu',
                 presentation: 'modal',
                 // animation: 'fade_from_bottom',
                 headerTitleAlign: 'center',
                 headerBackVisible: false,
+                headerBackTitleVisible: false,
                 headerTitle: ({ children }) => <Text style={[s.bold, s.textLG]}>{children}</Text>,
             }} />
-            
+
         <Animated.ScrollView
             entering={FadeIn}
             // onScroll={scrollHandler}
