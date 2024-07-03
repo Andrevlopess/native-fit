@@ -7,18 +7,19 @@ interface AddExerciseToWorkoutParams {
   workouts: string[];
 }
 
+export type AddExerciseToWorkoutResponse = {
+  workout_id: string;
+  exercise_id: string;
+}[]
+
 export const useAddExerciseToWorkout = ({
   ...options
-}: UseMutationOptions<
-  AddExerciseToWorkoutParams,
-  Error,
-  AddExerciseToWorkoutParams
-> = {}) => {
+}: UseMutationOptions<AddExerciseToWorkoutResponse, Error, AddExerciseToWorkoutParams> = {}) => {
+  
   async function addExerciseToWorkout({
     workouts,
     exercises,
   }: AddExerciseToWorkoutParams) {
-
     const insertArray = workouts.flatMap((workout) =>
       exercises.map((exercise) => ({
         exercise_id: exercise,
@@ -29,14 +30,12 @@ export const useAddExerciseToWorkout = ({
     try {
       const { data, error } = await supabase
         .from("workout_exercises")
-        .insert(insertArray)
-        .select();
+        .upsert(insertArray)
+        .select("exercise_id, workout_id");
 
       if (error) throw error;
 
-      console.log(data[0]);
-
-      return data[0];
+      return data as AddExerciseToWorkoutResponse;
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
       throw new Error(
@@ -47,10 +46,10 @@ export const useAddExerciseToWorkout = ({
 
   const { mutate: addExercise, ...rest } = useMutation({
     mutationKey: ["insert-exercise"],
-    mutationFn: (values: AddExerciseToWorkoutParams) =>
-      addExerciseToWorkout(values),
+    mutationFn: addExerciseToWorkout,
     ...options,
   });
 
   return { addExercise, ...rest };
 };
+

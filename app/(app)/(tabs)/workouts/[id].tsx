@@ -49,9 +49,9 @@ export default function WorkoutScreen() {
                 headerTitleAlign: 'left',
                 headerBackTitleVisible: false,
                 headerTitle: ({ children }) =>
-              
-                        <AnimatedHeaderTitle offset={offset} title={children} />,
-                        
+
+                    <AnimatedHeaderTitle offset={offset} title={children} />,
+
                 headerRight: () =>
                     <Link href={`/edit/${id}`} style={[s.bold, s.textIndigo600, s.textBase, s.p12]}>
                         Editar
@@ -103,18 +103,10 @@ export default function WorkoutScreen() {
                     ErrorComponent={<ErrorComponent />}
                 >
 
-                    <View style={[]}>
-
-                        <View style={[s.justifyBetween, s.itemsCenter, s.flexRow, s.p12]}>
-                            <Text style={[s.bold, s.textXL]}>Exercícios</Text>
-                            <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`}>
-                                <Button text='Adicionar' variant='tertiary' size='small' rounded />
-                            </Link>
-                        </View>
-
-
-                        {/* <WorkoutExercisesCarousel exercises={details?.exercises || []} /> */}
-                    </View>
+                    <WorkoutExercisesCarousel
+                        workoutId={id}
+                        exercises={details?.exercises || []}
+                    />
                 </RequestResultsView>
             </Animated.ScrollView>
         </>

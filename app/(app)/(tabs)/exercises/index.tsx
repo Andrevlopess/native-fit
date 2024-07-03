@@ -40,7 +40,11 @@ export default function LibraryIndexScreen() {
     isFetching,
     fetchStatus,
     fetchNextPage }
-    = useSearchExercises(debouncedSearch, filter);
+    = useSearchExercises({
+      search: debouncedSearch,
+      filter: filter,
+      limit: 15,
+    });
 
   const NotFoundComponent = () =>
     <MessageView
@@ -69,7 +73,7 @@ export default function LibraryIndexScreen() {
           device.android
           ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
           : undefined,
-          headerLargeTitle: true,
+          // headerLargeTitle: true,
           headerSearchBarOptions:
             device.ios
               ? {

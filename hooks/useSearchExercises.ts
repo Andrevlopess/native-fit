@@ -3,12 +3,17 @@ import { IExercise } from "@/types/exercise";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 
+interface UseSearchExercisesProps {
+  search: string;
+  filter?: string;
+  limit?: number;
+}
 
-export const useSearchExercises = (
-  search: string, 
-  filter: string,
-  itemsPerPage:number = 20
-  ) => {
+export const useSearchExercises = ({
+  limit = 20,
+  search = '',
+  filter = '',
+}: UseSearchExercisesProps) => {
   async function fetchSearchedExercises({
     queryKey,
     pageParam,
@@ -17,16 +22,15 @@ export const useSearchExercises = (
     pageParam: unknown;
   }) {
     try {
-
       const { data, error } = await supabase.rpc("search_exercises", {
         filter: queryKey[2],
         page_num: pageParam,
-        page_size: itemsPerPage,
+        page_size: limit,
         query: queryKey[1],
       });
 
       if (error) throw error;
-    
+
       return data as IExercise[];
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;

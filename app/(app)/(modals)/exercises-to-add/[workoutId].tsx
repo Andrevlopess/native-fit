@@ -14,11 +14,12 @@ import { useSearchExercises } from '@/hooks/useSearchExercises'
 import { s } from '@/styles/global'
 import { Filter, IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { useQueryClient } from '@tanstack/react-query'
+import { QueryCache, useQueryClient } from '@tanstack/react-query'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Search, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native'
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const Feed = () => <>
@@ -43,7 +44,6 @@ const PADDING = 12;
 const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
 
 
-
 export default function ExericesToAddModal() {
     const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
     const insets = useSafeAreaInsets();
@@ -55,7 +55,6 @@ export default function ExericesToAddModal() {
         return <MessageView
             message='Esta página não existe'
             description="Como q tu chegou até aqui?" />
-
     const {
         exercises,
         isFetching,
@@ -63,28 +62,53 @@ export default function ExericesToAddModal() {
         error,
         fetchNextPage,
         isFetchingNextPage } =
-        useSearchExercises(debouncedSearch, '', 15);
+        useSearchExercises({
+            search: debouncedSearch,
+        });
 
 
     const { addExercise, isPending } = useAddExerciseToWorkout({
-        onSuccess: () => {
+        onSuccess: (data) => {
+
+            const insertedExercises = data.map(inserted => inserted.exercise_id);
+            if (!exercises) return;
+            const filteredArray = exercises.filter(exercise => !insertedExercises.includes(exercise.id));
+
+            queryClient.setQueryData(
+                ["search-exercises", debouncedSearch, ''],
+                (prev: any) => {
+                    if (!prev) return [];
+                    return {
+                        pageParams: prev.pageParams,
+                        pages: [filteredArray]
+                    }
+                }
+            )
             queryClient.invalidateQueries({ queryKey: ["workout", workoutId] });
-            router.back()
-        }
+        },
+        onError: console.log
     })
+
+
 
 
     function handleAddExerciseToThisWorkout(exerciseId: string) {
         if (!workoutId) return;
+
+
         addExercise({
             exercises: [exerciseId],
             workouts: [workoutId]
         })
+
+        console.log('clicked', isPending);
+
     }
 
     // render components
     const renderItem = ({ item }: { item: IExercise }) =>
         <ExerciseListAddCard
+            disabled={isPending}
             onPress={() => handleAddExerciseToThisWorkout(item.id)}
             exercise={item}
         />
@@ -95,6 +119,7 @@ export default function ExericesToAddModal() {
             <ActivityIndicator color={COLORS.indigo} style={[s.p12, s.mxAuto]} />
         );
     };
+
 
     return (
         <>
@@ -126,7 +151,6 @@ export default function ExericesToAddModal() {
                     value={search}
                     containerStyles={[s.m12]}
                 />
-                {isPending && <Text>adiconando...</Text>}
 
                 <RequestResultsView
                     isError={isError}
@@ -146,8 +170,10 @@ export default function ExericesToAddModal() {
                         description={error?.message || 'Estamos tentando resolver este problema!'} />}
                 >
 
-                    <FlatList
-                       contentInsetAdjustmentBehavior='automatic'
+                    <Animated.FlatList
+                        entering={FadeIn}
+                        itemLayoutAnimation={LinearTransition.springify().stiffness(500).damping(60)}
+                        contentInsetAdjustmentBehavior='automatic'
                         data={exercises}
                         renderItem={renderItem}
                         keyExtractor={item => item.id}

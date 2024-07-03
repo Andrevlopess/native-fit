@@ -1,14 +1,18 @@
-import { s } from '@/styles/global'
-import { IExercise } from '@/types/exercise';
+import { s } from '@/styles/global';
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
-import { Stack, useLocalSearchParams } from 'expo-router';
-import React from 'react'
-import { Text, View } from 'react-native'
-import Animated, { FadeIn } from 'react-native-reanimated'
+import { Stack, router, useLocalSearchParams } from 'expo-router';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 // horizontal padding of 12 * 2
 const IMAGE_SIZE = SCREEN_WIDTH - 24;
 
+const BackButton = () => (
+    <TouchableOpacity onPress={() => router.back()}>
+        <Text style={[s.regular, s.textBase, s.py12]}>Voltar</Text>
+    </TouchableOpacity>
+)
 
 
 export default function ExerciseDetailsModal() {
@@ -32,12 +36,13 @@ export default function ExerciseDetailsModal() {
         <>
         
         <Stack.Screen options={{
-                title: params.name || 'tomanocu',
+                title: '',
                 presentation: 'modal',
                 // animation: 'fade_from_bottom',
                 headerTitleAlign: 'center',
                 headerBackVisible: false,
                 headerBackTitleVisible: false,
+                headerLeft: ({ canGoBack }) => <BackButton />,
                 headerTitle: ({ children }) => <Text style={[s.bold, s.textLG]}>{children}</Text>,
             }} />
 

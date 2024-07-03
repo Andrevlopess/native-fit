@@ -38,16 +38,20 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
         }
     });
 
-    const { addExercise, isPending, isSuccess } = useAddExerciseToWorkout()
+    const { addExercise, isPending } = useAddExerciseToWorkout({
+        onSuccess:(data) => {
+            router.back();
+        }
+    })
 
     function handleSubmitSelectedWorkouts({ addTo, exerciseId }: AddToWorkoutsValues) {
         addExercise({
             exercises: [exerciseId],
             workouts: addTo
         });
-
-        if (isSuccess) router.back();
     }
+
+
 
     return (
         <View style={[s.gap24, s.flex1, s.mt24]}>

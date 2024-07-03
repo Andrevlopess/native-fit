@@ -37,7 +37,7 @@ export const useFetchWorkouts = (search?: string, filter?: string) => {
   }
 
   const query = useQuery({
-    queryKey: ["workouts", search, "teste"],
+    queryKey: ["workouts", search],
     queryFn: ({ queryKey }) => fetchWorkouts(queryKey[1] || ""),
     retry: false,
     // enabled: false

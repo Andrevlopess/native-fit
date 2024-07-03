@@ -5,36 +5,24 @@ import { Image } from 'expo-image'
 import { Link, router } from 'expo-router'
 import { PlusCircle } from 'lucide-react-native'
 import React from 'react'
-import { GestureResponderEvent, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, GestureResponderEvent, Pressable, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
 import Button from './ui/Button'
-
-interface ExerciseListAddCardProps {
+import * as Haptics from 'expo-haptics';
+interface ExerciseListAddCardProps extends TouchableOpacityProps {
     width?: number;
     exercise: IExercise;
-    onPress: (event: GestureResponderEvent) => void
 }
 
-export default function ExerciseListAddCard({ exercise, width, onPress }: ExerciseListAddCardProps) {
+export default function ExerciseListAddCard({ exercise, width, onPress, ...props }: ExerciseListAddCardProps) {
 
 
     return (
         <TouchableOpacity
-            //onpress prop
-            onLongPress={() =>
-                router.navigate({
-                    pathname: `/(modals)/exercise-details/${exercise.id}`,
-                    params: {
-                        name: exercise.name,
-                        bodypart: exercise.bodypart,
-                        gifurl: exercise.gifurl,
-                        equipment: exercise.equipment,
-                        target: exercise.target
-                    }
-                })
-            }
+            {...props}
             onPress={onPress}
             activeOpacity={0.8}
             style={[
+                props.disabled && { opacity: 0.6 },
                 s.flexRow,
                 s.gap16,
                 // s.itemsCenter,
@@ -43,12 +31,31 @@ export default function ExerciseListAddCard({ exercise, width, onPress }: Exerci
                 s.py8,
                 { width }]} >
 
-            <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
+            <TouchableOpacity
+                onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+                    router.navigate({
+                        pathname: `/(modals)/exercise-details/${exercise.id}`,
+                        params: {
+                            name: exercise.name,
+                            bodypart: exercise.bodypart,
+                            gifurl: exercise.gifurl,
+                            equipment: exercise.equipment,
+                            target: exercise.target
+                        }
+                    })
+                }}
 
-                <Image source={exercise.gifurl} style={[s.radius8,
-                { height: 100, width: 100, }
-                ]} />
-            </View>
+                style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
+
+                <Image
+                    source={exercise.gifurl}
+                    style={[s.radius8,
+                    { height: 70, width: 70, },
+                    // props.disabled && { opacity: 0.5 }
+                 ]} 
+                    />
+            </TouchableOpacity>
 
 
             <View style={[s.gap4, s.flex1]}>
@@ -69,6 +76,7 @@ export default function ExerciseListAddCard({ exercise, width, onPress }: Exerci
             >
                 <PlusCircle color={COLORS.gray900} strokeWidth={2} size={28} />
             </View>
+
 
         </ TouchableOpacity>
 
