@@ -10,6 +10,9 @@ export default function NotFoundScreen() {
       <View style={[s.flex1, s.itemsCenter, s.justifyCenter]}>
 
         <Text>Screen  not found</Text>
+        <Link href={'/(app)/(tabs)/home'}>
+          back to home
+        </Link>
       </View>
     </>
   );

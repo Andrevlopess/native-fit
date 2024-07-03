@@ -14,7 +14,7 @@ interface SearchInputProps extends TextInputProps {
 export default function SearchInput({containerStyles, ...props}: SearchInputProps) {
 
 
-    if (device.ios) return null
+    if (device.ios) return undefined
 
     return (
 

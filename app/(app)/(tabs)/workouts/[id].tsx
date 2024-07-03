@@ -11,6 +11,7 @@ import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
 import { IExercise } from '@/types/exercise';
+import { device } from '@/utils/device';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { CircleX } from 'lucide-react-native';
 import React from 'react';
@@ -44,7 +45,13 @@ export default function WorkoutScreen() {
         <>
             <Stack.Screen options={{
                 title: name || details?.name || '',
-                headerTitle: ({ children }) => <AnimatedHeaderTitle offset={offset} title={children} />,
+                // headerLargeTitle: true,
+                headerTitleAlign: 'left',
+                headerBackTitleVisible: false,
+                headerTitle: ({ children }) =>
+              
+                        <AnimatedHeaderTitle offset={offset} title={children} />,
+                        
                 headerRight: () =>
                     <Link href={`/edit/${id}`} style={[s.bold, s.textIndigo600, s.textBase, s.p12]}>
                         Editar
@@ -52,6 +59,8 @@ export default function WorkoutScreen() {
             }} />
 
             <Animated.ScrollView
+                automaticallyAdjustContentInsets
+                contentInsetAdjustmentBehavior='automatic'
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
             >
@@ -104,7 +113,7 @@ export default function WorkoutScreen() {
                         </View>
 
 
-                        <WorkoutExercisesCarousel exercises={details?.exercises || []} />
+                        {/* <WorkoutExercisesCarousel exercises={details?.exercises || []} /> */}
                     </View>
                 </RequestResultsView>
             </Animated.ScrollView>

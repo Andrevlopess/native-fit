@@ -13,6 +13,7 @@ import { useFetchWorkouts } from '@/hooks/useFetchWorkouts'
 import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IWorkout } from '@/types/workout'
+import { device } from '@/utils/device'
 import { Link, Stack } from 'expo-router'
 import { CircleX, Inbox, Plus, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
@@ -67,7 +68,10 @@ export default function MyWorkoutsScreen() {
                                 <Plus color={COLORS.indigo} />
                             </TouchableOpacity>
                         </Link>,
-                    headerTitle: ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />,
+                    headerTitle:
+                        device.android
+                            ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
+                            : undefined,
                     headerLargeTitle: true,
                     headerTitleAlign: 'center'
                 }}

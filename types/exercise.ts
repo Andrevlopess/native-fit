@@ -66,7 +66,7 @@ export type Filter = BodyPart | Equipment | Target;
 export interface IExercise {
   id: string;
   name: string;
-  bodypart: String;
+  bodypart: string;
   target: string;
   equipment: string;
   gifurl: string;

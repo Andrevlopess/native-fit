@@ -47,7 +47,7 @@ const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
 export default function ExericesToAddModal() {
     const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
     const insets = useSafeAreaInsets();
-    const [search, setSearch] = useState('supino');
+    const [search, setSearch] = useState('costas');
     const debouncedSearch = useDebounce(search, 500).trim();
     const queryClient = useQueryClient();
 
@@ -147,6 +147,7 @@ export default function ExericesToAddModal() {
                 >
 
                     <FlatList
+                       contentInsetAdjustmentBehavior='automatic'
                         data={exercises}
                         renderItem={renderItem}
                         keyExtractor={item => item.id}

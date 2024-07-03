@@ -6,6 +6,7 @@ import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
 import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
+import { device } from '@/utils/device'
 import { Stack } from 'expo-router'
 import React from 'react'
 import { ScrollView } from 'react-native'
@@ -98,7 +99,10 @@ export default function HomeIndexScreen() {
           title: 'Início',
           headerTitleAlign: 'center',
           headerLeft: () => <LogoImage />,
-          headerTitle: ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
+          headerTitle:
+            device.android
+              ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
+              : undefined
         }}
       />
 

@@ -65,7 +65,10 @@ export default function LibraryIndexScreen() {
           title: 'Biblioteca',
           headerTitleAlign: 'center',
           headerLeft: () => <LogoImage />,
-          headerTitle: ({ children }) => device.ios ? undefined : <AnimatedHeaderTitle offset={offset} title={children} />,
+          headerTitle:
+          device.android
+          ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
+          : undefined,
           headerLargeTitle: true,
           headerSearchBarOptions:
             device.ios

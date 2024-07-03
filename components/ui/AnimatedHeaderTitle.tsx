@@ -27,7 +27,6 @@ export default function AnimatedHeaderTitle({ offset, title }: AnimatedHeaderTit
         };
     });
 
-    if (device.ios) return null
 
     return (
         <Animated.Text style={[s.bold, s.textLG, headerTitleAnimation]}>{title}</Animated.Text>

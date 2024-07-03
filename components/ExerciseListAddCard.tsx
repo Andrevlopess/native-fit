@@ -2,7 +2,7 @@ import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { Image } from 'expo-image'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { PlusCircle } from 'lucide-react-native'
 import React from 'react'
 import { GestureResponderEvent, Pressable, Text, TouchableOpacity, View } from 'react-native'
@@ -19,6 +19,14 @@ export default function ExerciseListAddCard({ exercise, width, onPress }: Exerci
     return (
         <TouchableOpacity
             //onpress prop
+            onLongPress={() =>
+                router.push({
+                    pathname: `/(modals)/exercise-details/${exercise.id}`,
+                    params: {
+                         ...exercise
+                    }
+                })
+            }
             onPress={onPress}
             activeOpacity={0.8}
             style={[
@@ -54,7 +62,7 @@ export default function ExerciseListAddCard({ exercise, width, onPress }: Exerci
             <View
                 style={[s.mrAuto, s.myAuto, s.bgGray100, s.radiusFull, s.p6]}
             >
-                <PlusCircle color={COLORS.gray900} strokeWidth={2} size={28}/>
+                <PlusCircle color={COLORS.gray900} strokeWidth={2} size={28} />
             </View>
 
         </ TouchableOpacity>

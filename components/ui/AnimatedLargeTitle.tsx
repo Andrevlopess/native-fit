@@ -14,8 +14,6 @@ interface AnimatedLargeTitleProps {
 
 export default function AnimatedLargeTitle({ offset, title, style }: AnimatedLargeTitleProps) {
 
-    if (device.ios) return null;
-
     const largeTitleAnimation = useAnimatedStyle(() => {
         return {
             transform: [
@@ -34,8 +32,14 @@ export default function AnimatedLargeTitle({ offset, title, style }: AnimatedLar
                         [1, 1.2],
                         Extrapolation.CLAMP
                     ),
-                },
+               }    
             ],
+            opacity: interpolate(
+                offset.value,
+                [30, 0],
+                [0.4, 1],
+                Extrapolation.CLAMP
+            ),
         };
     });
 
