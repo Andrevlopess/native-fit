@@ -22,18 +22,6 @@ import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-const Feed = () => <>
-    {/* <FeaturedExercices
-        itemsPerSection={5}
-        title='O melhor para seus quadríceps'
-        exercises={bestQuadExercises} />
-    <FeaturedExercices
-        itemsPerSection={5}
-        title='Para queimar gordura'
-        exercises={bestCardioExercises} /> */}
-    <MessageView icon={Search} message='Busque por um exercício' description='Procure entre as mais de 1300 atividades' />
-</>
-
 const CancelButton = () => (
     <TouchableOpacity onPress={() => router.back()}>
         <Text style={[s.regular, s.textBase, s.py12]}>Cancelar</Text>
@@ -51,10 +39,6 @@ export default function ExericesToAddModal() {
     const debouncedSearch = useDebounce(search, 500).trim();
     const queryClient = useQueryClient();
 
-    if (!workoutId)
-        return <MessageView
-            message='Esta página não existe'
-            description="Como q tu chegou até aqui?" />
     const {
         exercises,
         isFetching,
@@ -100,9 +84,6 @@ export default function ExericesToAddModal() {
             exercises: [exerciseId],
             workouts: [workoutId]
         })
-
-        console.log('clicked', isPending);
-
     }
 
     // render components
@@ -157,7 +138,9 @@ export default function ExericesToAddModal() {
                     isPending={isFetching && !isFetchingNextPage}
                     hasData={!!exercises?.length}
                     hasSearch={!!debouncedSearch}
-                    EmptyComponent={<Feed />}
+                    EmptyComponent={
+                        <MessageView icon={Search} message='Busque por um exercício' description='Procure entre as mais de 1300 atividades' />
+                    }
                     NotFoundComponent={
                         <MessageView
                             icon={SearchX}

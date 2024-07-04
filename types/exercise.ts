@@ -70,4 +70,5 @@ export interface IExercise {
   target: string;
   equipment: string;
   gifurl: string;
+  workoutExerciseId?: string;
 }

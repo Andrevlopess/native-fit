@@ -6,7 +6,7 @@ import {
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
-import React, { ForwardedRef, forwardRef, useMemo } from "react";
+import React, { ForwardedRef, forwardRef, memo, useMemo } from "react";
 import { StyleProp, View, ViewStyle } from "react-native";
 import Animated, {
   Extrapolation,
@@ -20,8 +20,8 @@ const Background = ({ style }: { style?: StyleProp<ViewStyle> }) => {
       style={[
         {
           backgroundColor: COLORS.white,
-          borderTopLeftRadius: 24,
-          borderTopRightRadius: 24,
+          borderTopLeftRadius: 12,
+          borderTopRightRadius: 12,
         },
         style,
       ]}
@@ -62,7 +62,8 @@ function Modal(
   { children, ...props }: ModalProps,
   ref: ForwardedRef<BottomSheetModal>
 ) {
-
+  console.log('render a modal');
+  
   return (
     <Portal>
       <BottomSheetModalProvider>

@@ -75,7 +75,7 @@ export default function WorkoutScreen() {
 
                     {
                         details &&
-                        <View style={[s.flexRow, s.gap4, s.itemsCenter]}>
+                        <View style={[s.flexRow, s.gap4, s.itemsCenter, s.mt12]}>
                             <Text style={[s.semibold, s.textLG, s.textGray600]}>
                                 {details?.exercises.length === 0
                                     ? 'Nenhum exercício'

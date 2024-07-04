@@ -51,7 +51,6 @@ export default function ExerciseDetailsModal() {
             // onScroll={scrollHandler}
             style={[s.flex1, s.bgWhite]}
             contentContainerStyle={[s.gap12, s.p12]}>
-
             <View
                 style={[s.bgWhite,
                 // s.shadow3,
@@ -72,6 +71,5 @@ export default function ExerciseDetailsModal() {
 
         </Animated.ScrollView>
         </>
-
     )
 }
