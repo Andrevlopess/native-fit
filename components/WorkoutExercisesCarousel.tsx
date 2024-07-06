@@ -1,7 +1,7 @@
 import { SCREEN_WIDTH } from "@/constants/Dimensions";
 import { supabase } from "@/lib/supabase";
 import { s } from "@/styles/global";
-import { IExercise } from "@/types/exercise";
+import { IDetailedExercise, IExercise } from "@/types/exercise";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Link } from "expo-router";
@@ -21,17 +21,16 @@ const ITEM_WIDTH = SCREEN_WIDTH * 0.8
 
 
 
-interface WorkoutExercisesCarouselProps { exercises: IExercise[], workoutId: string }
+interface WorkoutExercisesCarouselProps { exercises: IDetailedExercise[], workoutId: string }
 
 export const WorkoutExercisesCarousel = ({ exercises, workoutId }: WorkoutExercisesCarouselProps) => {
 
-   
 
 
-
-    const renderItem = ({ item }: { item: IExercise }) =>
+    const renderItem = ({ item }: { item: IDetailedExercise }) =>
         <ExerciseDetailedCard
             exercise={item}
+            inWorkoutId={workoutId}
             cardWitdh={ITEM_WIDTH}
             marginHorizontal={MARGIN_HORIZONTAL}
         />

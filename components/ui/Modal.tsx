@@ -1,18 +1,14 @@
 import COLORS from "@/constants/Colors";
 import {
+  BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetModalProps,
   BottomSheetModalProvider
 } from "@gorhom/bottom-sheet";
 import { Portal } from "@gorhom/portal";
-import React, { ForwardedRef, forwardRef, memo, useMemo } from "react";
-import { StyleProp, View, ViewStyle } from "react-native";
-import Animated, {
-  Extrapolation,
-  interpolate,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import React, { ForwardedRef, forwardRef } from "react";
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
 const Background = ({ style }: { style?: StyleProp<ViewStyle> }) => {
   return (
@@ -29,29 +25,13 @@ const Background = ({ style }: { style?: StyleProp<ViewStyle> }) => {
   );
 };
 
-export const Backdrop = ({ animatedIndex, style }: BottomSheetBackdropProps) => {
-  // animated variables
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
-    opacity: interpolate(
-      animatedIndex.value,
-      [-1, 1],
-      [0, 1],
-      Extrapolation.CLAMP
-    ),
-  }));
-
-  const containerStyle = useMemo(
-    () => [
-      style,
-      {
-        backgroundColor: "#00000060",
-      },
-      containerAnimatedStyle,
-    ],
-    [style, containerAnimatedStyle]
-  );
-
-  return <Animated.View style={containerStyle} />;
+export const Backdrop = ({ ...props }: BottomSheetBackdropProps) => {
+  return <BottomSheetBackdrop
+    enableTouchThrough={false}
+    {...props}
+    appearsOnIndex={0}
+    disappearsOnIndex={-1}
+    style={{ backgroundColor: "#00000080", ...StyleSheet.absoluteFillObject }} />
 };
 
 interface ModalProps extends BottomSheetModalProps {
@@ -63,7 +43,7 @@ function Modal(
   ref: ForwardedRef<BottomSheetModal>
 ) {
   console.log('render a modal');
-  
+
   return (
     <Portal>
       <BottomSheetModalProvider>
@@ -83,7 +63,7 @@ function Modal(
           {children}
         </BottomSheetModal>
       </BottomSheetModalProvider>
-   </Portal>
+    </Portal>
   );
 }
 

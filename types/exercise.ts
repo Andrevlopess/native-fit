@@ -70,5 +70,9 @@ export interface IExercise {
   target: string;
   equipment: string;
   gifurl: string;
+}
+
+export interface IDetailedExercise extends IExercise {
   workoutExerciseId?: string;
+  notes?: string;
 }

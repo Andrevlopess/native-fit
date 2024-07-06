@@ -1,7 +1,7 @@
 import COLORS from '@/constants/Colors'
 import { useModal } from '@/hooks/useModal'
 import { s } from '@/styles/global'
-import { IExercise } from '@/types/exercise'
+import { IDetailedExercise, IExercise } from '@/types/exercise'
 import { Image } from 'expo-image'
 import { Ellipsis, MinusCircle, PlusCircle } from 'lucide-react-native'
 import React from 'react'
@@ -14,7 +14,7 @@ import axios from 'axios'
 
 
 interface ExerciseDetailedCardProps {
-    exercise: IExercise;
+    exercise: IDetailedExercise;
     cardWitdh: number;
     inWorkoutId?: string;
     marginHorizontal: number;
@@ -51,7 +51,6 @@ export default function ExerciseDetailedCard({
         mutationKey: ["remove-exercise-from-workout", exercise.workoutExerciseId],
         mutationFn: removeExerciseFromWorkout,
         onSuccess: () => {
-            close();
             // Refresh the workout exercises
             queryClient.invalidateQueries({ queryKey: ["workout", inWorkoutId] });
         },
@@ -60,6 +59,8 @@ export default function ExerciseDetailedCard({
         }
     })
 
+
+    const workoutExerciseId = exercise.workoutExerciseId;
 
     return (
         <>
@@ -81,6 +82,10 @@ export default function ExerciseDetailedCard({
 
                 </View>
 
+                <View style={[s.py12, s.flexRow, s.justifyBetween, s.mt12]}>
+                    <Text style={[s.textGray600, s.medium]}>Séries</Text>
+                    <Text style={[s.semibold]}>{exercise.notes}</Text>
+                </View>
                 <View style={[s.py12, s.borderBottom1, s.borderGray200, s.flexRow, s.justifyBetween, s.mt12]}>
                     <Text style={[s.textGray600, s.medium]}>Músculo alvo</Text>
                     <Text style={[s.semibold]}>{exercise.target}</Text>
@@ -95,7 +100,7 @@ export default function ExerciseDetailedCard({
                 </View>
             </View>
 
-            {inWorkoutId &&
+            {workoutExerciseId &&
                 <Modal ref={ref} snapPoints={['50%']} >
                     <View style={[s.p12, s.borderBottom1, s.borderGray100, s.flexRow, s.gap12]}>
                         <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
@@ -125,9 +130,21 @@ export default function ExerciseDetailedCard({
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => mutate(exercise.id)}
+                        onPress={() => {
+
+                            close();
+
+                            mutate(workoutExerciseId)
+                        }
+                        }
                         style={[s.flexRow, s.p12, s.itemsCenter, s.gap12, s.mt12]}>
-                        <MinusCircle color={COLORS.gray900} />
+
+                        {isPending
+                            ? <ActivityIndicator color={COLORS.gray900} />
+                            : <MinusCircle color={COLORS.gray900} />
+                        }
+
+
                         <Text style={[s.medium, s.textBase, s.textGray800]}>Remover deste treino</Text>
                     </TouchableOpacity>
                 </Modal>

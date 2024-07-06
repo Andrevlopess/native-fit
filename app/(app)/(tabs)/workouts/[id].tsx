@@ -16,7 +16,7 @@ import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { CircleX } from 'lucide-react-native';
 import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 
 type SearchParams = { id: string, name: string, description: string }
@@ -40,7 +40,6 @@ export default function WorkoutScreen() {
 
     const { offset, scrollHandler } = useScrollValue('y')
 
-
     return (
         <>
             <Stack.Screen options={{
@@ -59,19 +58,20 @@ export default function WorkoutScreen() {
             }} />
 
             <Animated.ScrollView
+                entering={FadeIn}
                 automaticallyAdjustContentInsets
                 contentInsetAdjustmentBehavior='automatic'
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
+                stickyHeaderIndices={[1]}
             >
 
                 <View style={[s.px12]}>
 
                     <AnimatedLargeTitle title={name || details?.name || ''} offset={offset} />
 
-                    <Text style={[s.medium, s.textBase, s.textGray600]}>
-                        {description}
-                    </Text>
+                    <Text style={[s.medium, s.textBase, s.textGray600]}>{description?.trim()}</Text>
+
 
                     {
                         details &&
@@ -92,6 +92,7 @@ export default function WorkoutScreen() {
 
                 </View>
 
+                <Button text='Iniciar treino' size='small' variant='secondary' style={[s.m12]} />
 
                 <RequestResultsView
                     isError={isError}

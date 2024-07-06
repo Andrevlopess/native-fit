@@ -17,7 +17,7 @@ const SectionIndicatorComponent = ({ inputRange, scrollX, ...props }: SectionInd
 
     const stepsIndicatorsAnimation = useAnimatedStyle(() => {
         return {
-            width: interpolate(scrollX.value, inputRange, [8, 24, 8], Extrapolation.CLAMP),
+            width: interpolate(scrollX.value, inputRange, [6, 24, 6], Extrapolation.CLAMP),
             backgroundColor: interpolateColor(scrollX.value, inputRange, [
                 `${COLORS.gray900}50`, `${COLORS.indigo}`, `${COLORS.indigo}50`
             ])
@@ -27,7 +27,7 @@ const SectionIndicatorComponent = ({ inputRange, scrollX, ...props }: SectionInd
     return <Pressable
         {...props}
     >
-        <Animated.View style={[s.bgIndigo500, s.radiusFull, stepsIndicatorsAnimation, { height: 8 }]} />
+        <Animated.View style={[s.bgIndigo500, s.radiusFull, stepsIndicatorsAnimation, { height: 6 }]} />
     </Pressable>
 }
 
