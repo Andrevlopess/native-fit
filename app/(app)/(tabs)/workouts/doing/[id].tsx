@@ -21,7 +21,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 type SearchParams = { id: string, name: string, description: string }
 
-export default function WorkoutScreen() {
+export default function DoingWorkoutScreen() {
 
     const { id, name, description } = useLocalSearchParams<SearchParams>();
 
@@ -91,8 +91,6 @@ export default function WorkoutScreen() {
                     }
 
                 </View>
-
-                
 
                 <RequestResultsView
                     isError={isError}

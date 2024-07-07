@@ -67,7 +67,8 @@ export default function ExericesToAddModal() {
                         pages: [filteredArray]
                     }
                 }
-            )
+            );
+            
             queryClient.invalidateQueries({ queryKey: ["workout", workoutId] });
         },
         onError: console.log

@@ -3,6 +3,7 @@ import LogoImage from '@/components/LogoImage'
 import WorkoutsCarouselList from '@/components/WorkoutsCarouselList'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
+import Timer from '@/components/ui/Timer'
 import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
@@ -114,6 +115,7 @@ export default function HomeIndexScreen() {
       >
 
         <AnimatedLargeTitle title='Início' offset={offset} style={[s.px12]} />
+        {/* <Timer/> */}
 
         <WorkoutsCarouselList />
         <FeaturedExercices title='Destaques' exercises={exercises} />

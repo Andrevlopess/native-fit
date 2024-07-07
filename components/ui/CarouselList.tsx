@@ -13,7 +13,7 @@ const ITEM_WIDTH = SCREEN_WIDTH * 0.8;
 
 
 interface SectionIndicatorComponentProps extends PressableProps { inputRange: number[], scrollX: SharedValue<number> }
-const SectionIndicatorComponent = ({ inputRange, scrollX, ...props }: SectionIndicatorComponentProps) => {
+export const SectionIndicatorComponent = ({ inputRange, scrollX, ...props }: SectionIndicatorComponentProps) => {
 
     const stepsIndicatorsAnimation = useAnimatedStyle(() => {
         return {

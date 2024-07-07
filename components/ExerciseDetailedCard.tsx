@@ -4,13 +4,15 @@ import { s } from '@/styles/global'
 import { IDetailedExercise, IExercise } from '@/types/exercise'
 import { Image } from 'expo-image'
 import { Ellipsis, MinusCircle, PlusCircle } from 'lucide-react-native'
-import React from 'react'
+import React, { useRef } from 'react'
 import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from 'react-native'
 import Button from './ui/Button'
 import Modal from './ui/Modal'
 import { supabase } from '@/lib/supabase'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { BottomSheetModal } from '@gorhom/bottom-sheet'
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 
 
 interface ExerciseDetailedCardProps {
@@ -26,7 +28,7 @@ export default function ExerciseDetailedCard({
     marginHorizontal,
 }: ExerciseDetailedCardProps) {
 
-    const { ref, open, close } = useModal()
+    const modalRef = useRef<BottomSheetModal>(null)
 
     const queryClient = useQueryClient();
 
@@ -64,7 +66,10 @@ export default function ExerciseDetailedCard({
 
     return (
         <>
-            <View style={[s.gap8, s.flex1, { maxWidth: cardWitdh, marginHorizontal }]}>
+            <Animated.View
+                entering={FadeIn}
+                layout={LinearTransition.springify().stiffness(500).damping(60)}
+                style={[s.gap8, s.flex1, { maxWidth: cardWitdh, marginHorizontal }]}>
                 <View style={[s.bgWhite, s.shadow3]}>
                     <Image
                         source={exercise.gifurl}
@@ -76,7 +81,8 @@ export default function ExerciseDetailedCard({
                 <View style={[s.flexRow, s.justifyBetween, s.itemsCenter, s.mtAuto, s.gap8]}>
                     <Text style={[s.textXL, s.bold, s.flex1]}>{exercise.name}</Text>
 
-                    <Button rounded size='small' variant='ghost' onPress={open}>
+                    <Button rounded size='small' variant='ghost'
+                        onPress={() => modalRef.current?.present()}>
                         <Ellipsis color={COLORS.gray900} />
                     </Button>
 
@@ -98,10 +104,10 @@ export default function ExerciseDetailedCard({
                     <Text style={[s.textGray600, s.medium]}>Parte do corpo</Text>
                     <Text style={[s.semibold]}>{exercise.bodypart}</Text>
                 </View>
-            </View>
+            </Animated.View >
 
             {workoutExerciseId &&
-                <Modal ref={ref} snapPoints={['50%']} >
+                <Modal ref={modalRef} snapPoints={['50%']} >
                     <View style={[s.p12, s.borderBottom1, s.borderGray100, s.flexRow, s.gap12]}>
                         <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
                             <Image source={exercise.gifurl} style={[s.radius8,
@@ -132,9 +138,13 @@ export default function ExerciseDetailedCard({
                     <TouchableOpacity
                         onPress={() => {
 
-                            close();
+                            modalRef.current?.close()
+                            setTimeout(() => {
 
-                            mutate(workoutExerciseId)
+                                mutate(workoutExerciseId)
+
+                            }, 300)
+
                         }
                         }
                         style={[s.flexRow, s.p12, s.itemsCenter, s.gap12, s.mt12]}>
