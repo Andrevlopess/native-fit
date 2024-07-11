@@ -1,4 +1,4 @@
-import WorkoutSelectableList from '@/components/WorkoutSelectableList'
+import WorkoutSelectableList from '@/components/workout/WorkoutSelectableList'
 import Button from '@/components/ui/Button'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'

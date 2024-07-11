@@ -2,10 +2,10 @@ import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
 import { Link } from 'expo-router';
 import { LinkProps } from 'expo-router/build/link/Link';
+import { ExpoRouter } from 'expo-router/types/expo-router';
 import React, { ForwardedRef, PropsWithChildren, forwardRef } from 'react';
 import { ActivityIndicator, ColorValue, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
-const WithLink = ({ href, children }: LinkProps) => <Link href={href} asChild>{children}</Link>
 
 type Variant = 'primary' | 'secondary' | 'tertiary' | 'ghost';
 type Size = 'small' | 'medium' | 'large';
@@ -25,7 +25,7 @@ interface IButton extends TouchableOpacityProps {
     size?: Size;
     rounded?: boolean;
     textStyles?: StyleProp<TextStyle>;
-    asLink?: string;
+    asLink?: ExpoRouter.Href;
 }
 
 function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant = 'primary', rounded = false, ...props }: IButton,
@@ -54,6 +54,7 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
     const variantStyles: VariantStyles = {
         primary: {
             container: [
+
                 disabled ? s.bgGray300 : s.bgIndigo600,
                 rounded ? s.radiusFull : s.radius12,
                 sizedStyles[size],
@@ -71,7 +72,6 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
                 sizedStyles[size],
                 s.itemsCenter,
                 s.justifyCenter,
-
             ],
             text: [disabled ? s.textStone400 : s.textWhite, textStylesBySize[size], s.px12],
             activityIndicator: { color: COLORS.white }

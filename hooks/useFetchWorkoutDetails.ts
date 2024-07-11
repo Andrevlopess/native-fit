@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import { IWorkoutDetails } from "@/types/workout";
+import { IWorkout } from "@/types/workout";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -14,7 +14,7 @@ export const useFetchWorkoutDetails = (id: string) => {
 
       if (error) throw error;
 
-      return workouts as IWorkoutDetails;
+      return workouts as IWorkout;
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
       throw new Error(

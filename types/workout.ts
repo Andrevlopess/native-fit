@@ -6,8 +6,6 @@ export interface IWorkout {
   description: string;
   createdat: string;
   ownerid: string;
-}
-export interface IWorkoutDetails extends IWorkout {
-  ownername:string;
-  exercises: IExercise[];
+  ownername?: string;
+  exercises?: IExercise[];
 }

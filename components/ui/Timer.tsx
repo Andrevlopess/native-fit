@@ -20,8 +20,6 @@ export default function Timer() {
 
     }, [timer])
 
-    console.log(timer);
-
     return (
         <View style={[s.mxAuto]}>
             <Text style={[s.bold, s.textLG]}>{timer}</Text>

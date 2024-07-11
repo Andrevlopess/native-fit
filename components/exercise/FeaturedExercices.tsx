@@ -25,7 +25,6 @@ const FeaturedExercisesSection = ({ exercises }: { exercises: IExercise[] }) => 
     )
 }
 
-
 interface IFeaturedExercicesProps {
     title: string;
     exercises: IExercise[];

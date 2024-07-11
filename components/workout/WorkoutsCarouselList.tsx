@@ -6,8 +6,8 @@ import { Link } from 'expo-router'
 import React from 'react'
 import { Pressable, Text, View } from 'react-native'
 import Animated, { Extrapolation, SharedValue, interpolate, interpolateColor, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue, useSharedValue } from 'react-native-reanimated'
-import Button from './ui/Button'
-import { CarouselList } from './ui/CarouselList'
+import Button from '../ui/Button'
+import { CarouselList } from '../ui/CarouselList'
 
 
 const MARGIN_X = 6;

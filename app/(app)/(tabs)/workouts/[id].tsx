@@ -6,6 +6,7 @@ import { WorkoutExercisesCarousel } from '@/components/workout/WorkoutExercisesC
 import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
+import { IWorkout } from '@/types/workout';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
@@ -24,7 +25,7 @@ export default function WorkoutScreen() {
             description='Não sabemos como conseguiu chegar até aqui!' />
     }
 
-    const { data: details, isPending, isError, error } = useFetchWorkoutDetails(id);
+    const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
 
     const ErrorComponent = () =>
         <MessageView
@@ -36,7 +37,7 @@ export default function WorkoutScreen() {
     return (
         <>
             <Stack.Screen options={{
-                title: name || details?.name || '',
+                title: name || workout?.name || '',
                 // headerLargeTitle: true,
                 headerTitleAlign: 'left',
                 headerBackTitleVisible: false,
@@ -61,36 +62,36 @@ export default function WorkoutScreen() {
 
                 <View style={[s.px12]}>
 
-                    <AnimatedLargeTitle title={name || details?.name || ''} offset={offset} />
+                    <AnimatedLargeTitle title={name || workout?.name || ''} offset={offset} />
 
                     <Text style={[s.medium, s.textBase, s.textGray600]}>{description?.trim()}</Text>
 
 
                     {
-                        details &&
+                        workout &&
                         <View style={[s.flexRow, s.gap4, s.itemsCenter, s.mt12]}>
                             <Text style={[s.semibold, s.textLG, s.textGray600]}>
-                                {details?.exercises.length === 0
+                                {workout?.exercises?.length === 0
                                     ? 'Nenhum exercício'
-                                    : details?.exercises.length === 1
-                                        ? `${details?.exercises.length} exercício`
-                                        : `${details?.exercises.length} exercícios`}
+                                    : workout?.exercises?.length === 1
+                                        ? `${workout?.exercises?.length} exercício`
+                                        : `${workout?.exercises?.length} exercícios`}
                             </Text>
                             <View style={[s.radiusFull, s.bgGray600, { height: 4, width: 4 }]} />
                             <Text style={[s.semibold, s.textLG, s.textGray600]}>
-                                {details?.ownername}
+                                {workout?.ownername}
                             </Text>
                         </View>
                     }
 
                 </View>
 
-                
+
 
                 <RequestResultsView
                     isError={isError}
                     isPending={isPending}
-                    hasData={!!details}
+                    hasData={!!workout}
                     hasSearch={false}
                     // EmptyComponent={<EmptyComponent />}
                     // NotFoundComponent={<NotFoundComponent />}
@@ -98,8 +99,8 @@ export default function WorkoutScreen() {
                 >
 
                     <WorkoutExercisesCarousel
-                        workoutId={id}
-                        exercises={details?.exercises || []}
+                        workout={workout || {} as IWorkout}
+                        exercises={workout?.exercises || []}
                     />
                 </RequestResultsView>
             </Animated.ScrollView>

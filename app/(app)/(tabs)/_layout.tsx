@@ -29,6 +29,8 @@ export default function AppLayout() {
                         borderTopColor: "#fff",
                         // elevation: 4
                     },
+                    title: '',
+                    headerShown: false,
                     tabBarHideOnKeyboard: true,
                     tabBarInactiveTintColor: COLORS.textGray,
                     tabBarActiveTintColor: COLORS.indigo,
@@ -40,12 +42,11 @@ export default function AppLayout() {
                         !device.web &&
                         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
                 }}
+                initialRouteName="workouts"
             >
                 <Tabs.Screen
                     name="home"
                     options={{
-                        title: "",
-                        headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <Home
                                 strokeWidth={focused ? 1.8 : 1.5}
@@ -58,8 +59,6 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name="exercises"
                     options={{
-                        title: "",
-                        headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <Search
                                 strokeWidth={focused ? 1.8 : 1.5}
@@ -72,8 +71,6 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name="workouts"
                     options={{
-                        title: "",
-                        headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <LibrarySquare
                                 strokeWidth={focused ? 1.8 : 1.5}
@@ -86,8 +83,6 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name="profile"
                     options={{
-                        title: "",
-                        headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <UserRound
                                 strokeWidth={focused ? 1.8 : 1.5}

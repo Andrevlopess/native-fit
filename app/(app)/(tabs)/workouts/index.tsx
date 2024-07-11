@@ -1,5 +1,5 @@
 import LogoImage from '@/components/LogoImage'
-import { WorkoutListCard } from '@/components/WorkoutListCard'
+import { WorkoutListCard } from '@/components/workout/WorkoutListCard'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
 import { BadgesControl } from '@/components/ui/BadgesControl'
@@ -94,11 +94,11 @@ export default function MyWorkoutsScreen() {
                     // onBlur={() => scrollRef.current?.scrollTo({ y: 0 })}
                     />
                     <BadgesControl badges={badges} onSelect={console.log} selectedBadge='none' />
-                    <Button
+                    {/* <Button
                         variant='secondary'
                         size={'small'}
                         text="Novo treino"
-                        asLink='/new-workout' />
+                        asLink='/new-workout' /> */}
 
                 </View>
 
