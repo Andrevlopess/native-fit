@@ -1,11 +1,10 @@
-import { View, Text } from 'react-native'
-import React, { useCallback, useMemo } from 'react'
-import { IExercise } from '@/types/exercise'
-import Animated from 'react-native-reanimated'
-import { s } from '@/styles/global'
-import { Image } from 'expo-image'
-import ExerciseListCard from './ExerciseListCard'
 import { SCREEN_WIDTH } from '@/constants/Dimensions'
+import { s } from '@/styles/global'
+import { IExercise } from '@/types/exercise'
+import React, { useCallback, useMemo } from 'react'
+import { Text, View } from 'react-native'
+import Animated from 'react-native-reanimated'
+import ExerciseListCard from './ExerciseListCard'
 
 const padding = 12;
 const CARD_WIDTH = SCREEN_WIDTH - padding * 4

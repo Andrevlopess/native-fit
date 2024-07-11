@@ -1,13 +1,13 @@
-import { View, Text } from 'react-native'
+import { useCreateWorkout } from '@/hooks/useCreateWorkout'
+import { s } from '@/styles/global'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { router } from 'expo-router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { Text, View } from 'react-native'
 import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { s } from '@/styles/global'
-import { ControlledInput } from './controllers/ControlledInput'
-import Button from './ui/Button'
-import { useCreateWorkout } from '@/hooks/useCreateWorkout'
-import { router } from 'expo-router'
+import { ControlledInput } from '../controllers/ControlledInput'
+import Button from '../ui/Button'
 
 
 const NewWorkoutSchema = z.object({

@@ -1,21 +1,14 @@
-import ExerciseDetailedCard from '@/components/ExerciseDetailedCard';
-import { WorkoutExercisesCarousel } from '@/components/WorkoutExercisesCarousel';
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle';
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
-import Button from '@/components/ui/Button';
-import { CarouselList } from '@/components/ui/CarouselList';
 import MessageView from '@/components/views/MessageView';
 import RequestResultsView from '@/components/views/RequestResultView';
-import { SCREEN_WIDTH } from '@/constants/Dimensions';
+import { WorkoutExercisesCarousel } from '@/components/workout/WorkoutExercisesCarousel';
 import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
-import { IExercise } from '@/types/exercise';
-import { device } from '@/utils/device';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
-import { CircleX } from 'lucide-react-native';
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 

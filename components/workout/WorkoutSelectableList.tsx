@@ -6,7 +6,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Text, View } from 'react-native';
 import { z } from 'zod';
 import { SelectableWorkoutListCard } from './WorkoutSelectableCard';
-import Button from './ui/Button';
+import Button from '../ui/Button';
 import { router } from 'expo-router';
 import { useAddExerciseToWorkout } from '@/hooks/useAddExerciseToWorkout';
 

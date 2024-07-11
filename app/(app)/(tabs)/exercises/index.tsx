@@ -1,4 +1,4 @@
-import SwipeableExerciseListCard from '@/components/ExerciseListSwipeableCard'
+import SwipeableExerciseListCard from '@/components/exercise/ExerciseListSwipeableCard'
 import LibraryFeed from '@/components/LibraryFeed'
 import LogoImage from '@/components/LogoImage'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'

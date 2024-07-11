@@ -1,12 +1,10 @@
+import { bestCardioExercises, bestQuadExercises } from '@/constants/Exercises'
 import { s } from '@/styles/global'
-import { IExercise } from '@/types/exercise'
 import React from 'react'
 import { View } from 'react-native'
-import FeaturedExercices from './FeaturedExercices'
+import FeaturedExercices from './exercise/FeaturedExercices'
 import LoadingView from './views/LoadingView'
-import NotFoundView from './views/MessageView'
 import MessageView from './views/MessageView'
-import { bestCardioExercises, bestQuadExercises } from '@/constants/Exercises'
 
 export default function LibraryFeed() {
     // async function featuredExercises() {

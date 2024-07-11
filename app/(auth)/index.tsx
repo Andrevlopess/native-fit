@@ -1,5 +1,5 @@
-import ExerciseListCard from '@/components/ExerciseListCard'
-import  Button  from '@/components/ui/Button'
+import ExerciseListCard from '@/components/exercise/ExerciseListCard'
+import Button from '@/components/ui/Button'
 import { s } from '@/styles/global'
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { Stack, router } from 'expo-router'

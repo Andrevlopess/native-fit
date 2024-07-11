@@ -1,13 +1,12 @@
 import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
+import * as Haptics from 'expo-haptics'
 import { Image } from 'expo-image'
-import { Link, router } from 'expo-router'
+import { router } from 'expo-router'
 import { PlusCircle } from 'lucide-react-native'
 import React from 'react'
-import { ActivityIndicator, GestureResponderEvent, Pressable, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
-import Button from './ui/Button'
-import * as Haptics from 'expo-haptics';
+import { Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
 interface ExerciseListAddCardProps extends TouchableOpacityProps {
     width?: number;
     exercise: IExercise;

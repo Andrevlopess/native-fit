@@ -1,6 +1,5 @@
-import NewWorkoutForm from '@/components/NewWorkoutForm'
+import NewWorkoutForm from '@/components/workout/NewWorkoutForm'
 import { s } from '@/styles/global'
-import { device } from '@/utils/device'
 import { Stack, router } from 'expo-router'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'

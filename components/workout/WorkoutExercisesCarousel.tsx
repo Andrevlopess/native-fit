@@ -1,17 +1,17 @@
 import COLORS from "@/constants/Colors";
 import { SCREEN_WIDTH } from "@/constants/Dimensions";
 import { s } from "@/styles/global";
-import { IDetailedExercise, IExercise } from "@/types/exercise";
+import { IDetailedExercise } from "@/types/exercise";
 import { Link } from "expo-router";
 import { Inbox, Plus } from "lucide-react-native";
 import { Text, View } from "react-native";
 import Animated, { FadeIn, interpolate, LinearTransition, SharedValue, useAnimatedRef, useAnimatedStyle } from "react-native-reanimated";
-import ExerciseDetailedCard from "./ExerciseDetailedCard";
-import Button from "./ui/Button";
-import MessageView from "./views/MessageView";
+
 import { useScrollValue } from "@/hooks/useScrollValue";
 import { Image } from "expo-image";
 import { useState } from "react";
+import MessageView from "../views/MessageView";
+import Button from "../ui/Button";
 
 const MARGIN_HORIZONTAL = 12;
 const ITEM_WIDTH = SCREEN_WIDTH * 0.8;
