@@ -50,25 +50,29 @@ export default function DoingWorkoutScreen() {
                 title: name || workout?.name || '',
                 // headerLargeTitle: true,
                 headerTitleAlign: 'center',
+                // headerStyle: s.bgIndigo600,
                 headerBackVisible: false,
                 headerTitle: ({ children }) =>
                     <Text style={[s.semibold, s.textLG, s.textGray800]}>{children}</Text>,
-                headerRight: () => <Button
-                    variant='ghost'
-                    onPress={handleGiveUp}
-                    text='Desistir'
-                    size='small'
-
-                />
+                // headerLeft: () => <Button
+                //     variant='ghost'
+                //     onPress={handleGiveUp}
+                //     text='Desistir'
+                //     size='small'
+                // />
 
             }} />
 
-            <View style={[s.flex1]}>
+            {/* <View style={[s.flex1, s.border1]}> */}
+            <View style={[s.flex1, s.bgGray300]}>
                 {
                     workout?.exercises &&
                     <WorkingOutList exercises={workout?.exercises} />
                 }
             </View>
+            {/* <WorkingOutList exercises={workout?.exercises} /> */}
+
+            {/* </View> */}
         </>
     )
 }

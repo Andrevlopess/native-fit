@@ -1,28 +1,31 @@
+import { SCREEN_WIDTH } from "@/constants/Dimensions";
 import { s } from "@/styles/global";
-import { width } from "@/utils/dimensions";
 import React, { memo } from "react";
-import { View } from "react-native";
-import Animated from "react-native-reanimated";
+import { useAnimatedValue, View } from "react-native";
+import Animated, { SharedValue, useAnimatedStyle } from "react-native-reanimated";
 
 function HeaderStepBar({
-    steps,
-    currStep,
+    progress
 }: {
-    steps: number;
-    currStep: number;
+    progress: SharedValue<number>;
 }) {
 
-    const screenWidth = width();
-    const percentage = currStep / steps;
+    const anim = useAnimatedStyle(() => {
+        return {
+            width: SCREEN_WIDTH * progress.value / 100,
+            height: 3
+        }
+    })
+
 
     return (
         <View
             style={[
-                s.bgGray100, s.radiusFull, { height: 3, width: screenWidth },
+                s.bgGray100, s.radiusFull, { height: 3, width: SCREEN_WIDTH },
             ]}
         >
             <Animated.View
-                style={[s.bgBlue, s.radiusFull, { height: 3, width: screenWidth * percentage }]}
+                style={[s.bgIndigo500, s.radiusFull, anim]}
             />
         </View>
 

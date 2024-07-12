@@ -61,12 +61,8 @@ export default function WorkoutScreen() {
             >
 
                 <View style={[s.px12]}>
-
                     <AnimatedLargeTitle title={name || workout?.name || ''} offset={offset} />
-
                     <Text style={[s.medium, s.textBase, s.textGray600]}>{description?.trim()}</Text>
-
-
                     {
                         workout &&
                         <View style={[s.flexRow, s.gap4, s.itemsCenter, s.mt12]}>
@@ -83,7 +79,6 @@ export default function WorkoutScreen() {
                             </Text>
                         </View>
                     }
-
                 </View>
 
 

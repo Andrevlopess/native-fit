@@ -6,33 +6,44 @@ import { Image } from 'expo-image'
 import { Check, Link, PlusCircle } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
-import Animated, { FadeIn, FadeInDown, FadeOut, FadeOutUp, LinearTransition, SlideInDown, SlideOutDown, SlideOutUp, useSharedValue, withTiming, ZoomInEasyUp, ZoomOutEasyDown } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeInDown, FadeOut, FadeOutUp, interpolate, LinearTransition, SlideInDown, SlideOutDown, SlideOutUp, useAnimatedStyle, useSharedValue, withTiming, ZoomInEasyUp, ZoomOutEasyDown } from 'react-native-reanimated'
 import Button from '../ui/Button'
 
 
 interface IExerciseDoingCardProps {
   exercise: IExercise;
   onConclude: () => void;
-  active: boolean;
-  done: boolean;
+  active?: boolean;
+  done?: boolean;
 }
 
 
 export default function ExerciseDoingCard({ active, exercise, done, onConclude }: IExerciseDoingCardProps) {
 
 
-  const IMAGE_SIZE = active ? SCREEN_WIDTH * 0.8 : 70;
+  // const IMAGE_SIZE = active ? SCREEN_WIDTH * 0.8 : 70;
 
-  const height = useSharedValue(70);
+  // const height = useSharedValue(70);
+  // height.value = withTiming(active ? IMAGE_SIZE : 70);
 
-  height.value = withTiming(active ? IMAGE_SIZE : 70)
+  const height = 70;
 
+
+  // const anim = useAnimatedStyle(() => {
+  //   return {
+  //     // flexDirection: interpolate(height.value, [70, IMAGE_SIZE], ['row', 'column'])
+  //     flexDirection: height.value === 70 ? 'row' : 'column'
+  //   }
+  // })
 
   return (
     <Animated.View
       // onLayout={({ nativeEvent }) => console.log(nativeEvent.layout)}
+      // layout={LinearTransition.duration(2000)}
       layout={LinearTransition.springify().stiffness(500).damping(60)}
       style={[
+        // anim,
+        !active &&  s.flexRow,
         s.bgWhite,
         s.flex1,
         s.gap12,
@@ -40,7 +51,7 @@ export default function ExerciseDoingCard({ active, exercise, done, onConclude }
         s.radius12,
         // s.border2,
         // s.borderIndigo500,
-        active && s.bgIndigo600,
+        active && s.bgGray100,
         // done && s.itemsCenter,
         done && { opacity: 0.5 }
       ]}>
@@ -57,8 +68,8 @@ export default function ExerciseDoingCard({ active, exercise, done, onConclude }
         </Animated.View>
 
       }
-      <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100, 
-        done &&  s.mrAuto
+      <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100,
+      done && s.mrAuto
       ]}>
 
         <Animated.Image
@@ -105,6 +116,7 @@ export default function ExerciseDoingCard({ active, exercise, done, onConclude }
             {exercise.name}
           </Text>
           <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
+          <Text style={[s.regular, s.textGray400, s.textRight]}>Feito</Text>
 
         </View>
 
