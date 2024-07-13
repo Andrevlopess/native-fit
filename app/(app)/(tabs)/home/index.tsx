@@ -10,7 +10,7 @@ import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
 import { Stack } from 'expo-router'
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 const exercises: IExercise[] =
   [
@@ -106,8 +106,8 @@ export default function HomeIndexScreen() {
               : undefined
         }}
       />
-
-      <Animated.ScrollView
+      
+      {/* <Animated.ScrollView
         onScroll={scrollHandler}
         contentInsetAdjustmentBehavior='automatic'
         style={[s.flex1, s.bgWhite]}
@@ -115,12 +115,18 @@ export default function HomeIndexScreen() {
       >
 
         <AnimatedLargeTitle title='Início' offset={offset} style={[s.px12]} />
-        {/* <Timer/> */}
+  
 
         <WorkoutsCarouselList />
         <FeaturedExercices title='Destaques' exercises={exercises} />
 
-      </Animated.ScrollView>
+      </Animated.ScrollView> */}
+
+      <View style={[s.flex1]}>
+        <WorkoutsCarouselList />
+      </View>
+
+
     </>
   )
 }

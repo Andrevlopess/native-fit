@@ -2088,15 +2088,6 @@ export const s = StyleSheet.create({
   bgRed700: {
     backgroundColor: "#b91c1c",
   },
-  bgRed800: {
-    backgroundColor: "#991b1b",
-  },
-  bgRed900: {
-    backgroundColor: "#7f1d1d",
-  },
-  bgRed950: {
-    backgroundColor: "#450a0a",
-  },
   // Orange
   bgOrange50: {
     backgroundColor: "#fff7ed",

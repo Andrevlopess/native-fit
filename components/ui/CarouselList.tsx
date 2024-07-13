@@ -1,67 +1,131 @@
-import COLORS from '@/constants/Colors';
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
-import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
-import React, { useState } from 'react';
-import { FlatListProps, GestureResponderEvent, Pressable, PressableProps, View } from 'react-native';
-import Animated, { Extrapolation, SharedValue, interpolate, interpolateColor, useAnimatedRef, useAnimatedStyle } from 'react-native-reanimated';
+import React from 'react';
+import { Dimensions, FlatListProps, ListRenderItemInfo, View } from 'react-native';
+import Animated, {
+    Extrapolation,
+    SharedValue,
+    interpolate,
+    interpolateColor,
+    useAnimatedScrollHandler,
+    useAnimatedStyle,
+    useSharedValue,
+} from 'react-native-reanimated';
 
 const MARGIN_HORIZONTAL = 6;
 const ITEM_WIDTH = SCREEN_WIDTH * 0.8;
 // const ITEM_FULL_WIDTH = ITEM_WIDTH + MARGIN_HORIZONTAL * 2;
 // const SPACER = (SCREEN_WIDTH - ITEM_FULL_WIDTH) / 2;
 
+interface AnimatedProps {
+    inputRange: number[];
+    scrollX: SharedValue<number>;
+}
 
-interface SectionIndicatorComponentProps extends PressableProps { inputRange: number[], scrollX: SharedValue<number> }
-export const SectionIndicatorComponent = ({ inputRange, scrollX, ...props }: SectionIndicatorComponentProps) => {
+interface CardProps extends AnimatedProps {
+    children: React.ReactNode;
+    marginHorizontal: number;
+}
 
-    const stepsIndicatorsAnimation = useAnimatedStyle(() => {
+export const CardComponent = ({ inputRange, scrollX, marginHorizontal, children }: CardProps) => {
+
+    const cardAnimationScale = useAnimatedStyle(() => {
         return {
-            width: interpolate(scrollX.value, inputRange, [6, 24, 6], Extrapolation.CLAMP),
-            backgroundColor: interpolateColor(scrollX.value, inputRange, [
-                `${COLORS.gray900}50`, `${COLORS.indigo}`, `${COLORS.indigo}50`
-            ])
+            transform: [
+                {
+                    scale: interpolate(scrollX.value, inputRange, [0.8, 1, 0.8]),
+                },
+                // {
+                //     translateY: interpolate(scrollX.value, inputRange, [50, 0, 50]),
+                // },
+            ],
         };
     });
 
-    return <Pressable
-        {...props}
-    >
-        <Animated.View style={[s.bgIndigo500, s.radiusFull, stepsIndicatorsAnimation, { height: 6 }]} />
-    </Pressable>
-}
+    return (
+        <Animated.View style={[{ marginHorizontal }, cardAnimationScale, s.flex1]}>
+            {children}
+        </Animated.View>
+    );
+};
+
+export const SectionIndicatorComponent = ({ inputRange, scrollX }: AnimatedProps) => {
+
+    console.log(scrollX.value, inputRange);
+    
+    const stepsIndicatorsAnimation = useAnimatedStyle(() => {
+        return {
+            width: interpolate(scrollX.value, inputRange, [6, 24, 6], Extrapolation.CLAMP),
+            height: 6,
+            backgroundColor: interpolateColor(scrollX.value, inputRange, ['#000', '#ff9933', '#000']),
+            // transform: [
+            //     {
+            //         scale: interpolate(scrollX.value, inputRange, [0.8, 2, 0.8], Extrapolation.CLAMP)
+            //     }
+            // ]
+        };
+    });
+
+    return <Animated.View style={[stepsIndicatorsAnimation, { borderRadius: 50, height: 6, width: 6 }]} />;
+};
 
 interface CarouselListProps<T> extends FlatListProps<T> {
     itemWidth?: number;
-    marginHorizontal?: number
+    marginHorizontal?: number;
+    //CarouselComponent: React.ReactNode;
 }
 
 export function CarouselList<T>({
     itemWidth = ITEM_WIDTH,
     marginHorizontal = MARGIN_HORIZONTAL,
+    //CarouselComponent,
+    renderItem,
     ...props
 }: CarouselListProps<T>) {
-
-    const { offset, scrollHandler } = useScrollValue('x')
 
     const ITEM_FULL_WIDTH = itemWidth + marginHorizontal * 2;
     const SPACER = (SCREEN_WIDTH - ITEM_FULL_WIDTH) / 2;
 
-    const flatlistRef = useAnimatedRef<Animated.FlatList<T>>()
+    const offset = useSharedValue<number>(0);
+    const scrollHandler = useAnimatedScrollHandler({
+        onScroll: (event) => {
+            'worklet';
+            offset.value = event.contentOffset.x;
+        },
+    });
 
-    const handleScrollCarousel = (index: number) => flatlistRef.current?.scrollToIndex({ index: index })
+
+    const renderItemWrapper = (info: ListRenderItemInfo<T>) => {
+
+        const inputRange = [
+            (info.index - 1) * ITEM_FULL_WIDTH,
+            info.index * ITEM_FULL_WIDTH,
+            (info.index + 1) * ITEM_FULL_WIDTH,
+        ];
+
+
+        if (!renderItem) return null
+        return (
+            <CardComponent inputRange={inputRange} marginHorizontal={marginHorizontal} scrollX={offset}>
+                {renderItem(info)}
+            </CardComponent>
+        )
+        // return <CardComponent inputRange={inputRange} marginHorizontal={marginHorizontal} scrollX={offset}>{renderItem(info)}</CardComponent>;
+
+    }
+
+
 
     return (
-        <View style={[s.flex1, s.gap24, s.py12]}>
-
+        <View style={[s.py12, s.gap24]}>
             <Animated.FlatList
-                ref={flatlistRef}
-
+                //data={data}
                 ListHeaderComponent={<View />}
                 ListHeaderComponentStyle={{ width: SPACER }}
                 ListFooterComponent={<View />}
                 ListFooterComponentStyle={{ width: SPACER }}
 
+                renderItem={renderItemWrapper}
                 onScroll={scrollHandler}
                 scrollEventThrottle={16}
                 snapToInterval={ITEM_FULL_WIDTH}
@@ -72,24 +136,18 @@ export function CarouselList<T>({
                 {...props}
             />
 
-            <View style={[s.mxAuto, s.flexRow, s.gap4, s.itemsCenter]}>
+            <View
+                style={{ marginHorizontal: 'auto', flexDirection: 'row', gap: 4, alignItems: 'center' }}>
                 {new Array(props.data?.length).fill(0).map((_, index) => {
-
                     const inputRange = [
                         (index - 1) * ITEM_FULL_WIDTH,
                         index * ITEM_FULL_WIDTH,
                         (index + 1) * ITEM_FULL_WIDTH,
                     ];
 
-                    return <SectionIndicatorComponent
-                        key={index}
-                        onPress={() => handleScrollCarousel(index)}
-                        inputRange={inputRange}
-                        scrollX={offset}
-                    />
+                    return <SectionIndicatorComponent key={index} inputRange={inputRange} scrollX={offset} />;
                 })}
-
             </View>
         </View>
-    )
+    );
 }

@@ -78,6 +78,7 @@ export default function MyWorkoutsScreen() {
             />
 
             <Animated.ScrollView
+                
                 contentInsetAdjustmentBehavior='automatic'
                 entering={FadeIn}
                 onScroll={scrollHandler}

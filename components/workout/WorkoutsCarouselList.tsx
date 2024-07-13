@@ -10,21 +10,24 @@ import Button from '../ui/Button'
 import { CarouselList } from '../ui/CarouselList'
 
 
-const MARGIN_X = 6;
-const ITEM_WIDTH = SCREEN_WIDTH * 0.8
+const MARGIN_X = 0;
+const ITEM_WIDTH = Math.round(SCREEN_WIDTH * 0.8)
 
 const WorkoutCard = ({ name, id }: IWorkout) => {
     return (
-        <Link href={`/(app)/home/workouts/${id}`} asChild>
-            <Pressable>
+        // <Link href={`/(app)/home/workouts/${id}`} asChild>
+        //     <Pressable>
                 <Animated.View style={[
                     s.radius18,
-                    s.itemsEnd,
-                    s.bgGray200,
-                    { height: ITEM_WIDTH, width: ITEM_WIDTH, marginHorizontal: MARGIN_X }]}>
+                    // s.border1,
+                    
+                    // s.itemsEnd,
+                    s.bgBlack,
+                    { height: ITEM_WIDTH, width: ITEM_WIDTH }]}>
+                    <Text>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
                 </Animated.View>
-            </Pressable>
-        </Link>
+        //     </Pressable>
+        // </Link>
     )
 }
 
