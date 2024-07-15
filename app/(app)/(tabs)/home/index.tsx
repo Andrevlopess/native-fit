@@ -106,8 +106,8 @@ export default function HomeIndexScreen() {
               : undefined
         }}
       />
-      
-      {/* <Animated.ScrollView
+
+      <Animated.ScrollView
         onScroll={scrollHandler}
         contentInsetAdjustmentBehavior='automatic'
         style={[s.flex1, s.bgWhite]}
@@ -115,16 +115,16 @@ export default function HomeIndexScreen() {
       >
 
         <AnimatedLargeTitle title='Início' offset={offset} style={[s.px12]} />
-  
+
 
         <WorkoutsCarouselList />
         <FeaturedExercices title='Destaques' exercises={exercises} />
 
-      </Animated.ScrollView> */}
+      </Animated.ScrollView>
 
-      <View style={[s.flex1]}>
+      {/* <View style={[s.flex1]}>
         <WorkoutsCarouselList />
-      </View>
+      </View> */}
 
 
     </>

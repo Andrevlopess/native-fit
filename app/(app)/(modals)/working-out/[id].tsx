@@ -15,6 +15,7 @@ import { Link, router, Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 type SearchParams = { id: string, name: string }
@@ -22,6 +23,8 @@ type SearchParams = { id: string, name: string }
 export default function DoingWorkoutScreen() {
     const { id, name } = useLocalSearchParams<SearchParams>();
     if (!id) return <PageNotFound />
+
+    const { top } = useSafeAreaInsets()
 
 
     const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
@@ -47,19 +50,39 @@ export default function DoingWorkoutScreen() {
     return (
         <>
             <Stack.Screen options={{
+                // autoHideHomeIndicator: true,
                 title: name || workout?.name || '',
                 // headerLargeTitle: true,
                 headerTitleAlign: 'center',
                 // headerStyle: s.bgIndigo600,
                 headerBackVisible: false,
-                headerTitle: ({ children }) =>
-                    <Text style={[s.semibold, s.textLG, s.textGray800]}>{children}</Text>,
-                // headerLeft: () => <Button
-                //     variant='ghost'
-                //     onPress={handleGiveUp}
-                //     text='Desistir'
-                //     size='small'
-                // />
+                header: () => (
+                    <View style={[
+                        s.justifyBetween,
+                        s.itemsCenter,
+                        s.bgWhite,
+                        s.flexRow,
+                        { paddingTop: top, paddingLeft: 12 }]}>
+
+                        <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
+                            {name || workout?.name || ''}
+                        </Text>
+
+                        <Button
+                            variant='ghost'
+                            onPress={handleGiveUp}
+                            text='Desistir'
+                            size='small'
+                        />
+
+                        {/* <Button
+                            variant='ghost'
+                            onPress={handleGiveUp}
+                            text='Finalizar'
+                            size='small'
+                        /> */}
+                    </View>
+                ),
 
             }} />
 

@@ -1,11 +1,10 @@
-import COLORS from '@/constants/Colors'
 import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
 import { IWorkout } from '@/types/workout'
 import { Link } from 'expo-router'
 import React from 'react'
 import { Pressable, Text, View } from 'react-native'
-import Animated, { Extrapolation, SharedValue, interpolate, interpolateColor, useAnimatedScrollHandler, useAnimatedStyle, useDerivedValue, useSharedValue } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import Button from '../ui/Button'
 import { CarouselList } from '../ui/CarouselList'
 
@@ -15,19 +14,19 @@ const ITEM_WIDTH = Math.round(SCREEN_WIDTH * 0.8)
 
 const WorkoutCard = ({ name, id }: IWorkout) => {
     return (
-        // <Link href={`/(app)/home/workouts/${id}`} asChild>
-        //     <Pressable>
+        <Link href={`/(app)/home/workouts/${id}`} asChild>
+            <Pressable>
                 <Animated.View style={[
                     s.radius18,
                     // s.border1,
-                    
+
                     // s.itemsEnd,
-                    s.bgBlack,
+                    s.bgGray100,
                     { height: ITEM_WIDTH, width: ITEM_WIDTH }]}>
-                    <Text>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text>
+
                 </Animated.View>
-        //     </Pressable>
-        // </Link>
+            </Pressable>
+        </Link>
     )
 }
 

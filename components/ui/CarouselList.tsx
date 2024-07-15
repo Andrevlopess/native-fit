@@ -1,4 +1,6 @@
+import COLORS from '@/constants/Colors';
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
+import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
 import React from 'react';
 import { Dimensions, FlatListProps, ListRenderItemInfo, View } from 'react-native';
@@ -14,9 +16,6 @@ import Animated, {
 
 const MARGIN_HORIZONTAL = 6;
 const ITEM_WIDTH = SCREEN_WIDTH * 0.8;
-// const ITEM_FULL_WIDTH = ITEM_WIDTH + MARGIN_HORIZONTAL * 2;
-// const SPACER = (SCREEN_WIDTH - ITEM_FULL_WIDTH) / 2;
-
 interface AnimatedProps {
     inputRange: number[];
     scrollX: SharedValue<number>;
@@ -33,11 +32,11 @@ export const CardComponent = ({ inputRange, scrollX, marginHorizontal, children 
         return {
             transform: [
                 {
-                    scale: interpolate(scrollX.value, inputRange, [0.8, 1, 0.8]),
+                    scale: interpolate(scrollX.value, inputRange, [0.9, 1, 0.9]),
                 },
-                // {
-                //     translateY: interpolate(scrollX.value, inputRange, [50, 0, 50]),
-                // },
+                {
+                    translateY: interpolate(scrollX.value, inputRange, [10, 0, 10]),
+                },
             ],
         };
     });
@@ -51,18 +50,12 @@ export const CardComponent = ({ inputRange, scrollX, marginHorizontal, children 
 
 export const SectionIndicatorComponent = ({ inputRange, scrollX }: AnimatedProps) => {
 
-    console.log(scrollX.value, inputRange);
-    
     const stepsIndicatorsAnimation = useAnimatedStyle(() => {
         return {
             width: interpolate(scrollX.value, inputRange, [6, 24, 6], Extrapolation.CLAMP),
             height: 6,
-            backgroundColor: interpolateColor(scrollX.value, inputRange, ['#000', '#ff9933', '#000']),
-            // transform: [
-            //     {
-            //         scale: interpolate(scrollX.value, inputRange, [0.8, 2, 0.8], Extrapolation.CLAMP)
-            //     }
-            // ]
+            backgroundColor: interpolateColor(scrollX.value, inputRange,
+                [COLORS.gray, COLORS.indigo, `${COLORS.indigo}50`]),
         };
     });
 
@@ -72,7 +65,6 @@ export const SectionIndicatorComponent = ({ inputRange, scrollX }: AnimatedProps
 interface CarouselListProps<T> extends FlatListProps<T> {
     itemWidth?: number;
     marginHorizontal?: number;
-    //CarouselComponent: React.ReactNode;
 }
 
 export function CarouselList<T>({
@@ -86,14 +78,7 @@ export function CarouselList<T>({
     const ITEM_FULL_WIDTH = itemWidth + marginHorizontal * 2;
     const SPACER = (SCREEN_WIDTH - ITEM_FULL_WIDTH) / 2;
 
-    const offset = useSharedValue<number>(0);
-    const scrollHandler = useAnimatedScrollHandler({
-        onScroll: (event) => {
-            'worklet';
-            offset.value = event.contentOffset.x;
-        },
-    });
-
+    const { offset, scrollHandler } = useScrollValue('x')
 
     const renderItemWrapper = (info: ListRenderItemInfo<T>) => {
 
@@ -106,12 +91,13 @@ export function CarouselList<T>({
 
         if (!renderItem) return null
         return (
-            <CardComponent inputRange={inputRange} marginHorizontal={marginHorizontal} scrollX={offset}>
+            <CardComponent
+                inputRange={inputRange}
+                marginHorizontal={marginHorizontal}
+                scrollX={offset}>
                 {renderItem(info)}
             </CardComponent>
         )
-        // return <CardComponent inputRange={inputRange} marginHorizontal={marginHorizontal} scrollX={offset}>{renderItem(info)}</CardComponent>;
-
     }
 
 
@@ -137,7 +123,7 @@ export function CarouselList<T>({
             />
 
             <View
-                style={{ marginHorizontal: 'auto', flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+                style={[s.mxAuto, s.flexRow, s.gap4, s.itemsCenter]}>
                 {new Array(props.data?.length).fill(0).map((_, index) => {
                     const inputRange = [
                         (index - 1) * ITEM_FULL_WIDTH,

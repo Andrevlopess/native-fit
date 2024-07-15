@@ -5,7 +5,7 @@ import { useAnimatedValue, View } from "react-native";
 import Animated, { SharedValue, useAnimatedStyle } from "react-native-reanimated";
 
 function HeaderStepBar({
-    progress
+    progress,
 }: {
     progress: SharedValue<number>;
 }) {
