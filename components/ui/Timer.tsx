@@ -1,8 +1,10 @@
 import { s } from '@/styles/global';
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, Vibration, View } from 'react-native';
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import Button from './Button';
+
+import * as Haptics from 'expo-haptics'
 
 interface TimerProps {
     timer: number,
@@ -17,6 +19,8 @@ export default function Timer({ timer: initialTimer, onTimerEnd }: TimerProps) {
 
     useEffect(() => {
         if (timer <= 0) {
+            // Haptics.selectionAsync()
+            Vibration.vibrate()
             onTimerEnd();
             return;
         }
@@ -71,31 +75,33 @@ export default function Timer({ timer: initialTimer, onTimerEnd }: TimerProps) {
     //     };
     // });
 
-    return (
-        <View style={[
-            s.gap12,
-            s.p12,
-            s.justifyBetween,
-            s.radius12,
-            s.relative,
-            s.bgGray50,
-            { overflow: 'hidden' }
-        ]}>
-            {/* <Animated.View style={[s.bgIndigo600, s.absolute, anim, { bottom: 0, height: 3 }]} /> */}
-            <View style={[s.flexRow, s.gap12, s.itemsCenter, s.justifyBetween]}>
-                <Button
-                    disabled={timer < 30}
-                    text='-30'
-                    variant='tertiary'
-                    // onPress={() => handleRemoveSeconds(30)}
-                />
-                <Text style={[s.bold, s.text4XL, s.textCenter]}>{formatTime(timer)}</Text>
-                <Button
-                    text='+30'
-                    variant='tertiary'
-                    // onPress={() => handleAddSeconds(30)}
-                />
-            </View>
-        </View>
-    );
+    return <Text style={[s.bold, s.text4XL, s.textCenter]}>{formatTime(timer)}</Text>
+
+
+    // return (
+    //     <View style={[
+    //         s.gap12,
+    //         s.p12,
+    //         s.justifyBetween,
+    //         s.radius12,
+    //         s.relative,
+    //         s.bgGray50,
+    //         { overflow: 'hidden' }
+    //     ]}>
+    //         {/* <Animated.View style={[s.bgIndigo600, s.absolute, anim, { bottom: 0, height: 3 }]} /> */}
+    //         <View style={[s.flexRow, s.gap12, s.itemsCenter, s.justifyBetween]}>
+    //             <Button
+    //                 disabled={timer < 30}
+    //                 text='-30'
+    //                 variant='tertiary'
+    //                 // onPress={() => handleRemoveSeconds(30)}
+    //             />
+    //             <Button
+    //                 text='+30'
+    //                 variant='tertiary'
+    //                 // onPress={() => handleAddSeconds(30)}
+    //             />
+    //         </View>
+    //     </View>
+    // );
 }

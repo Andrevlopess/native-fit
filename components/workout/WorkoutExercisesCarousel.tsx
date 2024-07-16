@@ -73,7 +73,7 @@ export const WorkoutExercisesCarousel =
 
                         <Button
                             text='Iniciar treino'
-                            asLink={{ pathname: `/workouts/doing/${id}`, params: { name, description } }}
+                            asLink={{ pathname: `/working-out/${id}`, params: { name } }}
                             size='small'
                             rounded
                         />

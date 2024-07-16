@@ -35,7 +35,7 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
 
     const sizedStyles: Record<Size, StyleProp<ViewStyle>[]> = {
         small: [s.px12, s.py10],
-        medium: [s.p16],
+        medium: [s.p14],
         large: [s.p18]
     }
 

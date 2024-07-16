@@ -8,7 +8,7 @@ import ExerciseDetailedCard from '../exercise/ExerciseDetailedCard'
 import Animated from 'react-native-reanimated'
 import { SCREEN_WIDTH } from '@/constants/Dimensions'
 
-const IMAGE_SIZE = SCREEN_WIDTH * 0.6
+const IMAGE_SIZE = SCREEN_WIDTH * 0.3
 
 
 interface RestingWorkoutViewProps {
@@ -21,22 +21,20 @@ export default function RestingWorkoutView({ nextExercise, onTimerEnd }: Resting
 
         <View style={[s.flex1, s.p12, s.gap24, { paddingBottom: 96 }]}>
 
-            <Timer timer={3} onTimerEnd={onTimerEnd} />
+            <View style={[s.flex1, s.itemsCenter, s.justifyCenter, s.gap12, s.bgGray50, s.radius12]}>
+                <Text style={[s.text2XL, s.semibold]}>Respire um pouco</Text>
+                <Timer timer={3} onTimerEnd={onTimerEnd} />
 
-            <View style={[s.gap24]}>
+            </View>
 
-                <Text style={[s.semibold, s.textLG]}>Próximo exercício</Text>
-                {/* <ExerciseListCard exercise={nextExercise} /> */}
+            <View style={[s.gap12]}>
+                <Text style={[s.semibold, s.textXL, s.textGray600]}>
+                    Próximo exercício
+                </Text>
 
-                <Animated.Image
-                    source={{ uri: nextExercise.gifurl }}
-                    style={[s.radius8, s.mxAuto, s.bgGray100, s.border1, s.borderGray200, { height: IMAGE_SIZE, width: IMAGE_SIZE }]} />
-
-                <View style={[s.flexRow, s.gap12, s.itemsCenter]}>
-                    <Text style={[s.semibold, s.textXL, s.px12, s.flex1]}>{nextExercise.name}</Text>
-                    <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
-                    <Text style={[s.bold, s.textXL, s.textCenter, s.px12]}>4 x 12</Text>
-                </View>
+                <ExerciseListCard
+                    exercise={nextExercise}
+                    showsAddButton={false} />
             </View>
 
 

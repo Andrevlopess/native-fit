@@ -11,13 +11,16 @@ interface ExerciseListCardProps {
     width?: number;
     exercise: IExercise;
     showsAddButton?: boolean;
+    readOnly?: boolean;
 }
 
-export default function ExerciseListCard({ exercise, width, showsAddButton = true}: ExerciseListCardProps) {
+export default function ExerciseListCard({ exercise, width, showsAddButton = true, readOnly = false }: ExerciseListCardProps) {
 
     return (
         <Link
-            href={`/(app)/exercises/${exercise.id}`}
+            disabled={readOnly}
+            href={`/(app)/(modals)/exercise-details/${exercise.id}`}
+            // href={`/(app)/exercises/${exercise.id}`}
             asChild
             push
             style={[
@@ -51,8 +54,8 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                         style={[s.mrAuto, s.myAuto, s.bgGray100, s.radiusFull, s.p8]}
                         asChild
                         href={`/(app)/(modals)/add-to-workout/${exercise.id}`}
-                        // href={`/(app)/teste`}
-                        >
+                    // href={`/(app)/teste`}
+                    >
                         <TouchableOpacity activeOpacity={0.8}>
                             <PlusCircle color={COLORS.textGray} strokeWidth={2.5} />
                         </TouchableOpacity>

@@ -19,6 +19,8 @@ import { CircleX, Inbox, Plus, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeIn } from 'react-native-reanimated'
+import { useFetchWorkoutsHistory } from '@/hooks/useFetchWorkoutHistory'
+import LoadingView from '@/components/views/LoadingView'
 
 const EmptyComponent = () =>
     <MessageView
@@ -39,6 +41,9 @@ export default function MyWorkoutsScreen() {
     const debouncedSearch = useDebounce(search, 500).trim();
 
     const { data: workouts, isPending, isError, error } = useFetchWorkouts(debouncedSearch, filter);
+    const { data: history, isPending: isHistoryPending } = useFetchWorkoutsHistory();
+    // console.log('resultsssssss', data);
+
 
 
     const NotFoundComponent = () =>
@@ -78,7 +83,7 @@ export default function MyWorkoutsScreen() {
             />
 
             <Animated.ScrollView
-                
+
                 contentInsetAdjustmentBehavior='automatic'
                 entering={FadeIn}
                 onScroll={scrollHandler}
@@ -116,6 +121,24 @@ export default function MyWorkoutsScreen() {
                         {workouts?.map((workout, i) => (
                             <WorkoutListCard workout={workout} key={`${i},${workout.id}`} />
                         ))}
+                    </View>
+
+                    <View>
+
+                        <Text>Ultimos treinos que eu fiz</Text>
+                        
+                        {isHistoryPending
+                            ? <LoadingView />
+                            : <View>
+                                {history?.map(history =>
+                                    <View>
+                                        <Text>{new Date(history.done_at).toLocaleDateString('pt-br',
+                                            { dateStyle: 'medium' })}</Text>
+                                        <WorkoutListCard workout={history.workouts} />
+                                    </View>
+                                )}
+                            </View>
+                        }
                     </View>
                 </RequestResultsView>
             </Animated.ScrollView>

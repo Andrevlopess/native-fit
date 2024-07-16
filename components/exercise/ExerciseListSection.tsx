@@ -28,7 +28,11 @@ export default function ExerciseListSection({ title, filter }: ExerciseListSecti
     error,
     isError,
     fetchNextPage }
-    = useSearchExercises('', filter, 15);
+    = useSearchExercises({
+      search: '',
+      filter,
+      limit: 15
+    });
 
   const NotFoundComponent = () =>
     <MessageView

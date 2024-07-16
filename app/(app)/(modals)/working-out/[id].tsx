@@ -1,20 +1,14 @@
-import ExerciseDetailedCard from '@/components/exercise/ExerciseDetailedCard';
-import ExerciseDoingCard from '@/components/exercise/ExerciseDoingCard';
-import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle';
-import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import Button from '@/components/ui/Button';
 import MessageView from '@/components/views/MessageView';
 import PageNotFound from '@/components/views/PageNotFound';
 import RequestResultsView from '@/components/views/RequestResultView';
-import WorkingOutList from '@/components/workout/WorkingOutList';
-import { WorkoutExercisesCarousel } from '@/components/workout/WorkoutExercisesCarousel';
+import WorkingOutFlow from '@/components/workout/WorkingOutFlow';
 import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
-import { useScrollValue } from '@/hooks/useScrollValue';
+import { useWorkoutHistory } from '@/hooks/useWorkoutHistory';
 import { s } from '@/styles/global';
-import { Link, router, Stack, useLocalSearchParams } from 'expo-router';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { Alert, ScrollView, Text, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import { Alert, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
@@ -28,9 +22,16 @@ export default function DoingWorkoutScreen() {
 
 
     const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
+    const { mutate, isPending: isSaving } = useWorkoutHistory();
+
 
     const handleGiveUp = () => {
         Alert.alert('Quer mesmo desistir do seu treino?', '', [
+            {
+                text: 'Cancelar',
+                style: 'cancel',
+                isPreferred: true,
+            },
             {
                 text: 'Desisistir',
                 style: 'destructive',
@@ -38,13 +39,15 @@ export default function DoingWorkoutScreen() {
                     // Dismiss the modal and return to the previous screen
                     router.back();
                 }
-            },
-            {
-                text: 'Cancelar',
-                style: 'cancel',
-                isPreferred: true,
             }
         ])
+    }
+
+
+
+    function handleCompletedWorkout() {
+        if (!id) return;
+        mutate({ workout_id: id })
     }
 
     return (
@@ -87,12 +90,25 @@ export default function DoingWorkoutScreen() {
             }} />
 
             {/* <View style={[s.flex1, s.border1]}> */}
-            <View style={[s.flex1, s.bgGray300]}>
-                {
-                    workout?.exercises &&
-                    <WorkingOutList exercises={workout?.exercises} />
-                }
-            </View>
+
+            <RequestResultsView
+                isError={isError}
+                hasSearch={false}
+                isPending={isPending}
+                hasData={!!workout?.exercises}
+                ErrorComponent={<MessageView
+                    message='Não conseguimos carregar o seu treino!'
+                    description='Verifique sua conexão e tente novamente!'
+                />}
+
+            >
+                <WorkingOutFlow
+                    exercises={workout?.exercises || []}
+                    onWorkoutCompleted={handleCompletedWorkout}
+                />
+            </RequestResultsView>
+
+
             {/* <WorkingOutList exercises={workout?.exercises} /> */}
 
             {/* </View> */}

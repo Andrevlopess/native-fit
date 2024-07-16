@@ -8,13 +8,13 @@ export const useFetchWorkoutDetails = (id: string) => {
 
   async function fetchWorkoutDetails(id:string) {
     try {
-      let { data: workouts, error } = await supabase
+      let { data: workout, error } = await supabase
         .rpc('workout_details', {workoutid: id})
         .single();
 
       if (error) throw error;
 
-      return workouts as IWorkout;
+      return workout as IWorkout;
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
       throw new Error(

@@ -4,30 +4,27 @@ import axios from "axios";
 
 const UUID = "84f13dde-923f-4aa7-a706-4d2810f12c3c";
 
-export type CreateWorkoutResponse = {
+interface WorkoutHistoryParams {
+  workout_id: string;
+}
+interface WorkoutHistoryResponse {
   id: string;
-};
-
-interface CreateWorkoutParams {
-  name: string;
-  description: string;
 }
 
-export const useCreateWorkout = ({
+export const useWorkoutHistory = ({
   ...options
 }: UseMutationOptions<
-  CreateWorkoutResponse,
+  WorkoutHistoryResponse,
   Error,
-  CreateWorkoutParams
+  WorkoutHistoryParams
 > = {}) => {
-  async function createWorkout(values: CreateWorkoutParams) {
+  async function createWorkout(values: WorkoutHistoryParams) {
     try {
       const { data, error } = await supabase
-        .from("workouts")
+        .from("workouts_history")
         .insert({
-          owner_id: UUID,
-          name: values.name,
-          description: values.description,
+          user_id: UUID,
+          workout_id: values.workout_id,
         })
         .select("id")
         .single();
@@ -44,7 +41,7 @@ export const useCreateWorkout = ({
   }
 
   const mutation = useMutation({
-    mutationKey: ["create-workout"],
+    mutationKey: ["workout-history"],
     mutationFn: createWorkout,
     ...options,
   });

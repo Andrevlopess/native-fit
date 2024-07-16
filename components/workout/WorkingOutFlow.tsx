@@ -3,7 +3,7 @@ import { IExercise } from '@/types/exercise'
 import React, { useState } from 'react'
 import ExerciseDoingCard from '../exercise/ExerciseDoingCard'
 import Button from '../ui/Button'
-import Animated, { LinearTransition, useAnimatedRef, scrollTo, withSpring, useSharedValue, withTiming } from 'react-native-reanimated'
+import Animated, { LinearTransition, useAnimatedRef, scrollTo, withSpring, useSharedValue, withTiming, FadeIn, FadeInUp, FadeInDown } from 'react-native-reanimated'
 import Timer from '../ui/Timer'
 import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/constants/Dimensions'
 import { ScrollView, Text, useAnimatedValue, View } from 'react-native'
@@ -17,14 +17,15 @@ import { router } from 'expo-router'
 const IMAGE_SIZE = SCREEN_WIDTH * 0.9
 
 
-interface IWorkingOutListProps {
-    exercises: IExercise[]
+interface IWorkingOutFlowProps {
+    exercises: IExercise[];
+    onWorkoutCompleted: () => void;
 }
 
-export default function WorkingOutList({ exercises }: IWorkingOutListProps) {
+export default function WorkingOutFlow({ exercises, onWorkoutCompleted }: IWorkingOutFlowProps) {
 
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [isResting, setIsResting] = useState(true)
+    const [activeIndex, setActiveIndex] = useState(exercises.length - 1);
+    const [isResting, setIsResting] = useState(false)
 
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
     const progress = useSharedValue(0);
@@ -33,23 +34,26 @@ export default function WorkingOutList({ exercises }: IWorkingOutListProps) {
 
     const handleNext = () => {
 
-        if (isLastExercise) {
+        if (isLastExercise && !isResting) {
+            onWorkoutCompleted();
             router.back();
             return;
         }
 
         if (!isResting) {
             setActiveIndex((prev) => (prev + 1) % exercises.length);
+
+            progress.value = withSpring(100 / (exercises.length - 1) * (activeIndex + 1), {
+                stiffness: 500,
+                damping: 60
+            })
         }
 
         setIsResting(isResting ? false : true);
         // setIsResting(isResting ? false : true);
         // scrollRef.current?.scrollTo({ y: activeIndex * 200 })
 
-        progress.value = withSpring(100 / (exercises.length - 1) * (activeIndex + 1), {
-            stiffness: 500,
-            damping: 60
-        })
+
     };
 
     const handlePrev = () => {
@@ -88,35 +92,40 @@ export default function WorkingOutList({ exercises }: IWorkingOutListProps) {
                             onTimerEnd={handleNext}
                         />
                         :
-
                         <ScrollView
                             style={[s.flex1]}
                             contentContainerStyle={[s.py12, s.gap12, { paddingBottom: 96 }]}
                         >
-                            <Button text='reset' onPress={() => {
+                            {/* <Button text='reset' onPress={() => {
                                 setIsResting(false)
                                 setActiveIndex(0),
                                     progress.value = 0
-                            }} variant='secondary' size='small' />
+                            }} variant='secondary' size='small' /> */}
 
                             <View style={[s.gap24, s.py24]}>
 
                                 <Animated.Image
                                     source={{ uri: doing.gifurl }}
-                                    style={[s.radius8, s.mxAuto, s.bgGray100, { height: IMAGE_SIZE, width: IMAGE_SIZE }]} />
+                                    style={[s.radius8, s.mxAuto, s.bgGray50, { height: IMAGE_SIZE, width: IMAGE_SIZE }]} />
 
-                                <Text style={[s.bold, s.text2XL, s.textCenter, s.px12]}>{doing.name}</Text>
+                                <Animated.Text
+                                    entering={FadeInDown}
+                                    style={[s.bold, s.text2XL, s.textCenter, s.px12]}>{doing.name}</Animated.Text>
 
-                                <Text style={[s.bold, s.text4XL, s.textCenter, s.px12]}>4 x 12</Text>
+                                <Animated.Text
+                                    entering={FadeInDown.delay(100)}
+                                    style={[s.bold, s.text4XL, s.textCenter, s.px12]}>4 x 12</Animated.Text>
 
-                                <View style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4]}>
-                                    {/* <Text style={[s.regular, s.textGray400]}>Músculo alvo</Text> */}
+                                <Animated.View
+                                    entering={FadeInDown.delay(150)}
+                                    style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4]}>
+
                                     <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.target}</Text>
                                     <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
                                     <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.bodypart}</Text>
                                     <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
                                     <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.equipment}</Text>
-                                </View>
+                                </Animated.View>
 
                             </View>
 
@@ -141,8 +150,6 @@ export default function WorkingOutList({ exercises }: IWorkingOutListProps) {
 
 
                 <LinearGradient
-                    // Bacground Linear Gradient
-                    // end={{ x: 0, y:0 }}
                     locations={[0, 0.4]}
                     dither={false}
                     colors={['transparent', COLORS.white]}
@@ -154,37 +161,21 @@ export default function WorkingOutList({ exercises }: IWorkingOutListProps) {
                         <Button
                             text={'Voltar'}
                             onPress={handlePrev}
-                            variant='secondary' />
+                            variant='secondary'
+                        />
                     }
                     <Button
-                        text={isLastExercise ? 'Finalizar' : 'Próximo'}
+                        text={isLastExercise
+                            ? 'Finalizar'
+                            : isResting
+                                ? 'Estou pronto'
+                                : 'Próximo'
+                        }
                         style={[s.flex1]}
                         onPress={handleNext}
-                        // variant='secondary'
                     />
                 </LinearGradient>
 
-                {/* <View style={[s.gap12, s.mt24]}>
-                <Text style={[s.semibold, s.textGray800, s.textXL]}>Próximo exercício</Text>
-
-                <ExerciseDoingCard
-                    onConclude={handleNext}
-                    // active={exercise.id === doing.id}
-                    done={true}
-                    exercise={exercises[activeIndex + 1]} />
-            </View> */}
-                {/* {
-                exercises
-                    .filter(exercise => exercise.id !== doing.id)
-                    ?.map((exercise, index) =>
-                        <ExerciseDoingCard
-                            onConclude={handleNext}
-                            key={exercise.id}
-                            active={exercise.id === doing.id}
-                            done={activeIndex > index}
-                            exercise={exercise} />
-                    )
-            } */}
 
 
             </View >

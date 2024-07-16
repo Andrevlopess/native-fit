@@ -5,6 +5,9 @@ export const s = StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  flex2: {
+    flex: 2,
+  },
   shrink1: {
     flexShrink: 1,
   },

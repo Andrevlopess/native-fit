@@ -40,8 +40,8 @@ export default function ExerciseDetailsModal() {
                 presentation: 'modal',
                 // animation: 'fade_from_bottom',
                 headerTitleAlign: 'center',
-                headerBackVisible: false,
-                headerBackTitleVisible: false,
+                // headerBackVisible: false,
+                // headerBackTitleVisible: false,
                 headerLeft: ({ canGoBack }) => <BackButton />,
                 headerTitle: ({ children }) => <Text style={[s.bold, s.textLG]}>{children}</Text>,
             }} />

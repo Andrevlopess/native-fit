@@ -15,6 +15,7 @@ export const useFetchExerciseDetails = (id: string) => {
       if (error) throw error;
 
       return data as IExercise;
+      
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
       throw new Error(
