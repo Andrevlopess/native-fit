@@ -24,7 +24,7 @@ const SPACER = (SCREEN_WIDTH - ITEM_FULL_WIDTH) / 2;
 interface WorkoutExercisesCarouselProps { exercises: IDetailedExercise[], workout: IWorkout }
 
 export const WorkoutExercisesCarousel =
-    ({ exercises, workout: { id, name, description } }: WorkoutExercisesCarouselProps) => {
+    ({ exercises, workout: { id, name } }: WorkoutExercisesCarouselProps) => {
 
 
         // const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -71,12 +71,14 @@ export const WorkoutExercisesCarousel =
                             </Button>
                         </Link>
 
-                        <Button
-                            text='Iniciar treino'
-                            asLink={{ pathname: `/working-out/${id}`, params: { name } }}
-                            size='small'
-                            rounded
-                        />
+                        {!!exercises.length &&
+                            <Button
+                                text='Iniciar treino'
+                                asLink={{ pathname: `/working-out/${id}`, params: { name } }}
+                                size='small'
+                                rounded
+                            />
+                        }
 
 
                     </View>

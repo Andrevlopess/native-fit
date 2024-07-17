@@ -19,8 +19,9 @@ import { CircleX, Inbox, Plus, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeIn } from 'react-native-reanimated'
-import { useFetchWorkoutsHistory } from '@/hooks/useFetchWorkoutHistory'
 import LoadingView from '@/components/views/LoadingView'
+import Divisor from '@/components/ui/Divisor'
+import WorkoutWeekHistory from '@/components/workout/WorkoutWeekHistory'
 
 const EmptyComponent = () =>
     <MessageView
@@ -36,21 +37,18 @@ export default function MyWorkoutsScreen() {
 
 
     const { offset, scrollHandler } = useScrollValue('y');
-    const [filter, setFilter] = useState('Cardio')
+    const [filter, setFilter] = useState('Cardio');
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
 
     const { data: workouts, isPending, isError, error } = useFetchWorkouts(debouncedSearch, filter);
-    const { data: history, isPending: isHistoryPending } = useFetchWorkoutsHistory();
-    // console.log('resultsssssss', data);
-
-
+    // const { data: history, isPending: isHistoryPending } = useFetchWorkoutsHistory();
 
     const NotFoundComponent = () =>
         <MessageView
             icon={SearchX}
             message='Sem resultados'
-            description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
+            description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`} 
         />
     const ErrorComponent = () =>
         <MessageView
@@ -88,18 +86,19 @@ export default function MyWorkoutsScreen() {
                 entering={FadeIn}
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
-                contentContainerStyle={[s.gap12]}>
+                contentContainerStyle={[]}>
 
                 <View style={[s.p12, s.gap8]}>
                     <AnimatedLargeTitle title='Meus treinos' offset={offset} />
-                    <SearchInput
+
+
+                    {/* <SearchInput
                         onChangeText={setSearch}
                         placeholder='Encontrar treino'
                         value={search}
-                    // onFocus={() => scrollRef.current?.scrollTo({ y: 60 })}
-                    // onBlur={() => scrollRef.current?.scrollTo({ y: 0 })}
-                    />
-                    <BadgesControl badges={badges} onSelect={console.log} selectedBadge='none' />
+                   
+                    /> */}
+                    {/* <BadgesControl badges={badges} onSelect={console.log} selectedBadge='none' /> */}
                     {/* <Button
                         variant='secondary'
                         size={'small'}
@@ -107,6 +106,13 @@ export default function MyWorkoutsScreen() {
                         asLink='/new-workout' /> */}
 
                 </View>
+
+                <View>
+                    {/* <Text>Falta pouco para completar a semana!</Text> */}
+                    <WorkoutWeekHistory />
+                </View>
+
+
 
                 <RequestResultsView
                     isError={isError}
@@ -117,29 +123,35 @@ export default function MyWorkoutsScreen() {
                     NotFoundComponent={<NotFoundComponent />}
                     ErrorComponent={<ErrorComponent />}
                 >
-                    <View style={[s.px12, s.gap8]}>
-                        {workouts?.map((workout, i) => (
-                            <WorkoutListCard workout={workout} key={`${i},${workout.id}`} />
-                        ))}
+                    <View style={[]}>
+                        <View style={[s.px12, s.py24, s.gap12]}>
+                            {workouts?.map((workout, i) => (
+                                <WorkoutListCard workout={workout} key={`${i},${workout.id}`} />
+                            ))}
+
+                        </View>
+                        <Divisor />
+
+                        {/* <View style={[s.p12]}>
+                            <Text style={[s.semibold, s.textLG, s.textGray800]}>Ultimos treinos que eu fiz</Text>
+
+                            {history?.map(history =>
+                                <View style={[s.gap12, s.py12]}>
+                                    <Text style={[s.medium, s.textGray600]}>
+
+                                        {new Date(history.done_at)
+                                            .toLocaleDateString('pt-br', { dateStyle: 'medium' })}
+
+
+                                    </Text>
+                                    <WorkoutListCard workout={history.workouts} />
+                                </View>
+                            )}
+
+                        </View> */}
                     </View>
 
-                    <View>
 
-                        <Text>Ultimos treinos que eu fiz</Text>
-                        
-                        {isHistoryPending
-                            ? <LoadingView />
-                            : <View>
-                                {history?.map(history =>
-                                    <View>
-                                        <Text>{new Date(history.done_at).toLocaleDateString('pt-br',
-                                            { dateStyle: 'medium' })}</Text>
-                                        <WorkoutListCard workout={history.workouts} />
-                                    </View>
-                                )}
-                            </View>
-                        }
-                    </View>
                 </RequestResultsView>
             </Animated.ScrollView>
         </>

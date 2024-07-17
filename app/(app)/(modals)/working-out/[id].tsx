@@ -3,9 +3,11 @@ import MessageView from '@/components/views/MessageView';
 import PageNotFound from '@/components/views/PageNotFound';
 import RequestResultsView from '@/components/views/RequestResultView';
 import WorkingOutFlow from '@/components/workout/WorkingOutFlow';
+import { DEFAULT_USER_UUID } from '@/constants/user';
 import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
 import { useWorkoutHistory } from '@/hooks/useWorkoutHistory';
 import { s } from '@/styles/global';
+import { useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Alert, Text, View } from 'react-native';
@@ -18,11 +20,15 @@ export default function DoingWorkoutScreen() {
     const { id, name } = useLocalSearchParams<SearchParams>();
     if (!id) return <PageNotFound />
 
-    const { top } = useSafeAreaInsets()
-
+    const { top } = useSafeAreaInsets();
+    const queryClient = useQueryClient();
 
     const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
-    const { mutate, isPending: isSaving } = useWorkoutHistory();
+    const { mutate, isPending: isSaving } = useWorkoutHistory({
+        onSuccess: () => {            
+            queryClient.invalidateQueries({queryKey: ["workouts-history", DEFAULT_USER_UUID]})
+        }
+    });
 
 
     const handleGiveUp = () => {
@@ -53,11 +59,8 @@ export default function DoingWorkoutScreen() {
     return (
         <>
             <Stack.Screen options={{
-                // autoHideHomeIndicator: true,
                 title: name || workout?.name || '',
-                // headerLargeTitle: true,
                 headerTitleAlign: 'center',
-                // headerStyle: s.bgIndigo600,
                 headerBackVisible: false,
                 header: () => (
                     <View style={[
@@ -89,7 +92,6 @@ export default function DoingWorkoutScreen() {
 
             }} />
 
-            {/* <View style={[s.flex1, s.border1]}> */}
 
             <RequestResultsView
                 isError={isError}
@@ -107,11 +109,6 @@ export default function DoingWorkoutScreen() {
                     onWorkoutCompleted={handleCompletedWorkout}
                 />
             </RequestResultsView>
-
-
-            {/* <WorkingOutList exercises={workout?.exercises} /> */}
-
-            {/* </View> */}
         </>
     )
 }

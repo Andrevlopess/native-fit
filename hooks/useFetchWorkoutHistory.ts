@@ -1,27 +1,38 @@
 import { supabase } from "@/lib/supabase";
-import { IWorkout } from "@/types/workout";
-import { QueryData } from "@supabase/supabase-js";
-import { useQuery } from "@tanstack/react-query";
+import { IWorkoutHistory } from "@/types/workout";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { DEFAULT_USER_UUID } from "../constants/user";
 
-const UUID = "84f13dde-923f-4aa7-a706-4d2810f12c3c";
-
-interface IWorkoutHistory {
-  id: string;
-  done_at: string;
-  workouts: IWorkout;
+interface InfiniteQueryParams {
+  queryKey: unknown[];
+  pageParam: unknown;
 }
 
+const PAGE_SIZE = 5; // Define a constant for the page size
+
 export const useFetchWorkoutsHistory = (workoutId: string = "") => {
-  async function fetchWorkoutDetails(userId: string, workoutId: string) {
+  async function fetchWorkoutDetails({
+    pageParam,
+    queryKey,
+  }: InfiniteQueryParams) {
     try {
-      const { data: workouts, error } = await supabase
+      const page = pageParam as number; // Ensure pageParam is treated as a number
+      const start = (page - 1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE - 1;
+
+      let query = supabase
         .from("workouts_history")
         .select("id, done_at, workouts (*)")
-        .eq("user_id", userId)
-        .eq("workout_id", workoutId)
+        .eq("user_id", queryKey[1])
         .order("done_at", { ascending: false })
-        .returns<IWorkoutHistory[]>();
+        .range(start, end);
+
+      if (workoutId) {
+        query = query.eq("workout_id", workoutId);
+      }
+
+      const { data: workouts, error } = await query.returns<IWorkoutHistory[]>();
 
       if (error) throw error;
 
@@ -34,11 +45,16 @@ export const useFetchWorkoutsHistory = (workoutId: string = "") => {
     }
   }
 
-  const query = useQuery({
-    queryKey: ["workouts-history", UUID, workoutId],
-    queryFn: ({ queryKey }) => fetchWorkoutDetails(queryKey[1], workoutId[2]),
-    // retry: false,
-    // enabled: false
+  const { data: results, ...rest } = useInfiniteQuery({
+    queryKey: ["workouts-history", DEFAULT_USER_UUID, workoutId],
+    queryFn: fetchWorkoutDetails,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.length > 0 ? allPages.length + 1 : undefined,
+    retry: false,
   });
-  return query;
+
+  const history = results?.pages.map((page) => page).flat();
+
+  return { history, ...rest };
 };

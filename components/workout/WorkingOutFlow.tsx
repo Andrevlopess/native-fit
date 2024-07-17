@@ -113,11 +113,11 @@ export default function WorkingOutFlow({ exercises, onWorkoutCompleted }: IWorki
                                     style={[s.bold, s.text2XL, s.textCenter, s.px12]}>{doing.name}</Animated.Text>
 
                                 <Animated.Text
-                                    entering={FadeInDown.delay(100)}
+                                    entering={FadeInDown.delay(50)}
                                     style={[s.bold, s.text4XL, s.textCenter, s.px12]}>4 x 12</Animated.Text>
 
                                 <Animated.View
-                                    entering={FadeInDown.delay(150)}
+                                    entering={FadeInDown.delay(80)}
                                     style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4]}>
 
                                     <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.target}</Text>

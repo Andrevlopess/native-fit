@@ -105,7 +105,7 @@ export default function ExerciseDetailedCard({
                 </View>
             </Animated.View >
 
-            {workoutExerciseId &&
+            {/* {workoutExerciseId &&
                 <Modal ref={modalRef} snapPoints={['50%']} >
                     <View style={[s.p12, s.borderBottom1, s.borderGray100, s.flexRow, s.gap12]}>
                         <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
@@ -124,7 +124,6 @@ export default function ExerciseDetailedCard({
                             <Text style={[s.regular, s.textGray400]}>{exercise.equipment}</Text>
                         </View>
                     </View>
-                    {/* <ExerciseListCard exercise={exercise} showsAddButton={false}/> */}
                     <TouchableOpacity style={[s.flexRow, s.p12, s.itemsCenter, s.gap12, s.mt12]}>
                         {isPending
                             ? <ActivityIndicator color={COLORS.gray900} />
@@ -157,7 +156,7 @@ export default function ExerciseDetailedCard({
                         <Text style={[s.medium, s.textBase, s.textGray800]}>Remover deste treino</Text>
                     </TouchableOpacity>
                 </Modal>
-            }
+            } */}
 
 
         </>

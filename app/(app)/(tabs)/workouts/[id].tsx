@@ -3,6 +3,8 @@ import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import MessageView from '@/components/views/MessageView';
 import RequestResultsView from '@/components/views/RequestResultView';
 import { WorkoutExercisesCarousel } from '@/components/workout/WorkoutExercisesCarousel';
+import { WorkoutListCard } from '@/components/workout/WorkoutListCard';
+import WorkoutWeekHistory from '@/components/workout/WorkoutWeekHistory';
 import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
@@ -24,15 +26,13 @@ export default function WorkoutScreen() {
             message='Este treino não existe'
             description='Não sabemos como conseguiu chegar até aqui!' />
     }
-
+    const { offset, scrollHandler } = useScrollValue('y')
     const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
 
     const ErrorComponent = () =>
         <MessageView
             message="Ocorreu um erro!"
             description={error?.message || 'Estamos tentando resolver este problema!'} />
-
-    const { offset, scrollHandler } = useScrollValue('y')
 
     return (
         <>
@@ -42,9 +42,7 @@ export default function WorkoutScreen() {
                 headerTitleAlign: 'left',
                 headerBackTitleVisible: false,
                 headerTitle: ({ children }) =>
-
                     <AnimatedHeaderTitle offset={offset} title={children} />,
-
                 headerRight: () =>
                     <Link href={`/edit/${id}`} style={[s.bold, s.textIndigo600, s.textBase, s.p12]}>
                         Editar
@@ -81,8 +79,6 @@ export default function WorkoutScreen() {
                     }
                 </View>
 
-
-
                 <RequestResultsView
                     isError={isError}
                     isPending={isPending}
@@ -97,6 +93,22 @@ export default function WorkoutScreen() {
                         workout={workout || {} as IWorkout}
                         exercises={workout?.exercises || []}
                     />
+
+
+                    {/* <View style={[s.p12]}>
+                        <Text style={[s.semibold, s.textLG, s.textGray800]}>Ultimas vezes que eu fiz isto</Text>
+
+                        {history?.map(history =>
+                            <View style={[s.gap12, s.py12]} key={history.id}>
+                                <Text style={[s.medium, s.textGray600]}>
+                                    {new Date(history.done_at).toLocaleDateString('pt-br', { dateStyle: 'medium' })}
+                                </Text>
+                                <WorkoutListCard workout={history.workouts} />
+                            </View>
+                        )}
+
+                    </View> */}
+
                 </RequestResultsView>
             </Animated.ScrollView>
         </>

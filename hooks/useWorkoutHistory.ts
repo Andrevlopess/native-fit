@@ -1,8 +1,7 @@
+import { DEFAULT_USER_UUID } from "@/constants/user";
 import { supabase } from "@/lib/supabase";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import axios from "axios";
-
-const UUID = "84f13dde-923f-4aa7-a706-4d2810f12c3c";
 
 interface WorkoutHistoryParams {
   workout_id: string;
@@ -18,12 +17,13 @@ export const useWorkoutHistory = ({
   Error,
   WorkoutHistoryParams
 > = {}) => {
+  
   async function createWorkout(values: WorkoutHistoryParams) {
     try {
       const { data, error } = await supabase
         .from("workouts_history")
         .insert({
-          user_id: UUID,
+          user_id: DEFAULT_USER_UUID,
           workout_id: values.workout_id,
         })
         .select("id")

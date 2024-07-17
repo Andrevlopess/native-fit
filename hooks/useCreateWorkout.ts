@@ -1,8 +1,7 @@
+import { DEFAULT_USER_UUID } from "@/constants/user";
 import { supabase } from "@/lib/supabase";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import axios from "axios";
-
-const UUID = "84f13dde-923f-4aa7-a706-4d2810f12c3c";
 
 export type CreateWorkoutResponse = {
   id: string;
@@ -25,7 +24,7 @@ export const useCreateWorkout = ({
       const { data, error } = await supabase
         .from("workouts")
         .insert({
-          owner_id: UUID,
+          owner_id: DEFAULT_USER_UUID,
           name: values.name,
           description: values.description,
         })

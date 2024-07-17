@@ -4,8 +4,7 @@ import { IWorkout } from "@/types/workout";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
-
-const UUID = "84f13dde-923f-4aa7-a706-4d2810f12c3c";
+import { DEFAULT_USER_UUID } from "@/constants/user";
 
 interface useFetchWorkoutsParams {
   search?: string;
@@ -18,7 +17,7 @@ export const useFetchWorkouts = (search?: string, filter?: string) => {
       const { data: workouts, error } = await supabase
         .from("workouts")
         .select()
-        .eq("owner_id", UUID)
+        .eq("owner_id", DEFAULT_USER_UUID)
         .ilike("name", `%${search}%` || "");
       // .textSearch("name", `${search}`);
       // .or(`name.ilike.${search}`)
