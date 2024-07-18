@@ -15,48 +15,22 @@ import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
 export default function HistoricalIndex() {
 
 
-  // const { history, fetchNextPage, isFetchingNextPage, isError } = useFetchWorkoutsHistory()
-
-
-  // const renderItem = ({ item }: { item: IWorkoutHistory }) =>
-  //   <View style={[s.gap12, s.py72]}>
-  //     <Text style={[s.medium, s.textGray600]}>
-
-  //       {new Date(item.done_at)
-  //         .toLocaleDateString('pt-br', { dateStyle: 'medium' })}
-  //     </Text>
-  //     <WorkoutListCard workout={item.workouts} />
-  //   </View>
-
-  // const { offset, scrollHandler } = useScrollValue()
-
-
   return (
     <>
       <Stack.Screen options={{
-        title: 'Histórico',
+        title: 'Histórico de treinos',
         // headerLargeTitle: true,
         headerTitleAlign: 'left',
         headerBackTitleVisible: false,
-        // headerTitle: ({ children }) =>
-        //   <AnimatedHeaderTitle offset={offset} title={children} />,
-      }} 
+        headerTitle: ({ children }) =>
+          <Text style={[s.bold, s.textLG]}>{children}</Text>
+      }}
       />
 
-      <View style={[s.flex1, s.bgWhite, s.border1]}>
-
-
+      <View style={[s.flex1, s.bgWhite]}>
 
         <HistoryCalendar />
 
-        {/* <Animated.FlatList
-          contentContainerStyle={[s.p12]}
-          ListHeaderComponent={<AnimatedLargeTitle offset={offset} title='Histórico' />}
-          onScroll={scrollHandler}
-          data={history}
-          renderItem={renderItem}
-          onEndReached={fetchNextPage}
-        /> */}
       </View>
     </>
   )

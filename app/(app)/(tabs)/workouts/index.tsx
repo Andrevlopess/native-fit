@@ -15,7 +15,7 @@ import { s } from '@/styles/global'
 import { IWorkout } from '@/types/workout'
 import { device } from '@/utils/device'
 import { Link, Stack } from 'expo-router'
-import { CircleX, Inbox, Plus, SearchX } from 'lucide-react-native'
+import { CircleX, History, Inbox, Plus, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeIn } from 'react-native-reanimated'
@@ -48,7 +48,7 @@ export default function MyWorkoutsScreen() {
         <MessageView
             icon={SearchX}
             message='Sem resultados'
-            description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`} 
+            description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
         />
     const ErrorComponent = () =>
         <MessageView
@@ -64,13 +64,20 @@ export default function MyWorkoutsScreen() {
                     title: 'Meus treinos',
                     headerLeft: () => <LogoImage />,
                     headerRight: () =>
-                        <Link
-                            asChild
-                            href={'/workouts/new-workout'}>
-                            <TouchableOpacity>
-                                <Plus color={COLORS.indigo} />
-                            </TouchableOpacity>
-                        </Link>,
+                        <View style={[s.flexRow, s.itemsCenter, s.justifyCenter]}>
+
+                            <Link
+                                asChild
+                                href={'/workouts/new-workout'}>
+                                <TouchableOpacity>
+                                    <Plus color={COLORS.indigo} />
+                                </TouchableOpacity>
+                            </Link>
+                            <Button asLink={'/workouts/history'} variant='ghost'>
+                                <History color={COLORS.indigo} />
+                            </Button>
+                        </View>
+                    ,
                     headerTitle:
                         device.android
                             ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />

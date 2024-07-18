@@ -1,0 +1,42 @@
+{
+  "2024-07-11": {
+    "color": "#4F46E5",
+    "disabled": false,
+    "selected": true,
+    "startingDay": true,
+    "textColor": "#ffffff"
+  },
+  "2024-07-12": {
+    "color": "#4F46E5",
+    "disabled": false,
+    "selected": true,
+    "textColor": "#ffffff"
+  },
+  "2024-07-13": {
+    "color": "#4F46E5",
+    "disabled": false,
+    "endingDay": true,
+    "selected": true,
+    "textColor": "#ffffff"
+  },
+  "2024-07-17": {
+    "color": "#4F46E5",
+    "disabled": false,
+    "selected": true,
+    "startingDay": true,
+    "textColor": "#ffffff"
+  },
+  "2024-07-18": {
+    "color": "#4F46E5",
+    "disabled": false,
+    "selected": true,
+    "textColor": "#ffffff"
+  },
+  "2024-07-19": {
+    "color": "#4F46E5",
+    "disabled": false,
+    "endingDay": true,
+    "selected": true,
+    "textColor": "#ffffff"
+  }
+}
