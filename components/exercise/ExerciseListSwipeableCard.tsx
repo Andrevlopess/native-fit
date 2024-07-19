@@ -11,11 +11,12 @@ import { Swipeable } from 'react-native-gesture-handler'
 import ExerciseListCard from './ExerciseListCard'
 const ICON_SIZE = 40
 
-type Action = 'add' | 'remove';
-
 interface ExerciseListCardProps {
     exercise: IExercise;
-    action?: Action[]
+    onSwipeToRemove?: (id: string) => void;
+    onSwipeToAdd?: (id: string) => void;
+    disableSwipeToRemove?: boolean
+    disableSwipeToAdd?: boolean
 }
 
 const renderAddAction = (
@@ -90,18 +91,25 @@ const renderRemoveAction = (
     );
 };
 
-export default function SwipeableExerciseListCard({ exercise, action }: ExerciseListCardProps) {
+export default function SwipeableExerciseListCard({
+    exercise,
+    onSwipeToAdd,
+    onSwipeToRemove,
+    disableSwipeToAdd,
+    disableSwipeToRemove
+}: ExerciseListCardProps) {
 
     const ref = useRef<Swipeable>(null);
 
     const handleSwipe = (direction: "left" | "right") => {
-        ref.current?.close()
+
         switch (direction) {
             case 'left':
-                //todo
+                onSwipeToRemove && onSwipeToRemove(exercise.id)
                 break;
             case 'right':
-
+                ref.current?.close();
+                // or onSwipeToRemove()
                 router.navigate(`/(app)/(modals)/add-to-workout/${exercise.id}`)
                 break;
             default:
@@ -118,10 +126,10 @@ export default function SwipeableExerciseListCard({ exercise, action }: Exercise
             rightThreshold={40}
             leftThreshold={40}
             containerStyle={[s.bgWhite]}
-            renderLeftActions={action?.includes('remove') ? renderRemoveAction : undefined}
-            renderRightActions={action?.includes('add') ? renderAddAction : undefined}
+            renderLeftActions={disableSwipeToRemove ? undefined : renderRemoveAction}
+            renderRightActions={disableSwipeToAdd ? undefined : renderAddAction}
             onSwipeableOpen={handleSwipe}
-            enabled={!!action}
+            enabled={!disableSwipeToAdd && !disableSwipeToRemove}
         >
             <ExerciseListCard exercise={exercise} showsAddButton={false} />
         </Swipeable>

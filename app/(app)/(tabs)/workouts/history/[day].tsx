@@ -1,4 +1,5 @@
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
+import SkeletonList from '@/components/ui/SkeletonList';
 import LoadingView from '@/components/views/LoadingView';
 import { WorkoutListCard } from '@/components/workout/WorkoutListCard';
 import { supabase } from '@/lib/supabase';
@@ -50,27 +51,29 @@ export default function DayWorkoutsHistory() {
     return (
         <>
             <Stack.Screen options={{
-                title: '',
-                // headerLargeTitle: true,
-                headerTitleAlign: 'left',
+                title: formatedDay,
+                headerTitleAlign: 'center',
                 headerBackTitleVisible: false,
-                // headerTitle: ({ children }) =>
-                //   <AnimatedHeaderTitle offset={offset} title={children} />,
+                headerTitle: ({ children }) =>
+                    <Text style={[s.bold, s.textLG, s.bgWhite]}>{children}</Text>
             }}
             />
-            {isPending
-                ? <LoadingView />
-                : <View style={[s.flex1, s.bgWhite, s.p12]}>
-                    <FlatList contentContainerStyle={[s.gap12]}
-                        ListHeaderComponent={
-                            <Text style={[s.bold, s.text3XL, s.bgWhite]}>{formatedDay}</Text>
-                        }
-                        data={workouts}
-                        renderItem={renderItem}
-                        keyExtractor={({ id }, index) => `${id}-${index}`}
-                    />           
-                </View>
-            }
+            <View style={[s.flex1, s.bgWhite, s.p12]}>
+                <FlatList
+                    contentContainerStyle={[s.gap12]}
+                    ListHeaderComponent={
+                        workouts &&
+                        <Text style={[s.semibold, s.textXL, s.bgWhite, { marginBottom: 12 }]}>
+                            Você fez {workouts?.length} {workouts?.length > 1 ? 'treinos' : 'treino'} esse dia
+                        </Text>
+                    }
+                    ListEmptyComponent={<SkeletonList length={1} />}
+                    data={workouts}
+                    renderItem={renderItem}
+                    keyExtractor={({ id }, index) => `${id}-${index}`}
+                />
+            </View>
+
         </>
     )
 }

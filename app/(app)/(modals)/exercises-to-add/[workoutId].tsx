@@ -64,7 +64,7 @@ export default function ExericesToAddModal() {
                     }
                 }
             );
-            
+
             queryClient.invalidateQueries({ queryKey: ["workout", workoutId] });
         },
         onError: console.log
@@ -162,6 +162,25 @@ export default function ExericesToAddModal() {
                         onEndReached={() => fetchNextPage()}
                         ListFooterComponent={renderFooter}
                     />
+
+                    {/* {exercises?.map((exercise, i) => {
+                        return (
+                            <Animated.View
+                                key={exercise.id}
+                                entering={FadeIn.duration(100).delay(i * 50)}
+                                layout={LinearTransition.springify().stiffness(500).damping(60)}
+                            >
+
+                                <ExerciseListAddCard
+                                    disabled={isPending}
+                                    onPress={() => handleAddExerciseToThisWorkout(exercise.id)}
+                                    exercise={exercise}
+                                />
+                            </Animated.View>
+
+
+                        )
+                    })} */}
 
                 </RequestResultsView>
             </View>

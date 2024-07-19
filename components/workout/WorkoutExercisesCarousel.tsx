@@ -62,26 +62,7 @@ export const WorkoutExercisesCarousel =
             <>
                 <Animated.View entering={FadeIn} style={[s.flex1, s.mt24, s.gap12]}>
 
-                    <View style={[s.itemsCenter, s.flexRow, s.p12, s.gap4]}>
-                        <Text style={[s.bold, s.textXL, s.mrAuto]}>Exercícios</Text>
-
-                        <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`}>
-                            <Button variant='tertiary' size='small' rounded>
-                                <Plus color={COLORS.gray900} />
-                            </Button>
-                        </Link>
-
-                        {!!exercises.length &&
-                            <Button
-                                text='Iniciar treino'
-                                asLink={{ pathname: `/working-out/${id}`, params: { name } }}
-                                size='small'
-                                rounded
-                            />
-                        }
-
-
-                    </View>
+                   
 
                     {
                         exercises.length
@@ -114,15 +95,14 @@ export const WorkoutExercisesCarousel =
                                 icon={Inbox}
                                 message="Começe adicionando exercícios"
                                 description="Busque exercícios para adicionar a este treino"
-                                actionButton={
-                                    <Button
-                                        variant="secondary"
-                                        size="small"
-                                        text="Adicionar exercício"
-                                        asLink={`/(app)/(modals)/exercises-to-add/${id}`}
-                                    />
-                                }
-                            />
+                            >
+                                <Button
+                                    variant="secondary"
+                                    size="small"
+                                    text="Adicionar exercício"
+                                    asLink={`/(app)/(modals)/exercises-to-add/${id}`}
+                                />
+                            </MessageView>
 
                     }
 

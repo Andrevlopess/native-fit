@@ -8,11 +8,11 @@ interface MessageViewProps {
     icon?: ElementType;
     message: string;
     description: string;
-    actionButton?: React.ReactNode
+    children?: React.ReactNode
 }
 
 
-export default function MessageView({ icon: Icon, message, description, actionButton }: MessageViewProps) {
+export default function MessageView({ icon: Icon, message, description, children }: MessageViewProps) {
     return (
         <View style={[
             s.flex1,
@@ -29,7 +29,7 @@ export default function MessageView({ icon: Icon, message, description, actionBu
             <Text style={[s.bold, s.textXL, s.mt12, s.textCenter]}>{message}</Text>
             <Text style={[s.medium, s.textBase, s.textGray500, s.textCenter, {marginBottom: 24}]}>{description}</Text>
 
-            {actionButton}
+            {children}
         </View>
     )
 }

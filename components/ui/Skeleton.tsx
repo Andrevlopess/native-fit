@@ -36,7 +36,7 @@ export default function Skeleton({ height = 100, width, circle }: Props) {
         animatedStyle,
         { height: height, width: width && width },
         circle && { width: height },
-        circle ? s.radiusFull : [s.radius20]
+        circle ? s.radiusFull : [s.radius12]
       ]}
     />
   );

@@ -73,6 +73,5 @@ export interface IExercise {
 }
 
 export interface IDetailedExercise extends IExercise {
-  workoutExerciseId?: string;
   notes?: string;
 }

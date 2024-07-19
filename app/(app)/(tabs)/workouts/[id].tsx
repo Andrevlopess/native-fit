@@ -1,14 +1,9 @@
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle';
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import MessageView from '@/components/views/MessageView';
-import RequestResultsView from '@/components/views/RequestResultView';
-import { WorkoutExercisesCarousel } from '@/components/workout/WorkoutExercisesCarousel';
-import { WorkoutListCard } from '@/components/workout/WorkoutListCard';
-import WorkoutWeekHistory from '@/components/workout/WorkoutWeekHistory';
-import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
+import WorkoutExercisesList from '@/components/workout/WorkoutExercisesList';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
-import { IWorkout } from '@/types/workout';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
@@ -27,17 +22,12 @@ export default function WorkoutScreen() {
             description='Não sabemos como conseguiu chegar até aqui!' />
     }
     const { offset, scrollHandler } = useScrollValue('y')
-    const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
 
-    const ErrorComponent = () =>
-        <MessageView
-            message="Ocorreu um erro!"
-            description={error?.message || 'Estamos tentando resolver este problema!'} />
 
     return (
         <>
             <Stack.Screen options={{
-                title: name || workout?.name || '',
+                title: name || '',
                 // headerLargeTitle: true,
                 headerTitleAlign: 'left',
                 headerBackTitleVisible: false,
@@ -55,62 +45,48 @@ export default function WorkoutScreen() {
                 contentInsetAdjustmentBehavior='automatic'
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
-                stickyHeaderIndices={[1]}
+                // stickyHeaderIndices={[1]}
             >
 
+
                 <View style={[s.px12]}>
-                    <AnimatedLargeTitle title={name || workout?.name || ''} offset={offset} />
+                    <AnimatedLargeTitle title={name || ''} offset={offset} />
+
                     <Text style={[s.medium, s.textBase, s.textGray600]}>{description?.trim()}</Text>
-                    {
-                        workout &&
-                        <View style={[s.flexRow, s.gap4, s.itemsCenter, s.mt12]}>
-                            <Text style={[s.semibold, s.textLG, s.textGray600]}>
-                                {workout?.exercises?.length === 0
-                                    ? 'Nenhum exercício'
-                                    : workout?.exercises?.length === 1
-                                        ? `${workout?.exercises?.length} exercício`
-                                        : `${workout?.exercises?.length} exercícios`}
-                            </Text>
-                            <View style={[s.radiusFull, s.bgGray600, { height: 4, width: 4 }]} />
-                            <Text style={[s.semibold, s.textLG, s.textGray600]}>
-                                {workout?.ownername}
-                            </Text>
-                        </View>
-                    }
                 </View>
 
-                <RequestResultsView
-                    isError={isError}
-                    isPending={isPending}
-                    hasData={!!workout}
-                    hasSearch={false}
-                    // EmptyComponent={<EmptyComponent />}
-                    // NotFoundComponent={<NotFoundComponent />}
-                    ErrorComponent={<ErrorComponent />}
-                >
 
-                    <WorkoutExercisesCarousel
-                        workout={workout || {} as IWorkout}
-                        exercises={workout?.exercises || []}
-                    />
+                <WorkoutExercisesList workoutId={id} />
 
-
-                    {/* <View style={[s.p12]}>
-                        <Text style={[s.semibold, s.textLG, s.textGray800]}>Ultimas vezes que eu fiz isto</Text>
-
-                        {history?.map(history =>
-                            <View style={[s.gap12, s.py12]} key={history.id}>
-                                <Text style={[s.medium, s.textGray600]}>
-                                    {new Date(history.done_at).toLocaleDateString('pt-br', { dateStyle: 'medium' })}
-                                </Text>
-                                <WorkoutListCard workout={history.workouts} />
-                            </View>
-                        )}
-
-                    </View> */}
-
-                </RequestResultsView>
             </Animated.ScrollView>
         </>
     )
 }
+{/* <View style={[s.flexRow, s.p12]}>
+    {workout?.exercises?.map((exercise, i) =>
+        <View style={[s.shadow6, s.radius8, {
+            marginLeft: -20, zIndex: 10 - i,
+            transform: [
+                {
+                    rotateY: '-20deg'
+
+                },
+                {
+                    rotateY: '3deg'
+
+                },
+                {
+                    rotateZ: '-10deg'
+                    // translateY: i * 5
+                }
+            ]
+        }]}>
+            <Image
+                source={exercise.gifurl}
+                style={[{
+                    height: 100, width: 100,
+                }
+                ]} />
+        </View>
+    )}
+</View> */}

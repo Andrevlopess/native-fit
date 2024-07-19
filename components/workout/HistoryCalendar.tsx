@@ -1,7 +1,7 @@
 import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
 import React, { useCallback } from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { CalendarList, DateData } from 'react-native-calendars';
 
 import { supabase } from '@/lib/supabase';
@@ -14,7 +14,7 @@ import { useModal } from '@/hooks/useModal';
 import { router } from 'expo-router';
 import MessageView from '../views/MessageView';
 import Divisor from '../ui/Divisor';
-import { useFetchWorkedOutDays } from '@/hooks/useFetchWorkedOutDarys';
+import { useFetchWorkedOutDays } from '@/hooks/useFetchWorkedOutDays';
 
 LocaleConfig.locales['pt-br'] = {
     monthNames: [
@@ -69,12 +69,9 @@ LocaleConfig.locales['pt-br'] = {
 LocaleConfig.defaultLocale = 'pt-br';
 
 
-
-
 let today = new Date().toISOString().split('T')[0]
 
 export const HistoryCalendar = () => {
-
 
     const { data: dates, isPending } = useFetchWorkedOutDays()
 
@@ -87,7 +84,13 @@ export const HistoryCalendar = () => {
             || new Date(arr[index + 1].done_at).getTime() !== new Date(item.done_at).getTime() + 86400000;
 
         acc[item.done_at] =
-            { selected: true, disabled: false, color: COLORS.indigo, textColor: COLORS.white };
+        {
+            selected: true,
+            disabled: false,
+            color: COLORS.indigo,
+            textColor: COLORS.white,
+            customContainerStyle: s.radius12
+        };
 
         if (isStartingDay) {
             acc[item.done_at].startingDay = true;
@@ -114,6 +117,8 @@ export const HistoryCalendar = () => {
         return (
             <View style={[s.flexRow, s.justifyBetween, s.itemsCenter, s.py8, s.flex1]}>
                 <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{month}</Text>
+                {isPending && <ActivityIndicator color={COLORS.indigo} />}
+
                 <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{year}</Text>
             </View>
         );
@@ -156,20 +161,18 @@ export const HistoryCalendar = () => {
                         renderHeader={renderCustomHeader}
                         theme={{
                             textDayFontFamily: 'DMSans-Medium',
+                            textMonthFontFamily: 'DMSans-Medium',
                             todayTextColor: COLORS.indigo,
                             textDayStyle: s.medium,
                             textDisabledColor: COLORS.iosTextGray,
                             selectedDayBackgroundColor: COLORS.indigo,
-                            selectedDayTextColor: COLORS.white
+                            selectedDayTextColor: COLORS.white,
                         }}
                     />
 
 
             }
 
-
         </>
-
-
     );
 };
