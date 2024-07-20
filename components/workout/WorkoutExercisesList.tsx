@@ -50,13 +50,7 @@ const removeExerciseFromWorkout = async ({ exerciseId, workoutId }: RemoveExerci
     }
 }
 
-const EmptyComponent = () =>
-    <MessageView
-        icon={Inbox}
-        message='Você ainda não criou nenhum treino!'
-        description='Começe criando um treino para se exercitar'>
-        <Button text='Criar treino' size='small' variant='secondary' asLink={'/new-workout'} />
-    </MessageView>
+
 
 interface WorkoutExercisesListProps {
     workoutId: string
@@ -73,18 +67,20 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
         mutationFn: removeExerciseFromWorkout,
         onSuccess: (res) => {
 
+console.log('just completed now');
 
-            const filteredArray = exercises?.filter(exercise => exercise.id !== res?.exercise_id);
-            console.log(filteredArray);
+            // const filteredArray = exercises?.filter(exercise => exercise.id !== res?.exercise_id);
+
+            // console.log(filteredArray);
 
 
-            queryClient.setQueryData(
-                ["workout-exercises", workoutId],
-                (prev: any) => {
-                    if (!prev) return [];
-                    return filteredArray
-                }
-            );
+            // queryClient.setQueryData(
+            //     ["workout-exercises", workoutId],
+            //     (prev: any) => {
+            //         if (!prev) return [];
+            //         return filteredArray
+            //     }
+            // );
 
             queryClient.invalidateQueries({
                 queryKey: ["workout-exercises", workoutId]
@@ -95,7 +91,20 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
     })
 
     const handleRemoveExerciseFromWorkout = (id: string) => {
+        console.log('swipeeeeed');
         mutate({ exerciseId: id, workoutId: workoutId })
+        const filteredArray = exercises?.filter(exercise => exercise.id !== id);
+
+        console.log(filteredArray);
+
+
+        queryClient.setQueryData(
+            ["workout-exercises", workoutId],
+            (prev: any) => {
+                if (!prev) return [];
+                return filteredArray
+            }
+        );
     }
 
     const renderItem = ({ item }: { item: IExercise }) =>
@@ -104,6 +113,17 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
             onSwipeToRemove={handleRemoveExerciseFromWorkout}
         />
 
+    const EmptyComponent = () =>
+        <MessageView
+            icon={Inbox}
+            message='Nenhum exercício'
+            description='Adicione exercícios ao seu treino!'>
+            <Button
+                text='Adicionar exercício'
+                size='small'
+                variant='secondary'
+                asLink={`/exercises-to-add/${workoutId}`} />
+        </MessageView>
 
 
     return (
@@ -112,14 +132,24 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
             <View style={[s.itemsCenter, s.flexRow, s.gap12, s.mt36, s.p12]}>
                 <Text style={[s.bold, s.textXL]}>Exercícios</Text>
 
-                <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
+                {
+                    !!exercises?.length &&
+                    <>
+                        <View style={[
+                            s.bgGray800,
+                            s.radiusFull,
+                            { height: 8, width: 8 }]} />
 
-                <Text style={[s.bold, s.textXL, s.mrAuto]}>
-                    {exercises?.length}
-                </Text>
+                        <Text style={[s.bold, s.textXL]}>
+                            {exercises?.length}
+                        </Text>
+                    </>
+
+                }
 
 
-                <Link asChild href={`/(app)/(modals)/exercises-to-add/${workoutId}`}>
+
+                <Link asChild href={`/(app)/(modals)/exercises-to-add/${workoutId}`} style={[s.mlAuto]}>
                     <Button variant='tertiary' size='small' rounded>
                         <Plus color={COLORS.gray900} />
                     </Button>
@@ -137,17 +167,17 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
             </View>
 
 
-            <View style={[s.mt12,s.flex1]} >
+            <View style={[s.mt12, s.flex1]} >
                 {isPending
-                    ? <SkeletonList length={5} skeletonHeight={80} />
+                    ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />
                     : !exercises?.length
                         ? <EmptyComponent />
                         : exercises.map((exercise, i) =>
                             <Animated.View
                                 key={exercise.id}
-                                entering={FadeIn.duration(100).delay(i * 50)}
+                                // entering={FadeIn.duration(100).delay(i * 50)}
                                 layout={LinearTransition.springify().stiffness(500).damping(60)}
-                                >
+                            >
                                 <SwipeableExerciseListCard
                                     exercise={exercise}
                                     onSwipeToRemove={handleRemoveExerciseFromWorkout}

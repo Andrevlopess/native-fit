@@ -6,4 +6,5 @@ export default function index() {
   return <Redirect href={'/(app)/(tabs)/home'}/>
   // return <Redirect href={'/workouts/history'}/>
   // return <Redirect href={'/(app)/(modals)/working-out/39254871-cdaf-4a2c-8836-fe9a3dad4107'}/>
+  // return <Redirect href={'/workouts/39254871-cdaf-4a2c-8836-fe9a3dad4107'}/>
 }

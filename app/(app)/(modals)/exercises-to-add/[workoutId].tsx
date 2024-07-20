@@ -50,22 +50,9 @@ export default function ExericesToAddModal() {
     const { addExercise, isPending } = useAddExerciseToWorkout({
         onSuccess: (data) => {
 
-            const insertedExercises = data.map(inserted => inserted.exercise_id);
-            if (!exercises) return;
-            const filteredArray = exercises.filter(exercise => !insertedExercises.includes(exercise.id));
 
-            queryClient.setQueryData(
-                ["search-exercises", debouncedSearch, ''],
-                (prev: any) => {
-                    if (!prev) return [];
-                    return {
-                        pageParams: prev.pageParams,
-                        pages: [filteredArray]
-                    }
-                }
-            );
 
-            queryClient.invalidateQueries({ queryKey: ["workout", workoutId] });
+            queryClient.invalidateQueries({ queryKey: ["workout-exercises", workoutId] });
         },
         onError: console.log
     })
@@ -76,17 +63,29 @@ export default function ExericesToAddModal() {
     function handleAddExerciseToThisWorkout(exerciseId: string) {
         if (!workoutId) return;
 
+        const filteredArray = exercises?.filter(exercise => exercise.id !== exerciseId);
+
+        queryClient.setQueryData(
+            ["search-exercises", debouncedSearch, ''],
+            (prev: any) => {
+                if (!prev) return [];
+                return {
+                    pageParams: prev.pageParams,
+                    pages: [filteredArray]
+                }
+            }
+        );
 
         addExercise({
             exercises: [exerciseId],
             workouts: [workoutId]
-        })
+        });
     }
 
     // render components
     const renderItem = ({ item }: { item: IExercise }) =>
         <ExerciseListAddCard
-            disabled={isPending}
+            // disabled={isPending}
             onPress={() => handleAddExerciseToThisWorkout(item.id)}
             exercise={item}
         />

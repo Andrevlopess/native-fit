@@ -6,6 +6,7 @@ const COLORS = {
   textBlack: "#111111",
   background: "#F5F5F7",
   green: "#22c55e",
+  green400: "#4ade80",
   yellow: "#FACC15",
   sky: "#38BDF8",
   red: "#ef4444",

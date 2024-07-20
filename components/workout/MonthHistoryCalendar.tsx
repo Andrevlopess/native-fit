@@ -33,7 +33,7 @@ async function fetchMonthHistory() {
 export default function MonthHistoryCalendar() {
 
     const { data: dates, isPending } = useQuery({
-        queryKey: ['workout-month-history'],
+        queryKey: ['workout-history', { type: 'month' }],
         queryFn: fetchMonthHistory
     })
 
@@ -97,7 +97,6 @@ export default function MonthHistoryCalendar() {
             current={today}
             markedDates={marked}
             renderHeader={renderCustomHeader}
-            customHeaderTitle={<Text>testeeee</Text>}
             hideExtraDays
             disabledByDefault
             disableMonthChange

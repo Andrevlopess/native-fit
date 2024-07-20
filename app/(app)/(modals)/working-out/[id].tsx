@@ -26,7 +26,7 @@ export default function DoingWorkoutScreen() {
     const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
     const { mutate, isPending: isSaving } = useWorkoutHistory({
         onSuccess: () => {            
-            queryClient.invalidateQueries({queryKey: ["workouts-history", DEFAULT_USER_UUID]})
+            queryClient.invalidateQueries({queryKey: ["workouts-history"]})
         }
     });
 
