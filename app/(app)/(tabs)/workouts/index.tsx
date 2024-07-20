@@ -25,7 +25,7 @@ export default function MyWorkoutsScreen() {
         <>
             <Stack.Screen
                 options={{
-                    title: 'Atividade',
+                    title: 'Treinos',
                     headerLeft: () => <LogoImage />,
                     headerRight: () =>
                         <View style={[s.flexRow, s.itemsCenter, s.justifyCenter]}>
@@ -57,9 +57,9 @@ export default function MyWorkoutsScreen() {
                 entering={FadeIn}
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
-                contentContainerStyle={[s.gap12]}>
+                contentContainerStyle={[s.gap12, s.py12]}>
 
-                <AnimatedLargeTitle title='Atividade' offset={offset} style={[s.p12]} />
+                <AnimatedLargeTitle title='Treinos' offset={offset} style={[s.px12]} />
 
                 <MonthHistoryCalendar />
                 <Divisor />

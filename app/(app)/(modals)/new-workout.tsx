@@ -16,7 +16,7 @@ export default function NewWorkoutScreen() {
             <Stack.Screen options={{
                 title: 'Novo Treino',
                 presentation: 'modal',
-                // animation: 'fade_from_bottom',
+                animation: 'fade_from_bottom',
                 headerTitleAlign: 'center',
                 headerBackVisible: false,
                 headerLeft: ({ canGoBack }) => <CancelButton />,

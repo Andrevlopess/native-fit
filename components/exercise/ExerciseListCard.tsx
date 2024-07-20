@@ -16,10 +16,15 @@ interface ExerciseListCardProps {
 
 export default function ExerciseListCard({ exercise, width, showsAddButton = true, readOnly = false }: ExerciseListCardProps) {
 
+    const rest = (({id, ...rest}) => rest)(exercise)
+
     return (
         <Link
             disabled={readOnly}
-            href={`/(app)/(modals)/exercise-details/${exercise.id}`}
+            href={{
+                pathname: `/exercise-details/${exercise.id}`,
+                params: rest 
+            }}
             // href={`/(app)/exercises/${exercise.id}`}
             asChild
             push

@@ -32,10 +32,22 @@ export default function NewWorkoutForm() {
 
     const { mutate, isPending, } = useCreateWorkout({
         onError: console.error,
-        onSuccess: workoutId => {
+        onSuccess: ({ id, description, name }) => {
+
+
+
             router.replace(`/workouts`),
-            router.push(`/workouts/${workoutId}`)
-        }
+
+
+
+                router.push({
+                    pathname: `/workouts/${id}`,
+                    params: {
+                        name: name,
+                        description: description,
+                    }
+                })
+        },
     })
 
     const handleSubmitForm = (data: NewWorkoutValues) => {

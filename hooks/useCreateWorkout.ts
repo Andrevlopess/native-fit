@@ -1,10 +1,13 @@
 import { DEFAULT_USER_UUID } from "@/constants/user";
 import { supabase } from "@/lib/supabase";
+import { IWorkout } from "@/types/workout";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import axios from "axios";
 
 export type CreateWorkoutResponse = {
-  id: string;
+  id: string,
+  name: string,
+  description: string,
 };
 
 interface CreateWorkoutParams {
@@ -21,19 +24,20 @@ export const useCreateWorkout = ({
 > = {}) => {
   async function createWorkout(values: CreateWorkoutParams) {
     try {
-      const { data, error } = await supabase
+      const { data: workout, error } = await supabase
         .from("workouts")
         .insert({
           owner_id: DEFAULT_USER_UUID,
           name: values.name,
           description: values.description,
         })
-        .select("id")
-        .single();
-
+        .select("id, name, description")
+        .returns<CreateWorkoutResponse>()
+        .single()
+        
       if (error) throw error;
-
-      return data.id;
+      
+      return workout;
     } catch (error) {
       if (!axios.isAxiosError(error)) throw error;
       throw new Error(

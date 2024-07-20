@@ -658,6 +658,9 @@ export const s = StyleSheet.create({
     padding: 100,
   },
 
+  pb12: {
+    paddingBottom: 12,
+  },
   py0: {
     paddingVertical: 0,
   },
@@ -3460,7 +3463,7 @@ export const s = StyleSheet.create({
   // light: {
   //   fontFamily: "Inter_300Light",
   // },
-    // extrabold: {
+  // extrabold: {
   //   fontFamily: "Inter_800ExtraBold",
   // },
 

@@ -33,6 +33,7 @@ export const useAddExerciseToWorkout = ({
         .upsert(insertArray)
         .select("exercise_id, workout_id");
 
+      if (error?.code === '23505') throw new Error('Esse exercício já foi adicionado!');
       if (error) throw error;
 
       return data as AddExerciseToWorkoutResponse;

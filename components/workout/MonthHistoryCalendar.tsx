@@ -77,11 +77,11 @@ export default function MonthHistoryCalendar() {
         const [month] = header.split(' ');
 
         return (
-            <View style={[s.flexRow, s.justifyBetween, s.itemsCenter, s.py8, s.flex1]}>
+            <View style={[s.flexRow, s.justifyBetween, s.itemsStart, s.py8, s.flex1]}>
                 <Text style={[s.textXL, s.semibold, s.textIndigo600]}>Atividades de {month}</Text>
                 {isPending && <ActivityIndicator color={COLORS.indigo} />}
                 {/* <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{year}</Text> */}
-                <Button text='Ver mais' size='small' variant='tertiary' asLink={'/workouts/history'} />
+                <Button text='Ver mais' size='small' variant='tertiary' asLink={'/workouts/history'} rounded/>
 
             </View>
         );

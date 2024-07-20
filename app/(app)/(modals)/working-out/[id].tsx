@@ -4,7 +4,7 @@ import PageNotFound from '@/components/views/PageNotFound';
 import RequestResultsView from '@/components/views/RequestResultView';
 import WorkingOutFlow from '@/components/workout/WorkingOutFlow';
 import { DEFAULT_USER_UUID } from '@/constants/user';
-import { useFetchWorkoutDetails } from '@/hooks/useFetchWorkoutDetails';
+import { useFetchWorkoutExercises } from '@/hooks/useFetchWorkoutExercises';
 import { useWorkoutHistory } from '@/hooks/useWorkoutHistory';
 import { s } from '@/styles/global';
 import { useQueryClient } from '@tanstack/react-query';
@@ -23,7 +23,9 @@ export default function DoingWorkoutScreen() {
     const { top } = useSafeAreaInsets();
     const queryClient = useQueryClient();
 
-    const { data: workout, isPending, isError, error } = useFetchWorkoutDetails(id);
+    const {data: exercises, isPending, isError} = useFetchWorkoutExercises(id)
+
+
     const { mutate, isPending: isSaving } = useWorkoutHistory({
         onSuccess: () => {            
             queryClient.invalidateQueries({queryKey: ["workouts-history"]})
@@ -59,7 +61,7 @@ export default function DoingWorkoutScreen() {
     return (
         <>
             <Stack.Screen options={{
-                title: name || workout?.name || '',
+                title: name|| '',
                 headerTitleAlign: 'center',
                 headerBackVisible: false,
                 header: () => (
@@ -71,7 +73,7 @@ export default function DoingWorkoutScreen() {
                         { paddingTop: top, paddingLeft: 12 }]}>
 
                         <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
-                            {name || workout?.name || ''}
+                            {name|| ''}
                         </Text>
 
                         <Button
@@ -97,7 +99,7 @@ export default function DoingWorkoutScreen() {
                 isError={isError}
                 hasSearch={false}
                 isPending={isPending}
-                hasData={!!workout?.exercises}
+                hasData={!!exercises}
                 ErrorComponent={<MessageView
                     message='Não conseguimos carregar o seu treino!'
                     description='Verifique sua conexão e tente novamente!'
@@ -105,7 +107,7 @@ export default function DoingWorkoutScreen() {
 
             >
                 <WorkingOutFlow
-                    exercises={workout?.exercises || []}
+                    exercises={exercises || []}
                     onWorkoutCompleted={handleCompletedWorkout}
                 />
             </RequestResultsView>

@@ -31,7 +31,7 @@ const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
 export default function ExericesToAddModal() {
     const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
     const insets = useSafeAreaInsets();
-    const [search, setSearch] = useState('costas');
+    const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
     const queryClient = useQueryClient();
 
@@ -49,15 +49,10 @@ export default function ExericesToAddModal() {
 
     const { addExercise, isPending } = useAddExerciseToWorkout({
         onSuccess: (data) => {
-
-
-
-            queryClient.invalidateQueries({ queryKey: ["workout-exercises", workoutId] });
+            queryClient.invalidateQueries({ queryKey: ["workout-exercises"] });
         },
         onError: console.log
     })
-
-
 
 
     function handleAddExerciseToThisWorkout(exerciseId: string) {
@@ -126,6 +121,7 @@ export default function ExericesToAddModal() {
                     onChangeText={setSearch}
                     placeholder='Encontrar exercício'
                     value={search}
+                    autoFocus
                     containerStyles={[s.m12]}
                 />
 
@@ -155,7 +151,7 @@ export default function ExericesToAddModal() {
                         contentInsetAdjustmentBehavior='automatic'
                         data={exercises}
                         renderItem={renderItem}
-                        keyExtractor={item => item.id}
+                        // keyExtractor={item => item.id}
                         // showsVerticalScrollIndicator={false}
                         // onEndReachedThreshold={2}
                         onEndReached={() => fetchNextPage()}

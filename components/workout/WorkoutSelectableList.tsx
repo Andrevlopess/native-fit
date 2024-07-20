@@ -9,6 +9,11 @@ import { SelectableWorkoutListCard } from './WorkoutSelectableCard';
 import Button from '../ui/Button';
 import { router } from 'expo-router';
 import { useAddExerciseToWorkout } from '@/hooks/useAddExerciseToWorkout';
+import { useQueryClient } from '@tanstack/react-query';
+import { AlertCircle } from 'lucide-react-native';
+import COLORS from '@/constants/Colors';
+import Animated, { FadeIn } from 'react-native-reanimated';
+import { FadeInTransition } from '@/constants/Transitions';
 
 
 
@@ -29,6 +34,9 @@ interface WorkoutSelectableListProps {
 
 export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutSelectableListProps) {
 
+
+    const queryClient = useQueryClient()
+
     const { control, handleSubmit } = useForm<AddToWorkoutsValues>({
         resolver: zodResolver(AddToWorkoutSchema),
         mode: 'onSubmit',
@@ -38,10 +46,14 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
         }
     });
 
-    const { addExercise, isPending } = useAddExerciseToWorkout({
-        onSuccess:(data) => {
+    const { addExercise, isPending, error } = useAddExerciseToWorkout({
+        onSuccess: (data) => {
+            console.log(data);
+
+            queryClient.invalidateQueries({ queryKey: ["workout-exercises"] });
             router.back();
-        }
+        },
+        onError: console.log
     })
 
     function handleSubmitSelectedWorkouts({ addTo, exerciseId }: AddToWorkoutsValues) {
@@ -90,6 +102,14 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
 
                     )
                 })}
+                {error &&
+
+                    <Animated.View 
+                    entering={FadeInTransition}
+                    style={[s.px12, s.py8, s.radius12, s.bgRed100, s.flexRow,s .gap12, s.mt12]}>
+                        <AlertCircle color={COLORS.red} />
+                        <Text style={[s.textRed500, s.medium, s.textBase]}>{error.message}</Text>
+                    </Animated.View>}
             </View>
 
             <Button

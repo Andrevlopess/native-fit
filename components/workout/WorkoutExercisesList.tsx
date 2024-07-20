@@ -15,19 +15,23 @@ import axios from 'axios'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 import ExerciseListCard from '../exercise/ExerciseListCard'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+
+const AddExerciseCard = ({ id }: { id: string }) =>
+    <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8]}>
+        <TouchableOpacity activeOpacity={0.8}>
+            <View style={[s.radius12, s.bgGray200, s.itemsCenter, s.justifyCenter,
+            { height: 70, width: 70 }]}>
+                <Plus color={COLORS.white} />
+            </View>
+            <Text style={[s.textBase, s.medium]}>Adicionar exercício</Text>
+        </TouchableOpacity>
+    </Link>
 
 interface RemoveExerciseParams {
     exerciseId: string,
     workoutId: string
 }
-
-interface RemoveExerciseResponse {
-    id: string;
-}
-
-// export const useWorkoutHistory = ({
-//     ...options
-// }: = {}) => {
 
 const removeExerciseFromWorkout = async ({ exerciseId, workoutId }: RemoveExerciseParams) => {
     try {
@@ -67,7 +71,7 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
         mutationFn: removeExerciseFromWorkout,
         onSuccess: (res) => {
 
-console.log('just completed now');
+            console.log('just completed now');
 
             // const filteredArray = exercises?.filter(exercise => exercise.id !== res?.exercise_id);
 
@@ -172,27 +176,24 @@ console.log('just completed now');
                     ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />
                     : !exercises?.length
                         ? <EmptyComponent />
-                        : exercises.map((exercise, i) =>
-                            <Animated.View
-                                key={exercise.id}
-                                // entering={FadeIn.duration(100).delay(i * 50)}
-                                layout={LinearTransition.springify().stiffness(500).damping(60)}
-                            >
-                                <SwipeableExerciseListCard
-                                    exercise={exercise}
-                                    onSwipeToRemove={handleRemoveExerciseFromWorkout}
-                                />
-                                {/* <ExerciseListCard exercise={exercise}/> */}
-                            </Animated.View>
-                        )
-                    // : <Animated.FlatList
-                    //     entering={FadeIn}
-                    //     itemLayoutAnimation={LinearTransition.springify().stiffness(500).damping(60)}
-                    //     contentInsetAdjustmentBehavior='automatic'
-                    //     data={exercises}
-                    //     renderItem={renderItem}
-                    //     keyExtractor={item => item.id}
-                    // />
+                        : <>
+                            {exercises.map((exercise, i) =>
+                                <Animated.View
+                                    key={exercise.id}
+                                    entering={FadeIn.springify().stiffness(500).damping(60)}
+                                    layout={LinearTransition.springify().stiffness(500).damping(60)}
+                                >
+                                    <SwipeableExerciseListCard
+                                        exercise={exercise}
+                                        onSwipeToRemove={handleRemoveExerciseFromWorkout}
+                                    />
+                                    {/* <ExerciseListCard exercise={exercise}/> */}
+                                </Animated.View>
+                            )}
+                            <AddExerciseCard id={workoutId} />
+                        </>
+
+
                 }
             </View>
 

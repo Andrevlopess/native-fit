@@ -45,6 +45,7 @@ export default function WorkoutScreen() {
                 contentInsetAdjustmentBehavior='automatic'
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
+                contentContainerStyle={[s.pb12]}
                 // stickyHeaderIndices={[1]}
             >
 

@@ -141,7 +141,7 @@ export default function SwipeableExerciseListCard({
 
     const handleSwipe = (direction: "left" | "right") => {
 
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
 
         switch (direction) {
             case 'left':

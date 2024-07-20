@@ -23,7 +23,7 @@ export const WorkoutListCard = ({ workout: { id, name, description }, index = 0 
             style={[s.flex1, s.flexRow, s.gap12]}
         // onLayout={({nativeEvent}) => console.log(nativeEvent.layout)}
         >
-            <AnimatedPressable entering={FadeIn.delay(index * 50)}>
+            <AnimatedPressable>
 
                 <View style={[s.bgGray200, s.radius14, { height: 60, width: 60 }]} />
                 <View style={[s.gap4]} >

@@ -1,3 +1,4 @@
+import Divisor from '@/components/ui/Divisor';
 import { s } from '@/styles/global';
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -28,14 +29,10 @@ export default function ExerciseDetailsModal() {
             target: string;
         }>();
 
-
-        console.log(params.name);
-        
-
     return (
         <>
-        
-        <Stack.Screen options={{
+
+            <Stack.Screen options={{
                 title: '',
                 presentation: 'modal',
                 // animation: 'fade_from_bottom',
@@ -46,30 +43,29 @@ export default function ExerciseDetailsModal() {
                 headerTitle: ({ children }) => <Text style={[s.bold, s.textLG]}>{children}</Text>,
             }} />
 
-        <Animated.ScrollView
-            entering={FadeIn}
-            // onScroll={scrollHandler}
-            style={[s.flex1, s.bgWhite]}
-            contentContainerStyle={[s.gap12, s.p12]}>
-            <View
-                style={[s.bgWhite,
-                // s.shadow3,
-                s.border1,
-                s.borderGray100,
-                s.mxAuto,
-                { height: IMAGE_SIZE, width: IMAGE_SIZE }]}>
+            <Animated.ScrollView
+                entering={FadeIn}
+                // onScroll={scrollHandler}
+                style={[s.flex1, s.bgWhite]}
+                contentContainerStyle={[s.gap12]}>
+                <View
+                    style={[
+                        s.mxAuto,
+                        { height: IMAGE_SIZE, width: IMAGE_SIZE }]}>
 
-                <Animated.Image
-                    source={{ uri: params.gifurl }}
-                    style={{ height: IMAGE_SIZE, width: IMAGE_SIZE }} />
-            </View>
+                    <Animated.Image
+                        source={{ uri: params.gifurl }}
+                        style={{ height: IMAGE_SIZE, width: IMAGE_SIZE }} />
+                </View>
+                <Divisor />
+                <View style={[s.px12]}>
+                    <Text style={[s.bold, s.textXL]}>{params.name}</Text>
+                    <Text style={[s.bold, s.text2XL]}>{params.bodypart}</Text>
+                    <Text style={[s.bold, s.text2XL]}>{params.equipment}</Text>
+                    <Text style={[s.bold, s.text2XL]}>{params.target}</Text>
+                </View>
 
-            <Text style={[s.bold, s.text2XL]}>{params.name}</Text>
-            <Text style={[s.bold, s.text2XL]}>{params.bodypart}</Text>
-            <Text style={[s.bold, s.text2XL]}>{params.equipment}</Text>
-            <Text style={[s.bold, s.text2XL]}>{params.target}</Text>
-
-        </Animated.ScrollView>
+            </Animated.ScrollView >
         </>
     )
 }
