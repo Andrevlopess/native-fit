@@ -5,7 +5,7 @@ import { s } from '@/styles/global'
 import { Link } from 'expo-router'
 import { Inbox, Plus } from 'lucide-react-native'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Alert, Text, View } from 'react-native'
 import SwipeableExerciseListCard from '../exercise/ExerciseListSwipeableCard'
 import Button from '../ui/Button'
 import SkeletonList from '../ui/SkeletonList'
@@ -18,9 +18,9 @@ import ExerciseListCard from '../exercise/ExerciseListCard'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const AddExerciseCard = ({ id }: { id: string }) =>
-    <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8]}>
+    <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8, s.bgWhite, s.radius8]}>
         <TouchableOpacity activeOpacity={0.8}>
-            <View style={[s.radius12, s.bgGray200, s.itemsCenter, s.justifyCenter,
+            <View style={[s.bgGray200, s.itemsCenter, s.justifyCenter,
             { height: 70, width: 70 }]}>
                 <Plus color={COLORS.white} />
             </View>
@@ -71,7 +71,6 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
         mutationFn: removeExerciseFromWorkout,
         onSuccess: (res) => {
 
-            console.log('just completed now');
 
             // const filteredArray = exercises?.filter(exercise => exercise.id !== res?.exercise_id);
 
@@ -94,12 +93,23 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
 
     })
 
+    const handleConfirmRemove = (id: string) => {
+        Alert.alert('Deseja remover esse exercício?', 'Você poderá adicioná-lo novamente', [{
+            isPreferred: true,
+            text: 'Cancelar',
+            // onPress: () =>(id),
+        },
+        {
+            text: 'Remover',
+            style: 'destructive',
+            onPress: () => handleRemoveExerciseFromWorkout(id),
+        },
+        ])
+    }
+
     const handleRemoveExerciseFromWorkout = (id: string) => {
-        console.log('swipeeeeed');
         mutate({ exerciseId: id, workoutId: workoutId })
         const filteredArray = exercises?.filter(exercise => exercise.id !== id);
-
-        console.log(filteredArray);
 
 
         queryClient.setQueryData(
@@ -111,11 +121,6 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
         );
     }
 
-    const renderItem = ({ item }: { item: IExercise }) =>
-        <SwipeableExerciseListCard
-            exercise={item}
-            onSwipeToRemove={handleRemoveExerciseFromWorkout}
-        />
 
     const EmptyComponent = () =>
         <MessageView
@@ -133,69 +138,45 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
     return (
         <>
 
-            <View style={[s.itemsCenter, s.flexRow, s.gap12, s.mt36, s.p12]}>
-                <Text style={[s.bold, s.textXL]}>Exercícios</Text>
+            {
+                !!exercises?.length &&
+                <>
+                    <Text>Exercícios</Text>
+                    <View style={[
+                        s.bgGray800,
+                        s.radiusFull,
+                        { height: 8, width: 8 }]} />
 
-                {
-                    !!exercises?.length &&
-                    <>
-                        <View style={[
-                            s.bgGray800,
-                            s.radiusFull,
-                            { height: 8, width: 8 }]} />
+                    <Text style={[s.bold, s.textXL]}>
+                        {exercises?.length}
+                    </Text>
+                </>
 
-                        <Text style={[s.bold, s.textXL]}>
-                            {exercises?.length}
-                        </Text>
-                    </>
+            }
 
-                }
-
-
-
-                <Link asChild href={`/(app)/(modals)/exercises-to-add/${workoutId}`} style={[s.mlAuto]}>
-                    <Button variant='tertiary' size='small' rounded>
-                        <Plus color={COLORS.gray900} />
-                    </Button>
-                </Link>
-
-                {!!exercises?.length &&
-                    <Button
-                        text='Iniciar treino'
-                        asLink={{ pathname: `/working-out/${workoutId}` }}
-                        size='small'
-                        rounded
-                    />
-                }
-
-            </View>
-
-
-            <View style={[s.mt12, s.flex1]} >
+            <View style={[s.flex1]} >
                 {isPending
                     ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />
                     : !exercises?.length
                         ? <EmptyComponent />
                         : <>
                             {exercises.map((exercise, i) =>
-                                <Animated.View
+                                // <Animated.View
+                                //     entering={FadeIn.springify().stiffness(500).damping(60)}
+                                //     layout={LinearTransition.springify().stiffness(500).damping(60)}
+                                // >
+                                <SwipeableExerciseListCard
                                     key={exercise.id}
-                                    entering={FadeIn.springify().stiffness(500).damping(60)}
-                                    layout={LinearTransition.springify().stiffness(500).damping(60)}
-                                >
-                                    <SwipeableExerciseListCard
-                                        exercise={exercise}
-                                        onSwipeToRemove={handleRemoveExerciseFromWorkout}
-                                    />
-                                    {/* <ExerciseListCard exercise={exercise}/> */}
-                                </Animated.View>
+                                    exercise={exercise}
+                                    onSwipeToRemove={handleRemoveExerciseFromWorkout}
+                                />
+                                // </Animated.View >
+
                             )}
                             <AddExerciseCard id={workoutId} />
                         </>
-
-
                 }
-            </View>
+            </View >
 
         </>
     )

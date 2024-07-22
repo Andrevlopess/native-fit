@@ -4,6 +4,7 @@ export interface IWorkout {
   id: string;
   name: string;
   description: string;
+  exercises_count: number;
   createdat: string;
   ownerid: string;
   ownername?: string;

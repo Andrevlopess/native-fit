@@ -29,7 +29,6 @@ export default function MyWorkoutsScreen() {
                     headerLeft: () => <LogoImage />,
                     headerRight: () =>
                         <View style={[s.flexRow, s.itemsCenter, s.justifyCenter]}>
-
                             <Link
                                 asChild
                                 href={'/workouts/new-workout'}>
@@ -62,6 +61,7 @@ export default function MyWorkoutsScreen() {
                 <AnimatedLargeTitle title='Treinos' offset={offset} style={[s.px12]} />
 
                 <MonthHistoryCalendar />
+
                 <Divisor />
 
                 <WorkoutsList />

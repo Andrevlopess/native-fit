@@ -1,12 +1,10 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { IExercise } from '@/types/exercise'
+import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
+import { IExercise } from '@/types/exercise'
+import React from 'react'
+import { Text, View } from 'react-native'
 import ExerciseListCard from '../exercise/ExerciseListCard'
 import Timer from '../ui/Timer'
-import ExerciseDetailedCard from '../exercise/ExerciseDetailedCard'
-import Animated from 'react-native-reanimated'
-import { SCREEN_WIDTH } from '@/constants/Dimensions'
 
 const IMAGE_SIZE = SCREEN_WIDTH * 0.3
 

@@ -19,6 +19,7 @@ const FeaturedExercisesSection = ({ exercises }: { exercises: IExercise[] }) => 
                     exercise={exercise}
                     width={CARD_WIDTH}
                     showsAddButton
+                    enableExpandImage={false}
                 />
             ))}
         </View>

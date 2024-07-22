@@ -1,4 +1,5 @@
 import COLORS from '@/constants/Colors'
+import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { Image } from 'expo-image'
@@ -6,43 +7,100 @@ import { Link } from 'expo-router'
 import { PlusCircle } from 'lucide-react-native'
 import React from 'react'
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+
+
+const DEFAULT_IMAGE_SIZE = 70;
+const EXPANDED_IMAGE_SIZE = SCREEN_WIDTH - 24;
 
 interface ExerciseListCardProps {
     width?: number;
     exercise: IExercise;
     showsAddButton?: boolean;
     readOnly?: boolean;
+    enableExpandImage?: boolean;
 }
 
-export default function ExerciseListCard({ exercise, width, showsAddButton = true, readOnly = false }: ExerciseListCardProps) {
+export default function ExerciseListCard({ exercise, width, showsAddButton = true, readOnly = false, enableExpandImage = true }: ExerciseListCardProps) {
 
-    const rest = (({id, ...rest}) => rest)(exercise)
+    const rest = (({ id, ...rest }) => rest)(exercise);
+
+
+    const AnimatedLink = Animated.createAnimatedComponent(Link)
+
+
+    const isExpanded = useSharedValue<boolean>(false);
+    const imageAnimation = useAnimatedStyle(() => {
+        return {
+            height: withSpring(
+                isExpanded.value ? EXPANDED_IMAGE_SIZE : DEFAULT_IMAGE_SIZE, {
+                stiffness: 500,
+                damping: 60
+            }),
+            width: withSpring(
+                isExpanded.value ? EXPANDED_IMAGE_SIZE : DEFAULT_IMAGE_SIZE, {
+                stiffness: 500,
+                damping: 60
+            }),
+            // width: isExpanded.value ? DEFAULT_IMAGE_SIZE : SCREEN_WIDTH
+        }
+    })
+    const cardAnimation = useAnimatedStyle(() => {
+        return {
+            flexDirection: isExpanded.value ? 'column' : 'row'
+            //  withSpring(
+            //     , {
+            //     stiffness: 500,
+            //     damping: 60
+            // }),
+
+        }
+    })
+
+
+
+    const handleToggleExpand = () => {
+        if (!enableExpandImage) return;
+        isExpanded.value = !isExpanded.value;
+    }
+
 
     return (
-        <Link
+        <AnimatedLink
             disabled={readOnly}
             href={{
                 pathname: `/exercise-details/${exercise.id}`,
-                params: rest 
+                params: rest
             }}
             // href={`/(app)/exercises/${exercise.id}`}
             asChild
             push
             style={[
-                s.flexRow,
+                s.flex1,
+                // s.border1,
+                cardAnimation,
                 s.gap16,
-                // s.itemsCenter,
                 s.bgWhite,
                 s.px12,
                 s.py8,
                 { width }]}>
             <Pressable>
-                <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
+                {enableExpandImage
 
-                    <Image source={exercise.gifurl} style={[s.radius8,
-                    { height: 70, width: 70, }
-                    ]} />
-                </View>
+                    ? <Pressable
+
+                        onPress={handleToggleExpand}
+                        style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
+
+                        <Animated.Image src={exercise.gifurl}
+                            style={[s.radius8, imageAnimation]} />
+                    </Pressable>
+                    : <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
+                        <Image source={exercise.gifurl}
+                            style={[s.radius8, { height: DEFAULT_IMAGE_SIZE, width: DEFAULT_IMAGE_SIZE }]} />
+                    </View>
+                }
+
 
 
                 <View style={[s.gap4, s.flex1]}>
@@ -73,7 +131,7 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                     </Link>
                 }
             </Pressable>
-        </Link>
+        </AnimatedLink>
 
     )
 }

@@ -23,6 +23,8 @@ export const useFetchWorkouts = (search?: string, filter?: string) => {
       // .or(`name.ilike.${search}`)
       // .ilike("description", `%${search}%` || "");
       // .eq('name', 'teste')
+      console.log(workouts);
+      
 
       if (error) throw error;
 

@@ -34,19 +34,15 @@ export default function NewWorkoutForm() {
         onError: console.error,
         onSuccess: ({ id, description, name }) => {
 
-
-
             router.replace(`/workouts`),
 
-
-
-                router.push({
-                    pathname: `/workouts/${id}`,
-                    params: {
-                        name: name,
-                        description: description,
-                    }
-                })
+            router.push({
+                pathname: `/workouts/${id}`,
+                params: {
+                    name: name,
+                    description: description,
+                }
+            })
         },
     })
 

@@ -72,9 +72,9 @@ const Input = ({
 
       <View
         style={[
-          s.radius12,
-          s.border1,
-          s.p12,
+          // s.radius12,
+          s.borderBottom1,
+          s.p4,
           error ? s.borderRed500 : s.borderGray200,
         ]}
       >

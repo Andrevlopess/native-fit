@@ -1,14 +1,10 @@
 [
   {
-    "exercise_id": "65683a57-b5bd-4ce5-bbfd-f7cecd1649db",
-    "workout_id": "48f2846e-7f8e-495d-afda-f2ff607c339a"
-  },
-  {
-    "exercise_id": "65683a57-b5bd-4ce5-bbfd-f7cecd1649db",
-    "workout_id": "6219467d-c337-4b28-b785-b6a1d3be61dc"
-  },
-  {
-    "exercise_id": "65683a57-b5bd-4ce5-bbfd-f7cecd1649db",
-    "workout_id": "39254871-cdaf-4a2c-8836-fe9a3dad4107"
+    "created_at": "2024-07-22T20:41:24.763921+00:00",
+    "description": "",
+    "exercises_count": 4,
+    "id": "c073070e-0d72-4f53-9b3e-a5434626d048",
+    "name": "treino potente",
+    "owner_id": "84f13dde-923f-4aa7-a706-4d2810f12c3c"
   }
 ]

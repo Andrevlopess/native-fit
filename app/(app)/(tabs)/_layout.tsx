@@ -1,19 +1,15 @@
 import COLORS from "@/constants/Colors";
-import { s } from "@/styles/global";
 import { device } from "@/utils/device";
 import * as Haptics from 'expo-haptics';
-import { Image } from "expo-image";
 import { Tabs } from "expo-router";
 import {
-    GraduationCap,
     Home,
-    LibraryBig,
     LibrarySquare,
     Search,
     UserRound
 } from "lucide-react-native";
 import React from "react";
-import { Platform, Text } from "react-native";
+import { Platform } from "react-native";
 import 'react-native-reanimated';
 
 export default function AppLayout() {

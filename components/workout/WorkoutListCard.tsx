@@ -12,9 +12,11 @@ interface WorkoutListCardProps {
     index?: number;
 }
 
-export const WorkoutListCard = ({ workout: { id, name, description }, index = 0 }: WorkoutListCardProps) => {
+export const WorkoutListCard = ({ workout: { id, name, description, exercises_count }, index = 0 }: WorkoutListCardProps) => {
 
-    const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+    const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+    console.log(exercises_count);
+
 
     return (
         <Link
@@ -32,7 +34,14 @@ export const WorkoutListCard = ({ workout: { id, name, description }, index = 0 
                         numberOfLines={2}>
                         {name}
                     </Text>
-                    <Text style={[s.regular, s.textGray400]}>{description}</Text>
+                    {description &&
+                        <>
+                            <Text style={[s.regular, s.textGray400]}>{description}</Text>
+                            <View style={[s.bgGray400, s.radiusFull, { height: 4, width: 4 }]} />
+                        </>
+                    }
+                    <Text style={[s.regular, s.textGray400]}>{
+                        exercises_count}</Text>
                 </View>
             </AnimatedPressable>
 

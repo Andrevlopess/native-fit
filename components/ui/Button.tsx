@@ -132,7 +132,7 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
         <TouchableOpacity
             {...props}
             ref={ref}
-            disabled={isLoading}
+            disabled={isLoading || props.disabled}
             activeOpacity={0.8}
             style={[
                 variantStyles[variant].container,

@@ -23,7 +23,6 @@ export default function WorkoutScreen() {
     }
     const { offset, scrollHandler } = useScrollValue('y')
 
-
     return (
         <>
             <Stack.Screen options={{
@@ -34,7 +33,10 @@ export default function WorkoutScreen() {
                 headerTitle: ({ children }) =>
                     <AnimatedHeaderTitle offset={offset} title={children} />,
                 headerRight: () =>
-                    <Link href={`/edit/${id}`} style={[s.bold, s.textIndigo600, s.textBase, s.p12]}>
+                    <Link href={{
+                        pathname: `/edit-workout/${id}`,
+                        params: { name, description }
+                    }} style={[s.bold, s.textIndigo600, s.textBase, s.p12, s.border1]}>
                         Editar
                     </Link>
             }} />
@@ -46,18 +48,53 @@ export default function WorkoutScreen() {
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
                 contentContainerStyle={[s.pb12]}
-                // stickyHeaderIndices={[1]}
+            // stickyHeaderIndices={[1]}
             >
 
 
                 <View style={[s.px12]}>
                     <AnimatedLargeTitle title={name || ''} offset={offset} />
-
                     <Text style={[s.medium, s.textBase, s.textGray600]}>{description?.trim()}</Text>
                 </View>
 
 
-                <WorkoutExercisesList workoutId={id} />
+                <View>
+                  {/*   <View style={[s.itemsCenter, s.flexRow, s.gap12, s.mt36, s.p12]}>
+                        <Text style={[s.bold, s.textXL]}>Exercícios</Text>
+
+                        {
+                            !!exercises?.length &&
+                            <>
+                                <View style={[
+                                    s.bgGray800,
+                                    s.radiusFull,
+                                    { height: 8, width: 8 }]} />
+
+                                <Text style={[s.bold, s.textXL]}>
+                                    {exercises?.length}
+                                </Text>
+                            </>
+
+                        }
+
+                        <Link asChild href={`/(app)/(modals)/exercises-to-add/${workoutId}`} style={[s.mlAuto]}>
+                            <Button variant='tertiary' size='small' rounded>
+                                <Plus color={COLORS.gray900} />
+                            </Button>
+                        </Link>
+
+                        {!!exercises?.length &&
+                            <Button
+                                text='Iniciar treino'
+                                asLink={{ pathname: `/working-out/${workoutId}` }}
+                                size='small'
+                                rounded
+                            />
+                        }
+                    </View> */}
+                    <WorkoutExercisesList workoutId={id} />
+                </View>
+
 
             </Animated.ScrollView>
         </>
