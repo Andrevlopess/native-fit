@@ -48,6 +48,7 @@ export const useSearchExercises = ({
       lastPage.length > 0 ? allPages.length + 1 : undefined,
     enabled: !!search || !!filter,
     retry: false,
+    // select: data => return
   });
 
   const exercises = results?.pages.map((page) => page).flat();

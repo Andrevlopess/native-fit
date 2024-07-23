@@ -1,4 +1,4 @@
-import { useFetchWorkouts } from '@/hooks/useFetchWorkouts';
+
 import { s } from '@/styles/global';
 import { Inbox, SearchX, CircleX, X, Plus } from 'lucide-react-native';
 import React from 'react';
@@ -12,6 +12,8 @@ import Button from '../ui/Button';
 import { Link } from 'expo-router';
 import COLORS from '@/constants/Colors';
 import SkeletonList from '../ui/SkeletonList';
+import { useQuery } from '@tanstack/react-query';
+import { WorkoutApi } from '@/api/workout-api';
 
 
 const NewWorkoutCard = () =>
@@ -43,7 +45,11 @@ const ErrorComponent = () =>
 
 
 export default function WorkoutsList() {
-    const { data: workouts, isPending, isError, error } = useFetchWorkouts('', '');
+
+    const { data: workouts, isPending, isError } = useQuery({
+        queryKey: ['workouts'],
+        queryFn: () => WorkoutApi.findAll({ search: '' })
+    })
 
 
     return (
@@ -52,20 +58,21 @@ export default function WorkoutsList() {
             <Text style={[s.textGray800, s.semibold, s.textXL]}>Meus treinos</Text>
             <View style={[s.py24, s.gap12]}>
 
-                {isError && <ErrorComponent />}
+
 
                 {isPending
                     ? <SkeletonList length={3} />
-                    : !workouts?.length
-                        ? <EmptyComponent />
-                        : <View style={[s.gap12]}>
-                            {workouts?.map((workout, i) => (
-                                <WorkoutListCard workout={workout} key={`${i},${workout.id}`} index={i}/>
-                            ))}
-                            <NewWorkoutCard />
-                        </View>
+                    : isError
+                        ? <ErrorComponent />
+                        : !workouts.length
+                            ? <EmptyComponent />
+                            : <View style={[s.gap12]}>
+                                {workouts.map((workout, i) => (
+                                    <WorkoutListCard workout={workout} key={`${i},${workout.id}`} index={i} />
+                                ))}
+                                <NewWorkoutCard />
+                            </View>
                 }
-
 
             </View>
         </View>

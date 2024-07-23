@@ -14,7 +14,7 @@ import { useModal } from '@/hooks/useModal';
 import { router } from 'expo-router';
 import MessageView from '../views/MessageView';
 import Divisor from '../ui/Divisor';
-import { useFetchWorkedOutDays } from '@/hooks/useFetchWorkedOutDays';
+import { WorkoutApi } from '@/api/workout-api';
 
 LocaleConfig.locales['pt-br'] = {
     monthNames: [
@@ -73,17 +73,22 @@ let today = new Date().toISOString().split('T')[0]
 
 export const HistoryCalendar = () => {
 
-    const { data: dates, isPending } = useFetchWorkedOutDays()
+    const { data: dates, isPending } = useQuery({
+        queryKey: ['history-dates'],
+        queryFn: WorkoutApi.fetchHistory
+    });
+
+    
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
         const isStartingDay =
-            index === 0 || new Date(arr[index - 1].done_at).getTime()
-            !== new Date(item.done_at).getTime() - 86400000;
+            index === 0 || new Date(arr[index - 1]).getTime()
+            !== new Date(item).getTime() - 86400000;
         const isEndingDay =
             index === arr.length - 1
-            || new Date(arr[index + 1].done_at).getTime() !== new Date(item.done_at).getTime() + 86400000;
+            || new Date(arr[index + 1]).getTime() !== new Date(item).getTime() + 86400000;
 
-        acc[item.done_at] =
+        acc[item] =
         {
             selected: true,
             disabled: false,
@@ -93,9 +98,9 @@ export const HistoryCalendar = () => {
         };
 
         if (isStartingDay) {
-            acc[item.done_at].startingDay = true;
+            acc[item].startingDay = true;
         } else if (isEndingDay) {
-            acc[item.done_at].endingDay = true;
+            acc[item].endingDay = true;
         }
 
         return acc;
@@ -130,8 +135,8 @@ export const HistoryCalendar = () => {
             return 0;
         }
 
-        const startDateStr = dates[0].done_at;
-        const endDateStr = dates[dates.length - 1].done_at;
+        const startDateStr = dates[0];
+        const endDateStr = dates[dates.length - 1];
 
         const startMonth = new Date(startDateStr).getMonth();
         const endMonth = new Date(endDateStr).getMonth();
@@ -151,17 +156,15 @@ export const HistoryCalendar = () => {
                         futureScrollRange={0}
                         onDayPress={onDayPress}
                         markedDates={marked}
-                        ListHeaderComponent={
-                            <Text style={[s.bold, s.text3XL, s.bgWhite, s.p12]}>Histórico</Text>
-                        }
+                        ListHeaderComponent={<Text style={[s.bold, s.text3XL, s.bgWhite, s.p12]}>Histórico</Text>}
                         ItemSeparatorComponent={() => <Divisor />}
                         disabledByDefault
                         disableAllTouchEventsForDisabledDays
                         disableAllTouchEventsForInactiveDays
                         renderHeader={renderCustomHeader}
                         theme={{
-                            textDayFontFamily: 'DMSans-Medium',
-                            textMonthFontFamily: 'DMSans-Medium',
+                            textDayFontFamily: 'Inter_500Medium',
+                            textMonthFontFamily: 'Inter_500Medium',
                             todayTextColor: COLORS.indigo,
                             textDayStyle: s.medium,
                             textDisabledColor: COLORS.iosTextGray,

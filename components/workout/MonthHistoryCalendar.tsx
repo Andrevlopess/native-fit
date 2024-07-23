@@ -104,8 +104,8 @@ export default function MonthHistoryCalendar() {
             disableAllTouchEventsForInactiveDays
             enableSwipeMonths={false}
             theme={{
-                textMonthFontFamily: 'DMSans-Medium',
-                textDayFontFamily: 'DMSans-Medium',
+                textMonthFontFamily: 'Inter_500Medium',
+                textDayFontFamily: 'Inter_500Medium',
                 todayTextColor: COLORS.indigo,
                 textDayStyle: s.medium,
                 textDisabledColor: COLORS.iosTextGray,

@@ -1,4 +1,4 @@
-import { useCreateWorkout } from '@/hooks/useCreateWorkout'
+
 import { s } from '@/styles/global'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { router } from 'expo-router'
@@ -8,6 +8,8 @@ import { Text, View } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
+import { useMutation } from '@tanstack/react-query'
+import { WorkoutApi } from '@/api/workout-api'
 
 
 const NewWorkoutSchema = z.object({
@@ -30,12 +32,12 @@ export default function NewWorkoutForm() {
     })
 
 
-    const { mutate, isPending, } = useCreateWorkout({
+    const { mutate, isPending } = useMutation({
+        mutationKey: ['create-workout'],
+        mutationFn: WorkoutApi.create,
         onError: console.error,
         onSuccess: ({ id, description, name }) => {
-
-            router.replace(`/workouts`),
-
+            router.replace(`/workouts`)
             router.push({
                 pathname: `/workouts/${id}`,
                 params: {
@@ -45,6 +47,7 @@ export default function NewWorkoutForm() {
             })
         },
     })
+
 
     const handleSubmitForm = (data: NewWorkoutValues) => {
         mutate(data)

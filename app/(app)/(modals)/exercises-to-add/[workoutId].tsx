@@ -58,18 +58,18 @@ export default function ExericesToAddModal() {
     function handleAddExerciseToThisWorkout(exerciseId: string) {
         if (!workoutId) return;
 
-        const filteredArray = exercises?.filter(exercise => exercise.id !== exerciseId);
+        // const filteredArray = exercises?.filter(exercise => exercise.id !== exerciseId);
 
-        queryClient.setQueryData(
-            ["search-exercises", debouncedSearch, ''],
-            (prev: any) => {
-                if (!prev) return [];
-                return {
-                    pageParams: prev.pageParams,
-                    pages: [filteredArray]
-                }
-            }
-        );
+        // queryClient.setQueryData(
+        //     ["search-exercises", debouncedSearch, ''],
+        //     (prev: any) => {
+        //         if (!prev) return [];
+        //         return {
+        //             pageParams: prev.pageParams,
+        //             pages: [filteredArray]
+        //         }
+        //     }
+        // );
 
         addExercise({
             exercises: [exerciseId],

@@ -15,8 +15,6 @@ interface WorkoutListCardProps {
 export const WorkoutListCard = ({ workout: { id, name, description, exercises_count }, index = 0 }: WorkoutListCardProps) => {
 
     const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-    console.log(exercises_count);
-
 
     return (
         <Link
@@ -28,20 +26,27 @@ export const WorkoutListCard = ({ workout: { id, name, description, exercises_co
             <AnimatedPressable>
 
                 <View style={[s.bgGray200, s.radius14, { height: 60, width: 60 }]} />
-                <View style={[s.gap4]} >
+                <View style={[s.gap4, s.justifyCenter]} >
                     <Text
                         style={[s.medium, s.textBase, { lineHeight: 18 }]}
                         numberOfLines={2}>
                         {name}
                     </Text>
-                    {description &&
-                        <>
-                            <Text style={[s.regular, s.textGray400]}>{description}</Text>
-                            <View style={[s.bgGray400, s.radiusFull, { height: 4, width: 4 }]} />
-                        </>
-                    }
-                    <Text style={[s.regular, s.textGray400]}>{
-                        exercises_count}</Text>
+                    <View style={[s.flexRow, s.itemsCenter, s.gap4]}>
+                        {description &&
+                            <>
+                                <Text style={[s.regular, s.textGray400]}>{description}</Text>
+                                <View style={[s.bgGray400, s.radiusFull, { height: 4, width: 4 }]} />
+                            </>
+                        }
+                        <Text style={[s.regular, s.textGray400]}>
+                            {exercises_count
+                                ? `${exercises_count} exercícios`
+                                : 'Nenhum exercício'}
+                        </Text>
+                    </View>
+
+
                 </View>
             </AnimatedPressable>
 

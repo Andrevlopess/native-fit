@@ -3468,29 +3468,29 @@ export const s = StyleSheet.create({
   // },
 
   regular: {
-    // fontFamily: "Inter_400Regular",
-    fontFamily: "DMSans-Regular",
+    fontFamily: "Inter_400Regular",
+    // fontFamily: "DMSans-Regular",
     letterSpacing: -0.6,
   },
   medium: {
-    // fontFamily: "Inter_500Medium",
-    fontFamily: "DMSans-Medium",
+    fontFamily: "Inter_500Medium",
+    // fontFamily: "DMSans-Medium",
     letterSpacing: -0.6,
   },
   semibold: {
-    // fontFamily: "Inter_600SemiBold",
-    fontFamily: "DMSans-SemiBold",
+    fontFamily: "Inter_600SemiBold",
+    // fontFamily: "DMSans-SemiBold",
     letterSpacing: -0.6,
   },
   bold: {
-    // fontFamily: "Inter_700Bold",
-    fontFamily: "DMSans-Bold",
+    fontFamily: "Inter_700Bold",
+    // fontFamily: "DMSans-Bold",
     letterSpacing: -0.6,
   },
 
   black: {
-    // fontFamily: "Inter_900Black",
-    fontFamily: "DMSans-Black",
+    fontFamily: "Inter_900Black",
+    // fontFamily: "DMSans-Black",
     letterSpacing: -0.6,
   },
 

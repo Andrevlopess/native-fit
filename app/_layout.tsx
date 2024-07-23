@@ -20,21 +20,33 @@ import { StatusBar } from 'react-native';
 
 function RootLayout() {
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    // defaultOptions: {
+    //   queries: {
+    //     staleTime: 1000 * 60 * 5
+    //   }
+    // }
+  });
+
   const [loaded, error] = useFonts({
-    'DMSans-Black': require('@/assets/fonts/DMSans-Black.ttf'),
-    'DMSans-Bold': require('@/assets/fonts/DMSans-Bold.ttf'),
-    'DMSans-Medium': require('@/assets/fonts/DMSans-Medium.ttf'),
-    'DMSans-Regular': require('@/assets/fonts/DMSans-Regular.ttf'),
-    'DMSans-SemiBold': require('@/assets/fonts/DMSans-SemiBold.ttf'),
+    // 'DMSans-Black': require('@/assets/fonts/DMSans-Black.ttf'),
+    // 'DMSans-Bold': require('@/assets/fonts/DMSans-Bold.ttf'),
+    // 'DMSans-Medium': require('@/assets/fonts/DMSans-Medium.ttf'),
+    // 'DMSans-Regular': require('@/assets/fonts/DMSans-Regular.ttf'),
     // 'DMSans-SemiBold': require('@/assets/fonts/DMSans-SemiBold.ttf'),
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
   });
 
 
   useEffect(() => {
     if (error) throw error;
   }, [error]);
-  
+
   if (!loaded) {
     return null;
   }
@@ -45,7 +57,7 @@ function RootLayout() {
       <PortalProvider>
         <StatusBar barStyle='dark-content' />
         <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name='(app)'/>
+          <Stack.Screen name='(app)' />
         </Stack>
         {/* <Slot /> */}
       </PortalProvider>

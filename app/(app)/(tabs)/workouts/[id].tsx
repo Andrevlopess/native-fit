@@ -1,32 +1,50 @@
+import { WorkoutApi } from '@/api/workout-api';
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle';
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
+import Button from '@/components/ui/Button';
+import LoadingView from '@/components/views/LoadingView';
 import MessageView from '@/components/views/MessageView';
 import WorkoutExercisesList from '@/components/workout/WorkoutExercisesList';
+import COLORS from '@/constants/Colors';
+import { useFetchWorkouts } from '@/hooks/useFetchWorkouts';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
+import { useQuery } from '@tanstack/react-query';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
+import { Plus } from 'lucide-react-native';
 import React from 'react';
 import { Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 
-type SearchParams = { id: string, name: string, description: string }
+type SearchParams = { id: string }
 
 export default function WorkoutScreen() {
 
-    const { id, name, description } = useLocalSearchParams<SearchParams>();
+    const { id } = useLocalSearchParams<SearchParams>();
 
     if (!id) {
         return <MessageView
             message='Este treino não existe'
             description='Não sabemos como conseguiu chegar até aqui!' />
     }
-    const { offset, scrollHandler } = useScrollValue('y')
+    const { offset, scrollHandler } = useScrollValue('y');
+
+
+    const { data: workout, isPending } = useQuery({
+        queryKey: ["workouts", id],
+        queryFn: () => WorkoutApi.findAll(),
+        // retry: false,
+    });
+
+    if (isPending)
+        return <LoadingView />
+
 
     return (
         <>
             <Stack.Screen options={{
-                title: name || '',
+                title: workout.name,
                 // headerLargeTitle: true,
                 headerTitleAlign: 'left',
                 headerBackTitleVisible: false,
@@ -35,7 +53,7 @@ export default function WorkoutScreen() {
                 headerRight: () =>
                     <Link href={{
                         pathname: `/edit-workout/${id}`,
-                        params: { name, description }
+                        params: { workout.name, workout.description }
                     }} style={[s.bold, s.textIndigo600, s.textBase, s.p12, s.border1]}>
                         Editar
                     </Link>
@@ -59,7 +77,7 @@ export default function WorkoutScreen() {
 
 
                 <View>
-                  {/*   <View style={[s.itemsCenter, s.flexRow, s.gap12, s.mt36, s.p12]}>
+                    <View style={[s.itemsCenter, s.flexRow, s.gap12, s.mt36, s.p12]}>
                         <Text style={[s.bold, s.textXL]}>Exercícios</Text>
 
                         {
@@ -77,7 +95,7 @@ export default function WorkoutScreen() {
 
                         }
 
-                        <Link asChild href={`/(app)/(modals)/exercises-to-add/${workoutId}`} style={[s.mlAuto]}>
+                        <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`} style={[s.mlAuto]}>
                             <Button variant='tertiary' size='small' rounded>
                                 <Plus color={COLORS.gray900} />
                             </Button>
@@ -91,7 +109,7 @@ export default function WorkoutScreen() {
                                 rounded
                             />
                         }
-                    </View> */}
+                    </View>
                     <WorkoutExercisesList workoutId={id} />
                 </View>
 
