@@ -1,4 +1,5 @@
 import { WorkoutApi } from '@/api/workout-api';
+import NotFoundScreen from '@/app/+not-found';
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle';
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import Button from '@/components/ui/Button';
@@ -6,9 +7,9 @@ import LoadingView from '@/components/views/LoadingView';
 import MessageView from '@/components/views/MessageView';
 import WorkoutExercisesList from '@/components/workout/WorkoutExercisesList';
 import COLORS from '@/constants/Colors';
-import { useFetchWorkouts } from '@/hooks/useFetchWorkouts';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
+import { IWorkout } from '@/types/workout';
 import { useQuery } from '@tanstack/react-query';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Plus } from 'lucide-react-native';
@@ -33,88 +34,94 @@ export default function WorkoutScreen() {
 
     const { data: workout, isPending } = useQuery({
         queryKey: ["workouts", id],
-        queryFn: () => WorkoutApi.findAll(),
-        // retry: false,
+        queryFn: () => WorkoutApi.findOne({ id }),
+        // retry: false,    
     });
 
-    if (isPending)
-        return <LoadingView />
+    if(!workout) return null;
 
+    console.log(workout?.name);
+    
 
     return (
         <>
             <Stack.Screen options={{
-                title: workout.name,
+                title: workout?.name,
                 // headerLargeTitle: true,
                 headerTitleAlign: 'left',
                 headerBackTitleVisible: false,
                 headerTitle: ({ children }) =>
                     <AnimatedHeaderTitle offset={offset} title={children} />,
-                headerRight: () =>
+                headerRight: () => workout &&
                     <Link href={{
                         pathname: `/edit-workout/${id}`,
-                        params: { workout.name, workout.description }
-                    }} style={[s.bold, s.textIndigo600, s.textBase, s.p12, s.border1]}>
+                        params: { name: workout.name, description: workout.description }
+                    }} style={[s.bold, s.textIndigo600, s.textBase, s.p12]}>
                         Editar
                     </Link>
             }} />
 
-            <Animated.ScrollView
-                entering={FadeIn}
-                automaticallyAdjustContentInsets
-                contentInsetAdjustmentBehavior='automatic'
-                onScroll={scrollHandler}
-                style={[s.flex1, s.bgWhite]}
-                contentContainerStyle={[s.pb12]}
-            // stickyHeaderIndices={[1]}
-            >
+            {isPending
+                ? <LoadingView />
+                : !workout
+                    ? <Text>Treino nao encontrado</Text>
+                    : <Animated.ScrollView
+                        entering={FadeIn}
+                        automaticallyAdjustContentInsets
+                        contentInsetAdjustmentBehavior='automatic'
+                        onScroll={scrollHandler}
+                        style={[s.flex1, s.bgWhite]}
+                        contentContainerStyle={[s.pb12]}
+                    >
+
+                        <View style={[s.px12]}>
+                            <AnimatedLargeTitle title={workout.name} offset={offset} />
+                            <AnimatedLargeTitle title={workout.name || 'selocuo'} offset={offset} />
+                            <Text style={[s.medium, s.textBase, s.textGray600]}>{workout.description?.trim()}</Text>
+                        </View>
 
 
-                <View style={[s.px12]}>
-                    <AnimatedLargeTitle title={name || ''} offset={offset} />
-                    <Text style={[s.medium, s.textBase, s.textGray600]}>{description?.trim()}</Text>
-                </View>
+                        <View>
+                            <View style={[s.itemsCenter, s.flexRow, s.gap4, s.mt36, s.p12]}>
+                                <Text style={[s.bold, s.textXL]}>Exercícios</Text>
+
+                                {
+                                    !!workout.exercises_count &&
+                                    <>
+                                        <View style={[
+                                            s.bgGray800,
+                                            s.radiusFull,
+                                            { height: 8, width: 8 }]} />
+
+                                        <Text style={[s.bold, s.textXL]}>
+                                            {workout.exercises_count}
+                                        </Text>
+                                    </>
+
+                                }
+
+                                <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`} style={[s.mlAuto]}>
+                                    <Button variant='tertiary' size='small' rounded>
+                                        <Plus color={COLORS.gray900} />
+                                    </Button>
+                                </Link>
+
+                                {!!workout.exercises_count &&
+                                    <Button
+                                        text='Iniciar treino'
+                                        asLink={{ pathname: `/working-out/${id}` }}
+                                        size='small'
+                                        rounded
+                                    />
+                                }
+                            </View>
+                            <WorkoutExercisesList workoutId={id} />
+                        </View>
 
 
-                <View>
-                    <View style={[s.itemsCenter, s.flexRow, s.gap12, s.mt36, s.p12]}>
-                        <Text style={[s.bold, s.textXL]}>Exercícios</Text>
+                    </Animated.ScrollView>
+            }
 
-                        {
-                            !!exercises?.length &&
-                            <>
-                                <View style={[
-                                    s.bgGray800,
-                                    s.radiusFull,
-                                    { height: 8, width: 8 }]} />
-
-                                <Text style={[s.bold, s.textXL]}>
-                                    {exercises?.length}
-                                </Text>
-                            </>
-
-                        }
-
-                        <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`} style={[s.mlAuto]}>
-                            <Button variant='tertiary' size='small' rounded>
-                                <Plus color={COLORS.gray900} />
-                            </Button>
-                        </Link>
-
-                        {!!exercises?.length &&
-                            <Button
-                                text='Iniciar treino'
-                                asLink={{ pathname: `/working-out/${workoutId}` }}
-                                size='small'
-                                rounded
-                            />
-                        }
-                    </View>
-                    <WorkoutExercisesList workoutId={id} />
-                </View>
-
-
-            </Animated.ScrollView>
         </>
     )
 }

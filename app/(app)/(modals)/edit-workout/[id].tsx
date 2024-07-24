@@ -1,6 +1,5 @@
 import Input from '@/components/ui/Input';
 import EditWorkoutForm from '@/components/workout/EditWorkoutForm';
-import { useFetchWorkoutExercises } from '@/hooks/useFetchWorkoutExercises';
 import { s } from '@/styles/global';
 import { Link, Stack, router, useLocalSearchParams } from 'expo-router';
 import React from 'react';

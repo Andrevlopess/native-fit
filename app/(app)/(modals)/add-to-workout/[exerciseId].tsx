@@ -1,12 +1,13 @@
-import WorkoutSelectableList from '@/components/workout/WorkoutSelectableList'
+import { WorkoutApi } from '@/api/workout-api'
 import Button from '@/components/ui/Button'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
+import WorkoutSelectableList from '@/components/workout/WorkoutSelectableList'
 import { useDebounce } from '@/hooks/useDebounceCallback'
-import { useFetchWorkouts } from '@/hooks/useFetchWorkouts'
 import { s } from '@/styles/global'
 import { device } from '@/utils/device'
+import { useQuery } from '@tanstack/react-query'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Inbox, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
@@ -31,7 +32,13 @@ export default function AddToWorkoutScreen() {
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
 
-    const { data: workouts, isPending, isError, error } = useFetchWorkouts(debouncedSearch);
+
+    const { data: workouts, isPending, error } = useQuery({
+        queryKey: ['workouts', debouncedSearch],
+        queryFn: () => WorkoutApi.findAll({ search: debouncedSearch })
+    })
+
+
 
 
     const NotFoundComponent = () =>
@@ -87,7 +94,7 @@ export default function AddToWorkoutScreen() {
 
 
                 <RequestResultsView
-                    isError={isError}
+                    isError={!error}
                     isPending={isPending}
                     hasData={!!workouts?.length}
                     hasSearch={!!debouncedSearch}

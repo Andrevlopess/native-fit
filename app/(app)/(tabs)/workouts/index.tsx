@@ -60,7 +60,7 @@ export default function MyWorkoutsScreen() {
 
                 <AnimatedLargeTitle title='Treinos' offset={offset} style={[s.px12]} />
 
-                <MonthHistoryCalendar />
+            
 
                 <Divisor />
 

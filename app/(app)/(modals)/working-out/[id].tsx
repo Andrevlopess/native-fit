@@ -1,34 +1,47 @@
+import { WorkoutApi } from '@/api/workout-api';
 import Button from '@/components/ui/Button';
+import LoadingView from '@/components/views/LoadingView';
 import MessageView from '@/components/views/MessageView';
 import PageNotFound from '@/components/views/PageNotFound';
 import RequestResultsView from '@/components/views/RequestResultView';
 import WorkingOutFlow from '@/components/workout/WorkingOutFlow';
 import { DEFAULT_USER_UUID } from '@/constants/user';
-import { useFetchWorkoutExercises } from '@/hooks/useFetchWorkoutExercises';
 import { useWorkoutHistory } from '@/hooks/useWorkoutHistory';
 import { s } from '@/styles/global';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Alert, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
-type SearchParams = { id: string, name: string }
+type SearchParams = { id: string }
 
 export default function DoingWorkoutScreen() {
-    const { id, name } = useLocalSearchParams<SearchParams>();
+    const { id } = useLocalSearchParams<SearchParams>();
     if (!id) return <PageNotFound />
 
     const { top } = useSafeAreaInsets();
     const queryClient = useQueryClient();
 
-    const {data: exercises, isPending, isError} = useFetchWorkoutExercises(id)
+    const { data: workout, isPending } = useQuery({
+        queryKey: ["workouts", id],
+        queryFn: () => WorkoutApi.findOne({ id }),
+        // retry: false,    
+    });
+
+    if (isPending)
+        return <LoadingView />
+
+    if (!workout)
+        return <Text>Workout not found</Text>
 
 
-    const { mutate, isPending: isSaving } = useWorkoutHistory({
-        onSuccess: () => {            
-            queryClient.invalidateQueries({queryKey: ["workouts-history"]})
+    const { mutate, isPending: isSaving } = useMutation({
+        mutationKey: ['save-on-history', id],
+        mutationFn: WorkoutApi.saveOnHistory,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["workouts-history"] })
         }
     });
 
@@ -51,17 +64,14 @@ export default function DoingWorkoutScreen() {
         ])
     }
 
-
-
-    function handleCompletedWorkout() {
-        if (!id) return;
-        mutate({ workout_id: id })
+    function handleCompletedWorkout(id: string) {
+        mutate({ id })
     }
 
     return (
         <>
             <Stack.Screen options={{
-                title: name|| '',
+                title: workout.name,
                 headerTitleAlign: 'center',
                 headerBackVisible: false,
                 header: () => (
@@ -73,7 +83,7 @@ export default function DoingWorkoutScreen() {
                         { paddingTop: top, paddingLeft: 12 }]}>
 
                         <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
-                            {name|| ''}
+                            {workout.name}
                         </Text>
 
                         <Button
@@ -95,7 +105,7 @@ export default function DoingWorkoutScreen() {
             }} />
 
 
-            <RequestResultsView
+            {/* <RequestResultsView
                 isError={isError}
                 hasSearch={false}
                 isPending={isPending}
@@ -106,11 +116,14 @@ export default function DoingWorkoutScreen() {
                 />}
 
             >
-                <WorkingOutFlow
-                    exercises={exercises || []}
-                    onWorkoutCompleted={handleCompletedWorkout}
-                />
-            </RequestResultsView>
+              
+            </RequestResultsView> */}
+
+            <WorkingOutFlow
+                workoutId={id}
+                onWorkoutCompleted={() => handleCompletedWorkout}
+            />
+
         </>
     )
 }

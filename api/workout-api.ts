@@ -13,11 +13,19 @@ export interface FindOneWorkoutParams {
 export interface FetchExercisesParams {
   id: string;
 }
+export interface SaveOnHistoryParams {
+  id: string;
+}
 
 export interface CreateWorkoutResponse {
   id: string;
   name: string;
   description: string;
+}
+
+interface RemoveExerciseParams {
+  exerciseId: string;
+  workoutId: string;
 }
 
 interface CreateWorkoutParams {
@@ -47,9 +55,7 @@ export type AddExerciseResponse = {
 export class WorkoutApi {
   private constructor() {}
 
-  static async findAll(
-    params: FindAllWorkoutParams = {}
-  ): Promise<IWorkout[]> {
+  static async findAll(params: FindAllWorkoutParams = {}): Promise<IWorkout[]> {
     try {
       let query = supabase
         .from("workouts")
@@ -68,19 +74,20 @@ export class WorkoutApi {
     }
   }
 
-  static async findOne(
-    params: FindOneWorkoutParams
-  ): Promise<IWorkout | Error> {
+  static async findOne(params: FindOneWorkoutParams) {
     try {
-      const { data: workouts, error } = await supabase
+      const { data: workout, error } = await supabase
         .from("workouts")
         .select()
         .eq("id", params.id)
-        .returns<IWorkout>();
+        .returns<IWorkout>()
+        .single();
 
       if (error) throw error;
 
-      return workouts;
+      console.log('resultsssss', workout);
+      
+      return workout;
     } catch (error) {
       throw error;
     }
@@ -154,6 +161,57 @@ export class WorkoutApi {
       const dates = data.map((date) => date.done_at);
 
       return dates;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async saveOnHistory(params: SaveOnHistoryParams) {
+    try {
+      const { data, error } = await supabase
+        .from("workouts_history")
+        .insert({
+          user_id: DEFAULT_USER_UUID,
+          workout_id: params.id,
+        })
+        .select("id")
+        .single();
+
+      if (error) throw error;
+
+      return data.id;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async findDaySchedule(date: string) {
+    try {
+      const { data, error } = await supabase
+        .rpc("workedout_date_workouts", { date })
+        .returns<IWorkout[]>();
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async removeExercise(params: RemoveExerciseParams) {
+    try {
+      let { data: deletedExercise, error } = await supabase
+        .from("workout_exercises")
+        .delete()
+        .eq("workout_id", params.workoutId)
+        .eq("exercise_id", params.exerciseId)
+        .select("exercise_id")
+        .single();
+
+      if (error) throw error;
+
+      return deletedExercise;
     } catch (error) {
       throw error;
     }

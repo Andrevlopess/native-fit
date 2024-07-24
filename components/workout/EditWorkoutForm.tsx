@@ -1,6 +1,9 @@
-import { useCreateWorkout } from '@/hooks/useCreateWorkout'
+import { WorkoutApi } from '@/api/workout-api'
+import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
@@ -8,11 +11,7 @@ import { ScrollView, Text, View } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
-import { useFetchWorkoutExercises } from '@/hooks/useFetchWorkoutExercises'
 import WorkoutExercisesList from './WorkoutExercisesList'
-import { LinearGradient } from 'expo-linear-gradient'
-import COLORS from '@/constants/Colors'
-import { useEditWorkout } from '@/hooks/useEditWorkout'
 
 
 const NewWorkoutSchema = z.object({
@@ -32,8 +31,6 @@ interface EditWorkoutFormProps {
 
 export default function EditWorkoutForm({ workoutId, name, description }: EditWorkoutFormProps) {
 
-    // const { data: exercises, isPending: isExercisesPending } = useFetchWorkoutExercises(workoutId);
-
 
     const { control, handleSubmit, formState: { dirtyFields } } = useForm<NewWorkoutValues>({
         resolver: zodResolver(NewWorkoutSchema),
@@ -45,7 +42,9 @@ export default function EditWorkoutForm({ workoutId, name, description }: EditWo
     })
 
 
-    const { mutate, isPending, } = useEditWorkout({
+    const { mutate, isPending, } = useMutation({
+        mutationKey: ['edit-workout', workoutId],
+        mutationFn: WorkoutApi.edit,
         onError: console.error,
         onSuccess: ({id, name, description}) => {          
             router.back();
@@ -56,8 +55,6 @@ export default function EditWorkoutForm({ workoutId, name, description }: EditWo
     const handleSubmitForm = (data: NewWorkoutValues) => {
         mutate(data)
     }
-
-
 
     return (
         <>

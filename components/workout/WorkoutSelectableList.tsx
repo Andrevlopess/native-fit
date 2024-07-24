@@ -8,12 +8,12 @@ import { z } from 'zod';
 import { SelectableWorkoutListCard } from './WorkoutSelectableCard';
 import Button from '../ui/Button';
 import { router } from 'expo-router';
-import { useAddExerciseToWorkout } from '@/hooks/useAddExerciseToWorkout';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AlertCircle } from 'lucide-react-native';
 import COLORS from '@/constants/Colors';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { FadeInTransition } from '@/constants/Transitions';
+import { WorkoutApi } from '@/api/workout-api';
 
 
 
@@ -46,7 +46,9 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
         }
     });
 
-    const { addExercise, isPending, error } = useAddExerciseToWorkout({
+    const { mutate, isPending, error } = useMutation({
+        mutationKey: ['add-exercise-to'],
+        mutationFn: WorkoutApi.addExercise,
         onSuccess: (data) => {
             console.log(data);
 
@@ -57,7 +59,7 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
     })
 
     function handleSubmitSelectedWorkouts({ addTo, exerciseId }: AddToWorkoutsValues) {
-        addExercise({
+        mutate({
             exercises: [exerciseId],
             workouts: addTo
         });

@@ -13,7 +13,6 @@ interface SelectableWorkoutListCardProps {
 export const SelectableWorkoutListCard =
     ({ workout: { id, name, description }, isSelected, onSelect }: SelectableWorkoutListCardProps) => {
         return (
-
             <TouchableOpacity
                 activeOpacity={.8}
                 onPress={() => onSelect(id)}

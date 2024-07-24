@@ -1,16 +1,16 @@
+import { WorkoutApi } from '@/api/workout-api'
 import ExerciseListAddCard from '@/components/exercise/ExerciseListAddCard'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
 import COLORS from '@/constants/Colors'
 import { SCREEN_WIDTH } from '@/constants/Dimensions'
-import { useAddExerciseToWorkout } from '@/hooks/useAddExerciseToWorkout'
 import { useDebounce } from '@/hooks/useDebounceCallback'
 import { useSearchExercises } from '@/hooks/useSearchExercises'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Search, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
@@ -24,12 +24,10 @@ const CancelButton = () => (
     </TouchableOpacity>
 )
 
-const PADDING = 12;
-const CARD_WIDTH = SCREEN_WIDTH - PADDING * 4
-
 
 export default function ExericesToAddModal() {
     const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
+
     const insets = useSafeAreaInsets();
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
@@ -47,7 +45,9 @@ export default function ExericesToAddModal() {
         });
 
 
-    const { addExercise, isPending } = useAddExerciseToWorkout({
+    const { mutate, isPending } = useMutation({
+        mutationKey: ['add-exercise-to', workoutId],
+        mutationFn: WorkoutApi.addExercise,
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["workout-exercises"] });
         },
@@ -71,7 +71,7 @@ export default function ExericesToAddModal() {
         //     }
         // );
 
-        addExercise({
+        mutate({
             exercises: [exerciseId],
             workouts: [workoutId]
         });

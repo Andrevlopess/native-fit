@@ -1,16 +1,8 @@
-import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
-import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
-import { WorkoutListCard } from '@/components/workout/WorkoutListCard'
-import { useFetchWorkoutsHistory } from '@/hooks/useFetchWorkoutHistory'
-import { useScrollValue } from '@/hooks/useScrollValue'
+import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
 import { s } from '@/styles/global'
-import { IWorkoutHistory } from '@/types/workout'
 import { Stack } from 'expo-router'
 import React from 'react'
-import { FlatList, Text, View } from 'react-native'
-import Animated from 'react-native-reanimated'
-import { CalendarList, DateData } from 'react-native-calendars';
-import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
+import { Text, View } from 'react-native'
 
 export default function HistoricalIndex() {
 

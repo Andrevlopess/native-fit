@@ -1,21 +1,16 @@
+import { WorkoutApi } from '@/api/workout-api'
 import COLORS from '@/constants/Colors'
-import { useFetchWorkoutExercises } from '@/hooks/useFetchWorkoutExercises'
-import { supabase } from '@/lib/supabase'
 import { s } from '@/styles/global'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { Inbox, Plus } from 'lucide-react-native'
 import React from 'react'
 import { Alert, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import SwipeableExerciseListCard from '../exercise/ExerciseListSwipeableCard'
 import Button from '../ui/Button'
 import SkeletonList from '../ui/SkeletonList'
 import MessageView from '../views/MessageView'
-import { IDetailedExercise, IExercise } from '@/types/exercise'
-import axios from 'axios'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
-import ExerciseListCard from '../exercise/ExerciseListCard'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const AddExerciseCard = ({ id }: { id: string }) =>
     <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8, s.bgWhite, s.radius8]}>
@@ -28,33 +23,6 @@ const AddExerciseCard = ({ id }: { id: string }) =>
         </TouchableOpacity>
     </Link>
 
-interface RemoveExerciseParams {
-    exerciseId: string,
-    workoutId: string
-}
-
-const removeExerciseFromWorkout = async ({ exerciseId, workoutId }: RemoveExerciseParams) => {
-    try {
-        let { data: deletedExercise, error } = await supabase
-            .from('workout_exercises')
-            .delete()
-            .eq('workout_id', workoutId)
-            .eq('exercise_id', exerciseId)
-            .select('exercise_id')
-            .single();
-
-        if (error) throw error;
-
-        return deletedExercise;
-    } catch (error) {
-        if (!axios.isAxiosError(error)) throw error;
-        throw new Error(
-            error.response?.data.error || "Ocorreu um erro inesperado!"
-        );
-    }
-}
-
-
 
 interface WorkoutExercisesListProps {
     workoutId: string
@@ -62,16 +30,21 @@ interface WorkoutExercisesListProps {
 
 export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesListProps) {
 
-    const { data: exercises, isPending } = useFetchWorkoutExercises(workoutId)
 
     const queryClient = useQueryClient();
 
+
+    const { data: exercises = [], isPending, isError } = useQuery({
+        queryKey: ['workout-exercises', workoutId],
+        queryFn: () => WorkoutApi.fetchExercises({ id: workoutId })
+    })
+
+
+
     const { mutate, isPending: isRemoving } = useMutation({
         mutationKey: ['remove-exercise-from-workout', workoutId],
-        mutationFn: removeExerciseFromWorkout,
+        mutationFn: WorkoutApi.removeExercise,
         onSuccess: (res) => {
-
-
             // const filteredArray = exercises?.filter(exercise => exercise.id !== res?.exercise_id);
 
             // console.log(filteredArray);

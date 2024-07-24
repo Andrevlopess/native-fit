@@ -19,26 +19,7 @@ export const useWorkoutHistory = ({
 > = {}) => {
   
   async function createWorkout(values: WorkoutHistoryParams) {
-    try {
-      const { data, error } = await supabase
-        .from("workouts_history")
-        .insert({
-          user_id: DEFAULT_USER_UUID,
-          workout_id: values.workout_id,
-        })
-        .select("id")
-        .single();
-
-      if (error) throw error;
-
-      return data.id;
-    } catch (error) {
-      if (!axios.isAxiosError(error)) throw error;
-      throw new Error(
-        error.response?.data.error || "Ocorreu um erro inesperado!"
-      );
-    }
-  }
+    
 
   const mutation = useMutation({
     mutationKey: ["workout-history"],

@@ -1,3 +1,4 @@
+import { WorkoutApi } from '@/api/workout-api';
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import SkeletonList from '@/components/ui/SkeletonList';
 import LoadingView from '@/components/views/LoadingView';
@@ -13,22 +14,6 @@ import { Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
 
-async function fetchWorkoutsOfDay(date: string) {
-    try {
-        const { data, error } = await supabase
-            .rpc('workedout_date_workouts', { date })
-            .returns<IWorkout[]>()
-
-        if (error) throw error;
-
-        return data
-    } catch (error) {
-        if (!axios.isAxiosError(error)) throw error;
-        throw new Error(
-            error.response?.data.error || "Ocorreu um erro inesperado!"
-        );
-    }
-}
 
 
 export default function DayWorkoutsHistory() {
@@ -38,7 +23,7 @@ export default function DayWorkoutsHistory() {
 
     const { data: workouts, isPending } = useQuery({
         queryKey: ['workout-day-history', day],
-        queryFn: ({ queryKey }) => fetchWorkoutsOfDay(queryKey[1])
+        queryFn: () =>  WorkoutApi.findDaySchedule(day)
     })
 
 

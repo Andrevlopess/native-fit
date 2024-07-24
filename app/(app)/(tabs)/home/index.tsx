@@ -12,6 +12,7 @@ import { Stack } from 'expo-router'
 import React from 'react'
 import { ScrollView, View } from 'react-native'
 import Animated from 'react-native-reanimated'
+import MonthHistoryCalendar from '@/components/workout/MonthHistoryCalendar'
 const exercises: IExercise[] =
   [
     {
@@ -117,7 +118,10 @@ export default function HomeIndexScreen() {
         <AnimatedLargeTitle title='Início' offset={offset} style={[s.px12]} />
 
 
-        <WorkoutsCarouselList />
+        {/* <WorkoutsCarouselList />
+         */}
+        <MonthHistoryCalendar />
+
         <FeaturedExercices title='Destaques' exercises={exercises} />
 
       </Animated.ScrollView>

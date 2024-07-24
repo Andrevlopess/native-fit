@@ -1,28 +1,34 @@
+import COLORS from '@/constants/Colors'
+import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
-import { IExercise } from '@/types/exercise'
+import { LinearGradient } from 'expo-linear-gradient'
+import { router } from 'expo-router'
 import React, { useState } from 'react'
-import ExerciseDoingCard from '../exercise/ExerciseDoingCard'
+import { ScrollView, Text, View } from 'react-native'
+import Animated, { FadeInDown, useAnimatedRef, useSharedValue, withSpring } from 'react-native-reanimated'
+import ExerciseListCard from '../exercise/ExerciseListCard'
 import Button from '../ui/Button'
-import Animated, { LinearTransition, useAnimatedRef, scrollTo, withSpring, useSharedValue, withTiming, FadeIn, FadeInUp, FadeInDown } from 'react-native-reanimated'
-import Timer from '../ui/Timer'
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '@/constants/Dimensions'
-import { ScrollView, Text, useAnimatedValue, View } from 'react-native'
+import Divisor from '../ui/Divisor'
 import HeaderStepBar from '../ui/HeaderStepBar'
 import RestingWorkoutView from './RestingWorkoutView'
-import { LinearGradient } from 'expo-linear-gradient'
-import COLORS from '@/constants/Colors'
-import ExerciseListCard from '../exercise/ExerciseListCard'
-import Divisor from '../ui/Divisor'
-import { router } from 'expo-router'
+import { WorkoutApi } from '@/api/workout-api'
+import { useQuery } from '@tanstack/react-query'
 const IMAGE_SIZE = SCREEN_WIDTH * 0.9
 
 
 interface IWorkingOutFlowProps {
-    exercises: IExercise[];
-    onWorkoutCompleted: () => void;
+    // exercises: IExercise[];
+    workoutId: string;
+    onWorkoutCompleted: (id: string) => void;
 }
 
-export default function WorkingOutFlow({ exercises, onWorkoutCompleted }: IWorkingOutFlowProps) {
+export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorkingOutFlowProps) {
+
+    const { data: exercises = [], isPending, isError } = useQuery({
+        queryKey: ['workout-exercises', workoutId],
+        queryFn: () => WorkoutApi.fetchExercises({ id: workoutId })
+    })
+
 
     const [activeIndex, setActiveIndex] = useState(exercises.length - 1);
     const [isResting, setIsResting] = useState(false)
@@ -35,7 +41,7 @@ export default function WorkingOutFlow({ exercises, onWorkoutCompleted }: IWorki
     const handleNext = () => {
 
         if (isLastExercise && !isResting) {
-            onWorkoutCompleted();
+            onWorkoutCompleted(workoutId);
             router.back();
             return;
         }
