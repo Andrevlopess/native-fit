@@ -68,7 +68,7 @@ export class WorkoutApi {
 
       if (error) throw error;
 
-      return workouts;
+      return workouts as IWorkout[];
     } catch (error) {
       throw error;
     }
@@ -85,9 +85,8 @@ export class WorkoutApi {
 
       if (error) throw error;
 
-      console.log('resultsssss', workout);
       
-      return workout;
+      return workout as IWorkout;
     } catch (error) {
       throw error;
     }
@@ -141,8 +140,6 @@ export class WorkoutApi {
         .returns<IExercise[]>();
 
       if (error || !exercises) throw error;
-
-      console.log(exercises);
 
       return exercises;
     } catch (error) {

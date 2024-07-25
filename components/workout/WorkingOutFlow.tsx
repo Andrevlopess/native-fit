@@ -1,6 +1,8 @@
+import { WorkoutApi } from '@/api/workout-api'
 import COLORS from '@/constants/Colors'
 import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
+import { useQuery } from '@tanstack/react-query'
 import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
@@ -10,9 +12,8 @@ import ExerciseListCard from '../exercise/ExerciseListCard'
 import Button from '../ui/Button'
 import Divisor from '../ui/Divisor'
 import HeaderStepBar from '../ui/HeaderStepBar'
+import LoadingView from '../views/LoadingView'
 import RestingWorkoutView from './RestingWorkoutView'
-import { WorkoutApi } from '@/api/workout-api'
-import { useQuery } from '@tanstack/react-query'
 const IMAGE_SIZE = SCREEN_WIDTH * 0.9
 
 
@@ -83,108 +84,118 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
 
     return (
         <>
-            <HeaderStepBar progress={progress} />
+            {
+                isPending
+                    ? <LoadingView />
+                    : !exercises.length
+                        ? <Text>todo: create not found screen</Text>
+                        : <>
+                            <HeaderStepBar progress={progress} />
 
-            <View
-                style={[s.flex1, s.bgWhite, s.gap4]}
-            // stickyHeaderIndices={[0]}
-            >
+                            <View
+                                style={[s.flex1, s.bgWhite, s.gap4]}
+                            // stickyHeaderIndices={[0]}
+                            >
 
-                {
-                    isResting
-                        ? <RestingWorkoutView
-                            nextExercise={exercises[activeIndex]}
-                            // onTimerEnd={() => {}}
-                            onTimerEnd={handleNext}
-                        />
-                        :
-                        <ScrollView
-                            style={[s.flex1]}
-                            contentContainerStyle={[s.py12, s.gap12, { paddingBottom: 96 }]}
-                        >
-                            {/* <Button text='reset' onPress={() => {
-                                setIsResting(false)
-                                setActiveIndex(0),
-                                    progress.value = 0
-                            }} variant='secondary' size='small' /> */}
+                                {
+                                    isResting
+                                        ? <RestingWorkoutView
+                                            nextExercise={exercises[activeIndex]}
+                                            // onTimerEnd={() => {}}
+                                            onTimerEnd={handleNext}
+                                        />
+                                        :
+                                        <ScrollView
+                                            style={[s.flex1]}
+                                            contentContainerStyle={[s.py12, s.gap12, { paddingBottom: 96 }]}
+                                        >
+                                            {/* <Button text='reset' onPress={() => {
+                    setIsResting(false)
+                    setActiveIndex(0),
+                        progress.value = 0
+                }} variant='secondary' size='small' /> */}
 
-                            <View style={[s.gap24, s.py24]}>
+                                            <View style={[s.gap24, s.py24]}>
 
-                                <Animated.Image
-                                    source={{ uri: doing.gifurl }}
-                                    style={[s.radius8, s.mxAuto, s.bgGray50, { height: IMAGE_SIZE, width: IMAGE_SIZE }]} />
+                                                <Animated.Image
+                                                    source={{ uri: doing.gifurl }}
+                                                    style={[s.radius8, s.mxAuto, s.bgGray50, { height: IMAGE_SIZE, width: IMAGE_SIZE }]} />
 
-                                <Animated.Text
-                                    entering={FadeInDown}
-                                    style={[s.bold, s.text2XL, s.textCenter, s.px12]}>{doing.name}</Animated.Text>
+                                                <Animated.Text
+                                                    entering={FadeInDown}
+                                                    style={[s.bold, s.text2XL, s.textCenter, s.px12]}>{doing.name}</Animated.Text>
 
-                                <Animated.Text
-                                    entering={FadeInDown.delay(50)}
-                                    style={[s.bold, s.text4XL, s.textCenter, s.px12]}>4 x 12</Animated.Text>
+                                                <Animated.Text
+                                                    entering={FadeInDown.delay(50)}
+                                                    style={[s.bold, s.text4XL, s.textCenter, s.px12]}>4 x 12</Animated.Text>
 
-                                <Animated.View
-                                    entering={FadeInDown.delay(80)}
-                                    style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4]}>
+                                                <Animated.View
+                                                    entering={FadeInDown.delay(80)}
+                                                    style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4]}>
 
-                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.target}</Text>
-                                    <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
-                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.bodypart}</Text>
-                                    <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
-                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.equipment}</Text>
-                                </Animated.View>
+                                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.target}</Text>
+                                                    <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
+                                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.bodypart}</Text>
+                                                    <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
+                                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.equipment}</Text>
+                                                </Animated.View>
 
-                            </View>
-
-
-                            <Divisor text={
-                                isLastExercise ? 'Você chegou ao fim' : 'Descanse 1 minuto'
-                            } />
-
-                            {!isLastExercise &&
-                                <View style={[s.p12, s.gap12]}>
-                                    <Text style={[s.semibold, s.textXL, s.textGray600]}>
-                                        Próximo exercício
-                                    </Text>
-
-                                    <ExerciseListCard
-                                        exercise={exercises[activeIndex + 1]}
-                                        showsAddButton={false} />
-                                </View>
-                            }
-                        </ScrollView>
-                }
+                                            </View>
 
 
-                <LinearGradient
-                    locations={[0, 0.4]}
-                    dither={false}
-                    colors={['transparent', COLORS.white]}
-                    style={[s.p12, s.absolute, s.flexRow, s.gap12,
-                    { bottom: 0, left: 0, right: 0, paddingTop: 24 }]}
-                >
+                                            <Divisor text={
+                                                isLastExercise ? 'Você chegou ao fim' : 'Descanse 1 minuto'
+                                            } />
 
-                    {activeIndex !== 0 &&
-                        <Button
-                            text={'Voltar'}
-                            onPress={handlePrev}
-                            variant='secondary'
-                        />
-                    }
-                    <Button
-                        text={isLastExercise
-                            ? 'Finalizar'
-                            : isResting
-                                ? 'Estou pronto'
-                                : 'Próximo'
-                        }
-                        style={[s.flex1]}
-                        onPress={handleNext}
-                    />
-                </LinearGradient>
+                                            {!isLastExercise &&
+                                                <View style={[s.p12, s.gap12]}>
+                                                    <Text style={[s.semibold, s.textXL, s.textGray600]}>
+                                                        Próximo exercício
+                                                    </Text>
+
+                                                    <ExerciseListCard
+                                                        exercise={exercises[activeIndex + 1]}
+                                                        showsAddButton={false} />
+                                                </View>
+                                            }
+                                        </ScrollView>
+                                }
 
 
+                                <LinearGradient
+                                    locations={[0, 0.4]}
+                                    dither={false}
+                                    colors={['transparent', COLORS.white]}
+                                    style={[s.p12, s.absolute, s.flexRow, s.gap12,
+                                    { bottom: 0, left: 0, right: 0, paddingTop: 24 }]}
+                                >
 
-            </View >
+                                    {activeIndex !== 0 &&
+                                        <Button
+                                            text={'Voltar'}
+                                            onPress={handlePrev}
+                                            variant='secondary'
+                                        />
+                                    }
+                                    <Button
+                                        text={isLastExercise
+                                            ? 'Finalizar'
+                                            : isResting
+                                                ? 'Estou pronto'
+                                                : 'Próximo'
+                                        }
+                                        style={[s.flex1]}
+                                        onPress={handleNext}
+                                    />
+                                </LinearGradient>
+
+
+
+                            </View >
+
+                        </>
+            }
+
         </>
 
 

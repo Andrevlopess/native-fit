@@ -1,16 +1,15 @@
+import { ExerciseApi } from '@/api/exercise-api'
 import { WorkoutApi } from '@/api/workout-api'
 import ExerciseListAddCard from '@/components/exercise/ExerciseListAddCard'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
 import COLORS from '@/constants/Colors'
-import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { useDebounce } from '@/hooks/useDebounceCallback'
-import { useSearchExercises } from '@/hooks/useSearchExercises'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Search, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
@@ -30,28 +29,40 @@ export default function ExericesToAddModal() {
 
     const insets = useSafeAreaInsets();
     const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
     const queryClient = useQueryClient();
 
-    const {
-        exercises,
+
+    const { data: results,
         isFetching,
         isError,
         error,
         fetchNextPage,
-        isFetchingNextPage } =
-        useSearchExercises({
+        isFetchingNextPage
+    } = useInfiniteQuery({
+        queryKey: ["search-exercises", search, filter],
+        queryFn: ({ pageParam }) => ExerciseApi.search({
             search: debouncedSearch,
-        });
+            filter: filter,
+            pageParam,
+            limit: 20
+        }),
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, allPages) =>
+            lastPage.length > 0 ? allPages.length + 1 : undefined,
+        enabled: !!search || !!filter,
+        retry: false,
+    });
 
+    const exercises = results?.pages.map((page) => page).flat();
 
     const { mutate, isPending } = useMutation({
         mutationKey: ['add-exercise-to', workoutId],
         mutationFn: WorkoutApi.addExercise,
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["workout-exercises"] });
-        },
-        onError: console.log
+        }
     })
 
 
@@ -70,6 +81,12 @@ export default function ExericesToAddModal() {
         //         }
         //     }
         // );
+
+        // console.log(exerciseId);
+        // queryClient.setQueryDefaults(
+        //     ["search-exercises", debouncedSearch],
+        //     { select: exercises => exercises.filter((exercise: IExercise) => exercise.id !== id) })
+
 
         mutate({
             exercises: [exerciseId],
@@ -157,26 +174,6 @@ export default function ExericesToAddModal() {
                         onEndReached={() => fetchNextPage()}
                         ListFooterComponent={renderFooter}
                     />
-
-                    {/* {exercises?.map((exercise, i) => {
-                        return (
-                            <Animated.View
-                                key={exercise.id}
-                                entering={FadeIn.duration(100).delay(i * 50)}
-                                layout={LinearTransition.springify().stiffness(500).damping(60)}
-                            >
-
-                                <ExerciseListAddCard
-                                    disabled={isPending}
-                                    onPress={() => handleAddExerciseToThisWorkout(exercise.id)}
-                                    exercise={exercise}
-                                />
-                            </Animated.View>
-
-
-                        )
-                    })} */}
-
                 </RequestResultsView>
             </View>
         </>

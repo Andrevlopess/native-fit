@@ -38,15 +38,10 @@ export default function WorkoutScreen() {
         // retry: false,    
     });
 
-    if(!workout) return null;
-
-    console.log(workout?.name);
-    
-
     return (
         <>
             <Stack.Screen options={{
-                title: workout?.name,
+                title: workout?.name || "",
                 // headerLargeTitle: true,
                 headerTitleAlign: 'left',
                 headerBackTitleVisible: false,
@@ -76,42 +71,27 @@ export default function WorkoutScreen() {
 
                         <View style={[s.px12]}>
                             <AnimatedLargeTitle title={workout.name} offset={offset} />
-                            <AnimatedLargeTitle title={workout.name || 'selocuo'} offset={offset} />
-                            <Text style={[s.medium, s.textBase, s.textGray600]}>{workout.description?.trim()}</Text>
+                            {workout.description &&
+                                <Text style={[s.medium, s.textBase, s.textGray600]}>{workout.description?.trim()}</Text>
+                            }
                         </View>
 
 
                         <View>
-                            <View style={[s.itemsCenter, s.flexRow, s.gap4, s.mt36, s.p12]}>
-                                <Text style={[s.bold, s.textXL]}>Exercícios</Text>
+                            <View style={[s.flexRow, s.gap4, s.p12]}>
 
-                                {
-                                    !!workout.exercises_count &&
-                                    <>
-                                        <View style={[
-                                            s.bgGray800,
-                                            s.radiusFull,
-                                            { height: 8, width: 8 }]} />
-
-                                        <Text style={[s.bold, s.textXL]}>
-                                            {workout.exercises_count}
-                                        </Text>
-                                    </>
-
-                                }
-
-                                <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`} style={[s.mlAuto]}>
+                                {/* <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`} style={[s.mlAuto]}>
                                     <Button variant='tertiary' size='small' rounded>
                                         <Plus color={COLORS.gray900} />
                                     </Button>
-                                </Link>
+                                </Link> */}
 
                                 {!!workout.exercises_count &&
                                     <Button
                                         text='Iniciar treino'
                                         asLink={{ pathname: `/working-out/${id}` }}
                                         size='small'
-                                        rounded
+                                        // rounded
                                     />
                                 }
                             </View>

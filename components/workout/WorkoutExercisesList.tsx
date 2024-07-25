@@ -11,6 +11,8 @@ import SwipeableExerciseListCard from '../exercise/ExerciseListSwipeableCard'
 import Button from '../ui/Button'
 import SkeletonList from '../ui/SkeletonList'
 import MessageView from '../views/MessageView'
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
+import { IExercise } from '@/types/exercise'
 
 const AddExerciseCard = ({ id }: { id: string }) =>
     <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8, s.bgWhite, s.radius8]}>
@@ -39,29 +41,18 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
         queryFn: () => WorkoutApi.fetchExercises({ id: workoutId })
     })
 
-
-
     const { mutate, isPending: isRemoving } = useMutation({
         mutationKey: ['remove-exercise-from-workout', workoutId],
         mutationFn: WorkoutApi.removeExercise,
+        // onSettled: () => {
+        //     queryClient.invalidateQueries({
+        //         queryKey: ["workout-exercises", workoutId]
+        //     })
+        // }
         onSuccess: (res) => {
-            // const filteredArray = exercises?.filter(exercise => exercise.id !== res?.exercise_id);
-
-            // console.log(filteredArray);
-
-
-            // queryClient.setQueryData(
-            //     ["workout-exercises", workoutId],
-            //     (prev: any) => {
-            //         if (!prev) return [];
-            //         return filteredArray
-            //     }
-            // );
-
             queryClient.invalidateQueries({
                 queryKey: ["workout-exercises", workoutId]
             })
-
         }
 
     })
@@ -70,7 +61,6 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
         Alert.alert('Deseja remover esse exercício?', 'Você poderá adicioná-lo novamente', [{
             isPreferred: true,
             text: 'Cancelar',
-            // onPress: () =>(id),
         },
         {
             text: 'Remover',
@@ -81,17 +71,25 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
     }
 
     const handleRemoveExerciseFromWorkout = (id: string) => {
-        mutate({ exerciseId: id, workoutId: workoutId })
-        const filteredArray = exercises?.filter(exercise => exercise.id !== id);
+
+        // const filteredArray = exercises?.filter(exercise => exercise.id !== id);
 
 
-        queryClient.setQueryData(
+        // queryClient.setQueryData(
+        //     ["workout-exercises", workoutId],
+        //     (prev: any) => {
+        //         if (!prev) return [];
+        //         return filteredArray
+        //     }
+        // );
+
+
+
+        queryClient.setQueryDefaults(
             ["workout-exercises", workoutId],
-            (prev: any) => {
-                if (!prev) return [];
-                return filteredArray
-            }
-        );
+            { select: exercises => exercises.filter((exercise: IExercise) => exercise.id !== id) })
+
+        mutate({ exerciseId: id, workoutId: workoutId });
     }
 
 
@@ -110,40 +108,42 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
 
     return (
         <>
-
-            {
-                !!exercises?.length &&
-                <>
-                    <Text>Exercícios</Text>
-                    <View style={[
-                        s.bgGray800,
-                        s.radiusFull,
-                        { height: 8, width: 8 }]} />
-
-                    <Text style={[s.bold, s.textXL]}>
-                        {exercises?.length}
-                    </Text>
-                </>
-
-            }
-
-            <View style={[s.flex1]} >
+            <View style={[s.flex1, s.mt12]} >
                 {isPending
                     ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />
                     : !exercises?.length
                         ? <EmptyComponent />
                         : <>
+
+                            <View style={[s.flexRow, s.gap6, s.itemsCenter, s.p12]}>
+                                <Text style={[s.bold, s.textXL]}>Exercícios</Text>
+                                {
+                                    !!exercises.length &&
+                                    <>
+                                        <View style={[
+                                            s.bgGray800,
+                                            s.radiusFull,
+                                            { height: 8, width: 8 }]} />
+
+                                        <Text style={[s.bold, s.textXL]}>
+                                            {exercises.length}
+                                        </Text>
+                                    </>
+                                }
+                            </View>
+
                             {exercises.map((exercise, i) =>
-                                // <Animated.View
-                                //     entering={FadeIn.springify().stiffness(500).damping(60)}
-                                //     layout={LinearTransition.springify().stiffness(500).damping(60)}
-                                // >
-                                <SwipeableExerciseListCard
+                                <Animated.View
                                     key={exercise.id}
-                                    exercise={exercise}
-                                    onSwipeToRemove={handleRemoveExerciseFromWorkout}
-                                />
-                                // </Animated.View >
+
+                                    entering={FadeIn.springify().stiffness(500).damping(60)}
+                                    layout={LinearTransition.springify().stiffness(500).damping(60)}
+                                >
+                                    <SwipeableExerciseListCard
+                                        exercise={exercise}
+                                        onSwipeToRemove={handleConfirmRemove}
+                                    />
+                                </Animated.View >
 
                             )}
                             <AddExerciseCard id={workoutId} />
