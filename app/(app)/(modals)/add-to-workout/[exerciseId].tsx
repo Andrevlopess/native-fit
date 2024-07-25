@@ -33,13 +33,14 @@ export default function AddToWorkoutScreen() {
     const debouncedSearch = useDebounce(search, 500).trim();
 
 
-    const { data: workouts, isPending, error } = useQuery({
+    const { data: workouts = [], isPending, error } = useQuery({
         queryKey: ['workouts', debouncedSearch],
         queryFn: () => WorkoutApi.findAll({ search: debouncedSearch })
     })
 
 
-
+    console.log('results', workouts);
+    
 
     const NotFoundComponent = () =>
         <MessageView
@@ -94,7 +95,7 @@ export default function AddToWorkoutScreen() {
 
 
                 <RequestResultsView
-                    isError={!error}
+                    isError={!!error}
                     isPending={isPending}
                     hasData={!!workouts?.length}
                     hasSearch={!!debouncedSearch}

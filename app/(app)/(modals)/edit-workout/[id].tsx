@@ -1,9 +1,9 @@
-import Input from '@/components/ui/Input';
+import { WorkoutApi } from '@/api/workout-api';
 import EditWorkoutForm from '@/components/workout/EditWorkoutForm';
 import { s } from '@/styles/global';
-import { Link, Stack, router, useLocalSearchParams } from 'expo-router';
+import { useQuery } from '@tanstack/react-query';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { useForm } from 'react-hook-form';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 
@@ -20,8 +20,9 @@ type SearchParams = {
 
 export default function EditWorkoutModal() {
 
-    const { id, name, description } = useLocalSearchParams<SearchParams>();
+    const { id } = useLocalSearchParams<SearchParams>();
     if (!id) return;
+
 
 
 
@@ -40,8 +41,7 @@ export default function EditWorkoutModal() {
             <View style={[s.flex1, s.bgWhite]}>
                 <EditWorkoutForm
                     workoutId={id}
-                    name={name}
-                    description={description}
+
                 />
             </View>
         </>

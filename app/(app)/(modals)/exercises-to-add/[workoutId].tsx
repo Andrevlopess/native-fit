@@ -1,15 +1,15 @@
-import { ExerciseApi } from '@/api/exercise-api'
 import { WorkoutApi } from '@/api/workout-api'
-import ExerciseListAddCard from '@/components/exercise/ExerciseListAddCard'
+import SwipeableExerciseListCard from '@/components/exercise/ExerciseListSwipeableCard'
 import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
 import COLORS from '@/constants/Colors'
 import { useDebounce } from '@/hooks/useDebounceCallback'
+import { useSearchExercise } from '@/hooks/useSearchExercise'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Search, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
@@ -28,78 +28,58 @@ export default function ExericesToAddModal() {
     const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
 
     const insets = useSafeAreaInsets();
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState('perna');
     const [filter, setFilter] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
     const queryClient = useQueryClient();
 
-
-    const { data: results,
-        isFetching,
-        isError,
+    const {
+        data: exercises = [],
         error,
-        fetchNextPage,
-        isFetchingNextPage
-    } = useInfiniteQuery({
-        queryKey: ["search-exercises", search, filter],
-        queryFn: ({ pageParam }) => ExerciseApi.search({
+        isFetching,
+        isFetchingNextPage,
+        isError,
+        fetchNextPage }
+        = useSearchExercise({
             search: debouncedSearch,
-            filter: filter,
-            pageParam,
-            limit: 20
-        }),
-        initialPageParam: 1,
-        getNextPageParam: (lastPage, allPages) =>
-            lastPage.length > 0 ? allPages.length + 1 : undefined,
-        enabled: !!search || !!filter,
-        retry: false,
-    });
+            filter: filter
+        })
 
-    const exercises = results?.pages.map((page) => page).flat();
-
-    const { mutate, isPending } = useMutation({
+    const { mutate, isPending, variables } = useMutation({
         mutationKey: ['add-exercise-to', workoutId],
         mutationFn: WorkoutApi.addExercise,
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["workout-exercises"] });
-        }
+        onMutate: () =>
+            queryClient.invalidateQueries({ queryKey: ["workout-exercises", workoutId] }),
+        onError: err => console.error(err.message)
     })
 
 
     function handleAddExerciseToThisWorkout(exerciseId: string) {
         if (!workoutId) return;
 
-        // const filteredArray = exercises?.filter(exercise => exercise.id !== exerciseId);
-
+        //todo: fix this 'cannot read 'length' of undefined'
         // queryClient.setQueryData(
-        //     ["search-exercises", debouncedSearch, ''],
+        //     ["search-exercises"],
         //     (prev: any) => {
-        //         if (!prev) return [];
-        //         return {
-        //             pageParams: prev.pageParams,
-        //             pages: [filteredArray]
-        //         }
+        //         const exercises = prev.pages.flatMap((page: any) => page)
+        //         const filtered = exercises.filter((exercise: IExercise) => exercise.id !== exerciseId);
+
+        //         return filtered
         //     }
-        // );
-
-        // console.log(exerciseId);
-        // queryClient.setQueryDefaults(
-        //     ["search-exercises", debouncedSearch],
-        //     { select: exercises => exercises.filter((exercise: IExercise) => exercise.id !== id) })
-
+        // )
 
         mutate({
-            exercises: [exerciseId],
+            exercise: exerciseId,
             workouts: [workoutId]
         });
     }
 
     // render components
     const renderItem = ({ item }: { item: IExercise }) =>
-        <ExerciseListAddCard
-            // disabled={isPending}
-            onPress={() => handleAddExerciseToThisWorkout(item.id)}
+        <SwipeableExerciseListCard
             exercise={item}
+            disableSwipeToRemove
+            onSwipeToAdd={id => handleAddExerciseToThisWorkout(id)}
         />
 
     const renderFooter = () => {
@@ -145,7 +125,7 @@ export default function ExericesToAddModal() {
                 <RequestResultsView
                     isError={isError}
                     isPending={isFetching && !isFetchingNextPage}
-                    hasData={!!exercises?.length}
+                    hasData={true}
                     hasSearch={!!debouncedSearch}
                     EmptyComponent={
                         <MessageView icon={Search} message='Busque por um exercício' description='Procure entre as mais de 1300 atividades' />
@@ -168,9 +148,6 @@ export default function ExericesToAddModal() {
                         contentInsetAdjustmentBehavior='automatic'
                         data={exercises}
                         renderItem={renderItem}
-                        // keyExtractor={item => item.id}
-                        // showsVerticalScrollIndicator={false}
-                        // onEndReachedThreshold={2}
                         onEndReached={() => fetchNextPage()}
                         ListFooterComponent={renderFooter}
                     />

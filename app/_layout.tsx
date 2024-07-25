@@ -21,11 +21,11 @@ import { StatusBar } from 'react-native';
 function RootLayout() {
 
   const queryClient = new QueryClient({
-    // defaultOptions: {
-    //   queries: {
-    //     staleTime: 1000 * 60 * 5
-    //   }
-    // }
+    defaultOptions: {
+      queries: {
+        staleTime: 1000 * 60 * 5
+      }
+    }
   });
 
   const [loaded, error] = useFonts({

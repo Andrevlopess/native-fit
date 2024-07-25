@@ -1,7 +1,9 @@
 import { DEFAULT_USER_UUID } from "@/constants/user";
+
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
 import { IWorkout } from "@/types/workout";
+type HistoryIntervals = "all-time" | "year" | "month" | "week";
 
 export interface FindAllWorkoutParams {
   search?: string;
@@ -39,9 +41,12 @@ interface EditWorkoutParams {
   description: string;
 }
 
-// todo: exercises array doenst exists, the relation will be always one exercise to many workouts or one to one
+interface FetchHistoryParams {
+  interval: HistoryIntervals;
+}
+
 interface AddExerciseParams {
-  exercises: string[];
+  exercise: string;
   workouts: string[];
 }
 
@@ -85,7 +90,6 @@ export class WorkoutApi {
 
       if (error) throw error;
 
-      
       return workout as IWorkout;
     } catch (error) {
       throw error;
@@ -147,7 +151,7 @@ export class WorkoutApi {
     }
   }
 
-  static async fetchHistory(): Promise<string[]> {
+  static async fetchHistory(params: FetchHistoryParams): Promise<string[]> {
     try {
       const { data, error } = await supabase
         .rpc("workedout_dates")
@@ -217,12 +221,9 @@ export class WorkoutApi {
   static async addExercise(
     params: AddExerciseParams
   ): Promise<AddExerciseResponse> {
-    const insertArray = params.workouts.flatMap((workout) =>
-      params.exercises.map((exercise) => ({
-        exercise_id: exercise,
-        workout_id: workout,
-      }))
-    );
+    const insertArray = params.workouts.map((workout) => {
+      return { workout_id: workout, exercise_id: params.exercise };
+    });
 
     try {
       const { data, error } = await supabase

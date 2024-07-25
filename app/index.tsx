@@ -5,6 +5,7 @@ import { Redirect } from 'expo-router'
 export default function index() {
   return <Redirect href={'/(app)/(tabs)/home'}/>
   // return <Redirect href={'/workouts/history'}/>
-  // return <Redirect href={'/(app)/(modals)/working-out/39254871-cdaf-4a2c-8836-fe9a3dad4107'}/>
-  // return <Redirect href={'/workouts/39254871-cdaf-4a2c-8836-fe9a3dad4107'}/>
+  // return <Redirect href={'/(app)/(modals)/working-out/c073070e-0d72-4f53-9b3e-a5434626d048'}/>
+  // return <Redirect href={'/workouts/c073070e-0d72-4f53-9b3e-a5434626d048'}/>
+  // return <Redirect href={'/exercises-to-add/c073070e-0d72-4f53-9b3e-a5434626d048'}/>
 }

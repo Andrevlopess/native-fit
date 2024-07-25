@@ -50,7 +50,6 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
         mutationKey: ['add-exercise-to'],
         mutationFn: WorkoutApi.addExercise,
         onSuccess: (data) => {
-            console.log(data);
 
             queryClient.invalidateQueries({ queryKey: ["workout-exercises"] });
             router.back();
@@ -60,7 +59,7 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
 
     function handleSubmitSelectedWorkouts({ addTo, exerciseId }: AddToWorkoutsValues) {
         mutate({
-            exercises: [exerciseId],
+            exercise: exerciseId,
             workouts: addTo
         });
     }

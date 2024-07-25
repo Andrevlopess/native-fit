@@ -2,7 +2,7 @@ import { WorkoutApi } from '@/api/workout-api'
 import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React from 'react'
@@ -25,19 +25,25 @@ type NewWorkoutValues = z.infer<typeof NewWorkoutSchema>
 
 interface EditWorkoutFormProps {
     workoutId: string,
-    name?: string;
-    description?: string;
 }
 
-export default function EditWorkoutForm({ workoutId, name, description }: EditWorkoutFormProps) {
+export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
+
+
+    const clientela = useQueryClient()
+
+    const { data: workout, isPending: isWorkoutPending } = useQuery({
+        queryKey: ["workouts", workoutId],
+        queryFn: () => WorkoutApi.findOne({ id: workoutId }),
+    });
 
 
     const { control, handleSubmit, formState: { dirtyFields } } = useForm<NewWorkoutValues>({
         resolver: zodResolver(NewWorkoutSchema),
         defaultValues: {
             id: workoutId,
-            name,
-            description
+            name: workout?.name,
+            description: workout?.description
         }
     })
 
@@ -46,9 +52,11 @@ export default function EditWorkoutForm({ workoutId, name, description }: EditWo
         mutationKey: ['edit-workout', workoutId],
         mutationFn: WorkoutApi.edit,
         onError: console.error,
-        onSuccess: ({id, name, description}) => {          
+        onSuccess: ({ id, name, description }) => {
+            clientela.invalidateQueries({ queryKey: ["workouts", workoutId] })
             router.back();
-            router.setParams({name, description})
+
+            // router.setParams({ name, description })
         }
     })
 
@@ -59,7 +67,7 @@ export default function EditWorkoutForm({ workoutId, name, description }: EditWo
     return (
         <>
             <ScrollView
-                contentContainerStyle={[s.gap12]}
+                contentContainerStyle={[s.gap12, { paddingBottom: 96 }]}
                 style={[s.flex1]}>
                 {/* <Text
                 style={[s.textGray600, s.textLG, s.medium]}>Dê um nome e descrição ao seu novo treino!</Text> */}
@@ -83,10 +91,9 @@ export default function EditWorkoutForm({ workoutId, name, description }: EditWo
                     />
 
                 </View>
-                <Text style={[s.p12, s.mt12, s.semibold, s.textXL]}>Exercícios</Text>
 
                 <WorkoutExercisesList workoutId={workoutId} />
-               
+
             </ScrollView>
 
             <LinearGradient

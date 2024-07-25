@@ -9,43 +9,28 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { DateData, MarkedDates } from 'react-native-calendars/src/types';
 import Button from '../ui/Button';
+import { WorkoutApi } from '@/api/workout-api';
 
 
 let today = new Date().toISOString().split('T')[0]
 
-async function fetchMonthHistory() {
-    try {
-
-        const { data, error } = await supabase.rpc('workedout_dates')
-
-        if (error) throw error;
-
-        return data as { done_at: string }[];
-
-    } catch (error) {
-        if (!axios.isAxiosError(error)) throw error;
-        throw new Error(
-            error.response?.data.error || "Ocorreu um erro inesperado!"
-        );
-    }
-}
 
 export default function MonthHistoryCalendar() {
 
     const { data: dates, isPending } = useQuery({
-        queryKey: ['workout-history', { type: 'month' }],
-        queryFn: fetchMonthHistory
+        queryKey: ['workout-history'],
+        queryFn: () => WorkoutApi.fetchHistory({ interval: 'month' })
     })
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
         const isStartingDay =
-            index === 0 || new Date(arr[index - 1].done_at).getTime()
-            !== new Date(item.done_at).getTime() - 86400000;
+            index === 0 || new Date(arr[index - 1]).getTime()
+            !== new Date(item).getTime() - 86400000;
         const isEndingDay =
             index === arr.length - 1
-            || new Date(arr[index + 1].done_at).getTime() !== new Date(item.done_at).getTime() + 86400000;
+            || new Date(arr[index + 1]).getTime() !== new Date(item).getTime() + 86400000;
 
-        acc[item.done_at] =
+        acc[item] =
         {
             selected: true,
             disabled: false,
@@ -55,9 +40,9 @@ export default function MonthHistoryCalendar() {
         };
 
         if (isStartingDay) {
-            acc[item.done_at].startingDay = true;
+            acc[item].startingDay = true;
         } else if (isEndingDay) {
-            acc[item.done_at].endingDay = true;
+            acc[item].endingDay = true;
         }
 
         return acc;
@@ -81,7 +66,7 @@ export default function MonthHistoryCalendar() {
                 <Text style={[s.textXL, s.semibold, s.textIndigo600]}>Atividades de {month}</Text>
                 {isPending && <ActivityIndicator color={COLORS.indigo} />}
                 {/* <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{year}</Text> */}
-                <Button text='Ver mais' size='small' variant='tertiary' asLink={'/workouts/history'} rounded/>
+                <Button text='Ver mais' size='small' variant='tertiary' asLink={'/workouts/history'} rounded />
 
             </View>
         );

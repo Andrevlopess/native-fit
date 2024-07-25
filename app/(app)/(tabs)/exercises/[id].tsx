@@ -1,11 +1,12 @@
 
+import { ExerciseApi } from '@/api/exercise-api';
 import LoadingView from '@/components/views/LoadingView';
 import MessageView from '@/components/views/MessageView';
 
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
-import { useFetchExerciseDetails } from '@/hooks/useFetchExerciseDetails';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
+import { useQuery } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
@@ -23,7 +24,11 @@ export default function ExerciseDetailsScreen() {
             description='Não sabemos como conseguiu chegar até aqui!' />
     }
 
-    const { data: details, isError, isPending, error } = useFetchExerciseDetails(id)
+    const { data: details, isError, isPending, error } = useQuery({
+        queryKey: ['exercise', id],
+        queryFn: () => ExerciseApi.findOne({id})
+    });
+    
 
 
     const imageHeight = SCREEN_WIDTH / 1.2

@@ -116,7 +116,7 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
                         : <>
 
                             <View style={[s.flexRow, s.gap6, s.itemsCenter, s.p12]}>
-                                <Text style={[s.bold, s.textXL]}>Exercícios</Text>
+                                <Text style={[s.semibold, s.textXL]}>Exercícios</Text>
                                 {
                                     !!exercises.length &&
                                     <>
@@ -125,7 +125,7 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
                                             s.radiusFull,
                                             { height: 8, width: 8 }]} />
 
-                                        <Text style={[s.bold, s.textXL]}>
+                                        <Text style={[s.semibold, s.textXL]}>
                                             {exercises.length}
                                         </Text>
                                     </>
@@ -135,13 +135,12 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
                             {exercises.map((exercise, i) =>
                                 <Animated.View
                                     key={exercise.id}
-
                                     entering={FadeIn.springify().stiffness(500).damping(60)}
                                     layout={LinearTransition.springify().stiffness(500).damping(60)}
                                 >
                                     <SwipeableExerciseListCard
                                         exercise={exercise}
-                                        onSwipeToRemove={handleConfirmRemove}
+                                        onSwipeToRemove={handleRemoveExerciseFromWorkout}
                                     />
                                 </Animated.View >
 

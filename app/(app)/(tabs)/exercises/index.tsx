@@ -1,3 +1,4 @@
+import { ExerciseApi } from '@/api/exercise-api'
 import SwipeableExerciseListCard from '@/components/exercise/ExerciseListSwipeableCard'
 import LibraryFeed from '@/components/LibraryFeed'
 import LogoImage from '@/components/LogoImage'
@@ -9,9 +10,10 @@ import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
 import { useDebounce } from '@/hooks/useDebounceCallback'
-import { useSearchExercises } from '@/hooks/useSearchExercises'
+import { useSearchExercise } from '@/hooks/useSearchExercise'
 import { s } from '@/styles/global'
 import { device } from '@/utils/device'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { CircleX, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
@@ -31,20 +33,20 @@ export default function LibraryIndexScreen() {
   const debouncedSearch = useDebounce(search, 500).trim();
 
   const {
-    exercises,
-    hasNextPage,
-    isFetchingNextPage,
-    isPending,
+    data: exercises = [],
     error,
-    isError,
+    hasNextPage,
     isFetching,
-    fetchStatus,
+    isFetchingNextPage,
+    isError,
     fetchNextPage }
-    = useSearchExercises({
+    = useSearchExercise({
       search: debouncedSearch,
-      filter: filter,
-      limit: 15,
-    });
+      filter: filter
+    })
+
+
+
 
   const NotFoundComponent = () =>
     <MessageView
@@ -59,9 +61,6 @@ export default function LibraryIndexScreen() {
       message="Ocorreu um erro!"
       description={error?.message || 'Estamos tentando resolver este problema!'} />
 
-
-  console.log(isPending);
-
   return (
     <>
       <Stack.Screen
@@ -70,9 +69,9 @@ export default function LibraryIndexScreen() {
           headerTitleAlign: 'center',
           headerLeft: () => <LogoImage />,
           headerTitle:
-          device.android
-          ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
-          : undefined,
+            device.android
+              ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
+              : undefined,
           // headerLargeTitle: true,
           headerSearchBarOptions:
             device.ios
@@ -130,7 +129,7 @@ export default function LibraryIndexScreen() {
                   <SwipeableExerciseListCard
                     exercise={exercise}
                     key={`${exercise.id}${index}`}
-                    action={['add']}
+                    disableSwipeToRemove
                   />
                 ))}
               </View>

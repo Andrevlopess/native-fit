@@ -7,7 +7,7 @@ import { Link } from 'expo-router'
 import { PlusCircle } from 'lucide-react-native'
 import React from 'react'
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming } from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
 
 
 const DEFAULT_IMAGE_SIZE = 70;
@@ -92,11 +92,23 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                         onPress={handleToggleExpand}
                         style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
 
-                        <Animated.Image src={exercise.gifurl}
-                            style={[s.radius8, imageAnimation]} />
+                        <Animated.Image
+                            // src={exercise.gifurl}
+                            style={[s.radius8, imageAnimation]}
+
+                        // blurRadius={12}
+                        // defaultSource={{ uri: require('@/assets/images/yafit.svg') }}
+                        // loadingIndicatorSource={{
+                        //     uri: require('@/assets/images/yafit.svg')
+                        // }}
+                        />
                     </Pressable>
                     : <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
-                        <Image source={exercise.gifurl}
+                        <Image
+                            placeholder={
+                                require('@/assets/images/react-logo.png')
+                            }
+                            source={exercise.gifurl}
                             style={[s.radius8, { height: DEFAULT_IMAGE_SIZE, width: DEFAULT_IMAGE_SIZE }]} />
                     </View>
                 }

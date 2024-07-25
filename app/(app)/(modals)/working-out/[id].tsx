@@ -6,7 +6,6 @@ import PageNotFound from '@/components/views/PageNotFound';
 import RequestResultsView from '@/components/views/RequestResultView';
 import WorkingOutFlow from '@/components/workout/WorkingOutFlow';
 import { DEFAULT_USER_UUID } from '@/constants/user';
-import { useWorkoutHistory } from '@/hooks/useWorkoutHistory';
 import { s } from '@/styles/global';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
@@ -26,8 +25,7 @@ export default function DoingWorkoutScreen() {
 
     const { data: workout, isPending } = useQuery({
         queryKey: ["workouts", id],
-        queryFn: () => WorkoutApi.findOne({ id }),
-        // retry: false,    
+        queryFn: () => WorkoutApi.findOne({ id })  
     });
 
     if (isPending)
@@ -41,7 +39,7 @@ export default function DoingWorkoutScreen() {
         mutationKey: ['save-on-history', id],
         mutationFn: WorkoutApi.saveOnHistory,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["workouts-history"] })
+            queryClient.invalidateQueries({ queryKey: ['workout-history'] })
         }
     });
 

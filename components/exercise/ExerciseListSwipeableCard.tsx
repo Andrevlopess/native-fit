@@ -133,8 +133,8 @@ export default function SwipeableExerciseListCard({
     exercise,
     onSwipeToAdd,
     onSwipeToRemove,
-    disableSwipeToAdd,
-    disableSwipeToRemove
+    disableSwipeToAdd = false,
+    disableSwipeToRemove = false
 }: ExerciseListCardProps) {
 
     const ref = useRef<Swipeable>(null);
@@ -143,15 +143,19 @@ export default function SwipeableExerciseListCard({
 
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
 
+
         switch (direction) {
             case 'left':
-                // console.log('swiped');
-                // ref.current?.close();
-
                 onSwipeToRemove && onSwipeToRemove(exercise.id)
                 break;
             case 'right':
-                // or onSwipeToRemove()
+
+
+                if (onSwipeToAdd) {
+                    onSwipeToAdd(exercise.id);
+                    return;
+                }
+
                 router.navigate(`/(app)/(modals)/add-to-workout/${exercise.id}`)
                 ref.current?.close();
                 break;
@@ -160,14 +164,9 @@ export default function SwipeableExerciseListCard({
         }
     }
 
-
     return (
         <Swipeable
             ref={ref}
-            friction={1}
-            // enableTrackpadTwoFingerGesture
-            // activeOffsetX={10}
-            // dragOffsetFromLeftEdge={40}
             onSwipeableWillOpen={handleSwipe}
             rightThreshold={100}
             leftThreshold={100}
@@ -175,7 +174,8 @@ export default function SwipeableExerciseListCard({
             renderLeftActions={disableSwipeToRemove ? undefined : renderRemoveAction}
             renderRightActions={disableSwipeToAdd ? undefined : renderAddAction}
             // onSwipeableOpen={handleSwipe}
-            enabled={!disableSwipeToAdd && !disableSwipeToRemove}
+
+            enabled={!(disableSwipeToAdd && disableSwipeToRemove)}
         >
             <ExerciseListCard exercise={exercise} showsAddButton={false} />
         </Swipeable>

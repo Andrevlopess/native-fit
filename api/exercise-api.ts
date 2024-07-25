@@ -1,7 +1,7 @@
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
 
-interface SearchExercisesParams {
+export interface SearchExercisesParams {
   search: string;
   filter?: string;
   limit?: number;
