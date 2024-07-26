@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Yafit",
-    "slug": "Yafit",
+    "name": "Native Fit",
+    "slug": "NativeFit",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

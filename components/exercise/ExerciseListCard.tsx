@@ -25,7 +25,6 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
 
     const rest = (({ id, ...rest }) => rest)(exercise);
 
-
     const AnimatedLink = Animated.createAnimatedComponent(Link)
 
 
@@ -86,21 +85,13 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                 { width }]}>
             <Pressable>
                 {enableExpandImage
-
                     ? <Pressable
-
                         onPress={handleToggleExpand}
                         style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
-
                         <Animated.Image
-                            // src={exercise.gifurl}
+                            src={exercise.gifurl}
                             style={[s.radius8, imageAnimation]}
-
-                        // blurRadius={12}
-                        // defaultSource={{ uri: require('@/assets/images/yafit.svg') }}
-                        // loadingIndicatorSource={{
-                        //     uri: require('@/assets/images/yafit.svg')
-                        // }}
+                            defaultSource={require('@/assets/images/react-logo.png')}                 
                         />
                     </Pressable>
                     : <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>

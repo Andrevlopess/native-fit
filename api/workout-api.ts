@@ -3,7 +3,7 @@ import { DEFAULT_USER_UUID } from "@/constants/user";
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
 import { IWorkout } from "@/types/workout";
-type HistoryIntervals = "all-time" | "year" | "month" | "week";
+type Period = "all-time" | "year" | "month" | "week";
 
 export interface FindAllWorkoutParams {
   search?: string;
@@ -42,7 +42,7 @@ interface EditWorkoutParams {
 }
 
 interface FetchHistoryParams {
-  interval: HistoryIntervals;
+  period: Period;
 }
 
 interface AddExerciseParams {
@@ -154,12 +154,12 @@ export class WorkoutApi {
   static async fetchHistory(params: FetchHistoryParams): Promise<string[]> {
     try {
       const { data, error } = await supabase
-        .rpc("workedout_dates")
-        .returns<{ done_at: string }[]>();
+        .rpc("workedout_dates", {period: params.period})
+        .returns<{ doneat: string }[]>();
 
       if (error) throw error;
 
-      const dates = data.map((date) => date.done_at);
+      const dates = data.map((date) => date.doneat);
 
       return dates;
     } catch (error) {

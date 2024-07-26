@@ -18,9 +18,12 @@ let today = new Date().toISOString().split('T')[0]
 export default function MonthHistoryCalendar() {
 
     const { data: dates, isPending } = useQuery({
-        queryKey: ['workout-history'],
-        queryFn: () => WorkoutApi.fetchHistory({ interval: 'month' })
+        queryKey: ['workout-history', {period: 'month'}],
+        queryFn: () => WorkoutApi.fetchHistory({ period: 'month' })
     })
+
+    console.log(dates);
+    
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
         const isStartingDay =

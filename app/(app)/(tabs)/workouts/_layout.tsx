@@ -5,7 +5,7 @@ import React from "react";
 export default function WorkoutsLayout() {
   return (
     // <WorkoutProvider>
-      <Stack screenOptions={{headerShadowVisible: false}} />
+      <Stack screenOptions={{headerShadowVisible: false}} initialRouteName="index" />
     // </WorkoutProvider> 
   );
 }

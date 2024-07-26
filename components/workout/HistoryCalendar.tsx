@@ -74,11 +74,13 @@ let today = new Date().toISOString().split('T')[0]
 export const HistoryCalendar = () => {
 
     const { data: dates, isPending } = useQuery({
-        queryKey: ['history-dates'],
-        queryFn: WorkoutApi.fetchHistory
+        queryKey: ['workout-history'],
+        queryFn: () => WorkoutApi.fetchHistory({ period: 'all-time' })
     });
 
-    
+    console.log(dates);
+
+
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
         const isStartingDay =
