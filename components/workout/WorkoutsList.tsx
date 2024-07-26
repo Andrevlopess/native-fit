@@ -1,19 +1,16 @@
 
+import { WorkoutApi } from '@/api/workout-api';
+import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
-import { Inbox, SearchX, CircleX, X, Plus } from 'lucide-react-native';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'expo-router';
+import { Inbox, Plus, X } from 'lucide-react-native';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
-import Divisor from '../ui/Divisor';
-import MessageView from '../views/MessageView';
-import RequestResultsView from '../views/RequestResultView';
-import { WorkoutListCard } from './WorkoutListCard';
-import Skeleton from '../ui/Skeleton';
 import Button from '../ui/Button';
-import { Link } from 'expo-router';
-import COLORS from '@/constants/Colors';
 import SkeletonList from '../ui/SkeletonList';
-import { useQuery } from '@tanstack/react-query';
-import { WorkoutApi } from '@/api/workout-api';
+import MessageView from '../views/MessageView';
+import { WorkoutListCard } from './WorkoutListCard';
 
 
 const NewWorkoutCard = () =>

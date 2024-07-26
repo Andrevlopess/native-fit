@@ -1,4 +1,4 @@
-import Divisor from '@/components/ui/Divisor';
+import Divisor from '@/components/ui/Divisors';
 import { s } from '@/styles/global';
 import { SCREEN_WIDTH } from '@gorhom/bottom-sheet';
 import { Stack, router, useLocalSearchParams } from 'expo-router';

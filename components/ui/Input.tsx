@@ -39,18 +39,17 @@ const Input = ({
 
   const focused = useSharedValue(false);
 
-  const textAnimation = useAnimatedStyle(() => {
-    return {
-      transform: [{
-        scale: withTiming(focused.value ? 0.8 : 1)
-      },
-      { translateY: withTiming(focused.value ? -14 : 0) }]
-    }
-  })
+  // const textAnimation = useAnimatedStyle(() => {
+  //   return {
+  //     transform: [{
+  //       scale: withTiming(focused.value ? 0.8 : 1)
+  //     },
+  //     { translateY: withTiming(focused.value ? -14 : 0) }]
+  //   }
+  // })
 
   return (
-    // !props.editable is not working and i dont know why
-    <View style={[s.gap6, containerStyles, [props.editable === false && { opacity: 0.5 }]]}
+    <View style={[containerStyles, [props.editable === false && { opacity: 0.5 }]]}
     //  onLayout={({ nativeEvent }) => console.log(label, nativeEvent.layout)}
     >
       {secondaryLabel && (
@@ -63,18 +62,23 @@ const Input = ({
 
 
       {label && (
-        <Animated.Text
-          style={[s.semibold, s.textGray500, s.textLG, s.px4, labelStyles]}
+        <Text
+          style={[
+            s.semibold,
+            s.textLG,
+            s.px4,
+            error ? s.textRed500 : s.textGray800,
+            labelStyles]}
         >
           {label}
-        </Animated.Text>
+        </Text>
       )}
 
       <View
         style={[
-          // s.radius12,
+          s.flexRow,
           s.borderBottom1,
-          s.p4,
+          s.px4,
           error ? s.borderRed500 : s.borderGray200,
         ]}
       >
@@ -89,6 +93,7 @@ const Input = ({
           enablesReturnKeyAutomatically
           clearButtonMode="always"
           style={[
+            s.flex1,
             s.semibold,
             s.textBlack,
             s.textBase,
@@ -119,7 +124,7 @@ const Input = ({
       </View>
 
       {error && (
-        <View style={[s.flexRow, s.itemsCenter, s.px12]}>
+        <View style={[s.flexRow, s.itemsCenter, s.p6]}>
           <AlertCircle
             size={18}
             color={COLORS.red}

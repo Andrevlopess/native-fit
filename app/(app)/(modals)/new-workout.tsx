@@ -1,4 +1,4 @@
-import NewWorkoutForm from '@/components/workout/NewWorkoutForm'
+import NewWorkoutForm from '@/components/forms/NewWorkoutForm'
 import { s } from '@/styles/global'
 import { Stack, router } from 'expo-router'
 import React from 'react'

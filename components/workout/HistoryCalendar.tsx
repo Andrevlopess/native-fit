@@ -4,17 +4,13 @@ import React, { useCallback } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { CalendarList, DateData } from 'react-native-calendars';
 
-import { supabase } from '@/lib/supabase';
+import { WorkoutApi } from '@/api/workout-api';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import { router } from 'expo-router';
 import { LocaleConfig } from 'react-native-calendars';
 import { MarkedDates } from 'react-native-calendars/src/types';
+import Divisor from '../ui/Divisors';
 import LoadingView from '../views/LoadingView';
-import { useModal } from '@/hooks/useModal';
-import { router } from 'expo-router';
-import MessageView from '../views/MessageView';
-import Divisor from '../ui/Divisor';
-import { WorkoutApi } from '@/api/workout-api';
 
 LocaleConfig.locales['pt-br'] = {
     monthNames: [

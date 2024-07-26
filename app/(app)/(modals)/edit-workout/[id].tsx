@@ -1,5 +1,5 @@
 import { WorkoutApi } from '@/api/workout-api';
-import EditWorkoutForm from '@/components/workout/EditWorkoutForm';
+import EditWorkoutForm from '@/components/forms/EditWorkoutForm';
 import { s } from '@/styles/global';
 import { useQuery } from '@tanstack/react-query';
 import { Stack, router, useLocalSearchParams } from 'expo-router';

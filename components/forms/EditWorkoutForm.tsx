@@ -11,7 +11,8 @@ import { ScrollView, Text, View } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
-import WorkoutExercisesList from './WorkoutExercisesList'
+import WorkoutExercisesList from '../workout/WorkoutExercisesList'
+
 
 
 const NewWorkoutSchema = z.object({

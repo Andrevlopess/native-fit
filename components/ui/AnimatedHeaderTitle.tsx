@@ -5,13 +5,16 @@ import Animated, { Extrapolation, SharedValue, interpolate, useAnimatedStyle } f
 
 
 interface AnimatedHeaderTitleProps {
-    offset: SharedValue<number>,
+    offset?: SharedValue<number>,
     title: string;
 }
 
 export default function AnimatedHeaderTitle({ offset, title }: AnimatedHeaderTitleProps) {
 
+
     const headerTitleAnimation = useAnimatedStyle(() => {
+
+        if(!offset) return {}
         return {
             opacity: interpolate(offset.value, [30, 50], [0, 1]),
             transform: [

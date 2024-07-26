@@ -115,7 +115,6 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                     <View style={[s.flexRow, s.gap6, s.itemsCenter]}>
 
                         <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
-                        <View style={[s.bgGray400, s.radiusFull, { height: 4, width: 4 }]} />
                         <Text style={[s.regular, s.textGray400]}>{exercise.target}</Text>
                     </View>
 
