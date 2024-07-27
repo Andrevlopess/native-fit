@@ -1,10 +1,9 @@
-import { useWorkout } from '@/contexts/WorkoutContext'
 import { s } from '@/styles/global'
 import { IWorkout } from '@/types/workout'
-import { Link, router } from 'expo-router'
+import { Link } from 'expo-router'
 import React from 'react'
 import { Pressable, Text, View } from 'react-native'
-import Animated, { FadeIn } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 
 
 interface WorkoutListCardProps {

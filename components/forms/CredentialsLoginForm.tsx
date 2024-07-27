@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
 import Divisor, { LineDivisor } from '../ui/Divisors'
+import { useAuth } from '@/contexts/AuthContext'
 
 const loginShema = z.object({
     email: z.string().email('Insira um email válido').min(1, 'Insira um email'),
@@ -20,20 +21,21 @@ export type LoginParams = z.infer<typeof loginShema>
 export default function CredentialsLoginForm() {
 
 
+    const { Login } = useAuth()
 
     const { control, handleSubmit } = useForm<LoginParams>({
         resolver: zodResolver(loginShema),
         defaultValues: {
             email: 'andrellopes021@gmail.com',
-            password: 'teste'
+            password: 'teste123'
         }
     })
 
     const { mutate, isPending } = useMutation({
         mutationKey: ['login'],
-        mutationFn: AuthApi.login,
-        onSuccess: console.log,
-        onError: console.error
+        mutationFn: Login,
+        // onSuccess: console.log,
+        // onError: console.error
     })
 
     const handleLogin = (data: LoginParams) => {
@@ -71,9 +73,8 @@ export default function CredentialsLoginForm() {
             <Button
                 text='Criar uma conta'
                 variant='ghost'
-                isLoading={isPending}
                 size="small"
-                asLink={'/signUp'} />
+                asLink={'/auth/signUp'} />
 
 
         </View>

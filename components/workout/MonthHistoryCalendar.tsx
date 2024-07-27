@@ -21,8 +21,6 @@ export default function MonthHistoryCalendar() {
         queryKey: ['workout-history', {period: 'month'}],
         queryFn: () => WorkoutApi.fetchHistory({ period: 'month' })
     })
-
-    console.log(dates);
     
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {

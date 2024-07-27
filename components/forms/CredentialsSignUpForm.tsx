@@ -9,6 +9,8 @@ import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
 import Divisor, { LineDivisor } from '../ui/Divisors'
+import { router } from 'expo-router'
+import { useAuth } from '@/contexts/AuthContext'
 
 const signUpSchema = z.object({
     name: z.string().min(1, 'Nome obrigatório'),
@@ -25,21 +27,24 @@ export type SignUpParams = z.infer<typeof signUpSchema>
 
 export default function CredentialsSignUpForm() {
 
+
+    const { SignUp } = useAuth()
+
     const { control, handleSubmit } = useForm<SignUpParams>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
             name: 'andrevlopes',
             email: 'andrellopes021@gmail.com',
-            password: 'teste',
-            passwordConfirm: 'teste'
+            password: 'teste123',
+            passwordConfirm: 'teste123'
         }
     })
 
     const { mutate, isPending } = useMutation({
         mutationKey: ['signUp'],
-        mutationFn: AuthApi.signUp,
-        onSuccess: console.log,
-        onError: console.error
+        mutationFn: SignUp,
+        // onSuccess: () => router.replace('/home'),
+        // onError: console.error
     })
 
     const handleLogin = (data: SignUpParams) => {
@@ -69,6 +74,13 @@ export default function CredentialsSignUpForm() {
                 rules={{ required: true }}
                 secureTextEntry
             />
+            <ControlledInput
+                name='passwordConfirm'
+                label='Confirme sua senha'
+                control={control}
+                rules={{ required: true }}
+                secureTextEntry
+            />
 
 
             <Button
@@ -83,9 +95,8 @@ export default function CredentialsSignUpForm() {
             <Button
                 text='Acessar minha conta'
                 variant='ghost'
-                isLoading={isPending}
                 size="small"
-                asLink={'/login'} />
+                asLink={'/auth/login'} />
 
 
         </View>

@@ -1,9 +1,14 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Stack } from 'expo-router'
+import { SplashScreen, Stack } from 'expo-router'
 
 
 export default function AppRootLayout() {
+
+    SplashScreen.hideAsync()
+    console.log('render app');
+
+
     return (
         <Stack initialRouteName='(tabs)' screenOptions={{ headerShown: false }}>
             <Stack.Screen name='(tabs)' options={{ headerShadowVisible: false }} />

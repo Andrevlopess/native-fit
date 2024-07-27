@@ -10,9 +10,11 @@ import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
 import { Stack } from 'expo-router'
 import React from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import MonthHistoryCalendar from '@/components/workout/MonthHistoryCalendar'
+import { useAuth } from '@/contexts/AuthContext'
+import { Marquee } from '@/components/ui/Marquee'
 const exercises: IExercise[] =
   [
     {
@@ -91,7 +93,8 @@ const exercises: IExercise[] =
 export default function HomeIndexScreen() {
 
 
-  const { offset, scrollHandler } = useScrollValue('y')
+  const { offset, scrollHandler } = useScrollValue('y');
+  const { user } = useAuth()
 
   return (
 
@@ -115,8 +118,7 @@ export default function HomeIndexScreen() {
         contentContainerStyle={[s.gap8]}
       >
 
-        <AnimatedLargeTitle title='Início' offset={offset} style={[s.px12]} />
-
+        <AnimatedLargeTitle title={user?.user_metadata.username} offset={offset} style={[s.px12]} />
 
         {/* <WorkoutsCarouselList />
          */}

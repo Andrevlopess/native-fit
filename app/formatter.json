@@ -1,10 +1,33 @@
-[
-  {
-    "created_at": "2024-07-22T20:41:24.763921+00:00",
-    "description": "",
-    "exercises_count": 4,
-    "id": "c073070e-0d72-4f53-9b3e-a5434626d048",
-    "name": "treino potente",
-    "owner_id": "84f13dde-923f-4aa7-a706-4d2810f12c3c"
+{
+  "app_metadata": { "provider": "email", "providers": ["email"] },
+  "aud": "authenticated",
+  "created_at": "2024-07-27T11:57:27.398691Z",
+  "email": "andrellopes021@gmail.com",
+  "email_confirmed_at": "2024-07-27T11:57:27.40655783Z",
+  "id": "e99801b0-4f75-485c-b5b9-9f446f870478",
+  "identities": [
+    {
+      "created_at": "2024-07-27T11:57:27.403468Z",
+      "email": "andrellopes021@gmail.com",
+      "id": "e99801b0-4f75-485c-b5b9-9f446f870478",
+      "identity_data": [],
+      "identity_id": "78b43d77-13e7-4fdd-bd68-14833c801110",
+      "last_sign_in_at": "2024-07-27T11:57:27.403419752Z",
+      "provider": "email",
+      "updated_at": "2024-07-27T11:57:27.403468Z",
+      "user_id": "e99801b0-4f75-485c-b5b9-9f446f870478"
+    }
+  ],
+  "is_anonymous": false,
+  "last_sign_in_at": "2024-07-27T11:57:27.409598243Z",
+  "phone": "",
+  "role": "authenticated",
+  "updated_at": "2024-07-27T11:57:27.411933Z",
+  "user_metadata": {
+    "email": "andrellopes021@gmail.com",
+    "email_verified": false,
+    "phone_verified": false,
+    "sub": "e99801b0-4f75-485c-b5b9-9f446f870478",
+    "username": "andrevlopes"
   }
-]
+}

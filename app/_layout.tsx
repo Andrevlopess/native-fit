@@ -16,9 +16,17 @@ import 'react-native-reanimated';
 import { PortalProvider } from '@gorhom/portal';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
+import { AuthProvider } from '@/contexts/AuthContext';
+import * as Splash from 'expo-splash-screen'
 
+
+// Splash.preventAutoHideAsync()
 
 function RootLayout() {
+
+
+
+
 
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -54,14 +62,18 @@ function RootLayout() {
   return (
     // <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
     <QueryClientProvider client={queryClient}>
-      <PortalProvider>
-        <StatusBar barStyle='dark-content' />
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name='(app)' />
-        </Stack>
-        {/* <Slot /> */}
-      </PortalProvider>
+      <AuthProvider>
+        <PortalProvider>
+          <StatusBar barStyle='dark-content' />
+          {/* <Stack>
+            <Stack.Screen name="(app)" />
+          </Stack> */}
+          <Slot />
+        </PortalProvider>
+      </AuthProvider>
     </QueryClientProvider>
+
+
 
     // </ThemeProvider>
   );

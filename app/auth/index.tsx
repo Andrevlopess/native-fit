@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import { GoogleAuthButton } from '@/components/ui/GoogleAuthButton'
 import { s } from '@/styles/global'
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { Stack, router } from 'expo-router'
+import { SplashScreen, Stack, router } from 'expo-router'
 import React, { useEffect, useRef, useState } from 'react'
 import Animated from 'react-native-reanimated'
 
@@ -17,7 +17,6 @@ export default function AuthIndexScreen() {
                 options={{
                     title: ''
                 }}
-
             />
 
             <Animated.View
@@ -25,12 +24,10 @@ export default function AuthIndexScreen() {
 
                 {/* <GoogleAuthButton /> */}
 
-
-
                 <Button
                     text="Acessar minha conta"
                     // variant=''
-                    asLink={'/login'}
+                    asLink={'/auth/login'}
                 />
 
                 <Button

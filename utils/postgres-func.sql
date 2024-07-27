@@ -10,3 +10,5 @@ $$ language plpgsql;
 
 select
   <FUNCTIONNAME> ();
+
+SELECT prosrc FROM pg_proc WHERE proname = <'proc name'>;

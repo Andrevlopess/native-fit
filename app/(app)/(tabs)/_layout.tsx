@@ -38,7 +38,7 @@ export default function AppLayout() {
                         !device.web &&
                         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
                 }}
-                initialRouteName="workouts"
+                initialRouteName="home"
             >
                 <Tabs.Screen
                     name="home"

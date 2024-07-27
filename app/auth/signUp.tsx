@@ -11,13 +11,12 @@ import { Stack, router } from 'expo-router'
 import { ChevronLeft } from 'lucide-react-native'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { z } from 'zod'
 
 
 
 export default function SignUpScreen() {
-
 
     return (
         <>
@@ -30,11 +29,11 @@ export default function SignUpScreen() {
                 }}
             />
 
-            <View style={[s.flex1, s.bgWhite, s.p12]}>
+            <ScrollView style={[s.flex1, s.bgWhite, s.p12]}>
 
                 <CredentialsSignUpForm />
 
-            </View>
+            </ScrollView>
 
 
         </>

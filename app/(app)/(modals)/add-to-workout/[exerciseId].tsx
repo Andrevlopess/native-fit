@@ -38,8 +38,6 @@ export default function AddToWorkoutScreen() {
         queryFn: () => WorkoutApi.findAll({ search: debouncedSearch })
     })
 
-
-    console.log('results', workouts);
     
 
     const NotFoundComponent = () =>

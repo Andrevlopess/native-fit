@@ -42,7 +42,6 @@ function Modal(
   { children, ...props }: ModalProps,
   ref: ForwardedRef<BottomSheetModal>
 ) {
-  console.log('render a modal');
 
   return (
     <Portal>
