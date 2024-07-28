@@ -31,7 +31,6 @@ export default function ProfileIndexScreen() {
       <View style={[s.flex1, s.bgWhite, s.p12, s.itemsCenter, s.justifyCenter]}>
 
         <Button text='Logout' onPress={() => {
-          console.log('cliqued');
           Logout()
 
         }} />

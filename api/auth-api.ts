@@ -57,10 +57,6 @@ export class AuthApi {
 
   static async retrieveSession() {
     try {
-      // const { data, error } = await supabase.auth.getSession();
-
-      console.log("retrieving, api");
-
       const {
         data: { user },
         error,

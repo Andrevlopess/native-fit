@@ -34,8 +34,6 @@ export default function CredentialsLoginForm() {
     const { mutate, isPending } = useMutation({
         mutationKey: ['login'],
         mutationFn: Login,
-        // onSuccess: console.log,
-        // onError: console.error
     })
 
     const handleLogin = (data: LoginParams) => {

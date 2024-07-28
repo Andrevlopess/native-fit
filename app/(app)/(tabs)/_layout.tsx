@@ -1,13 +1,11 @@
+import Account from "@/assets/icons/Account";
+import Home from "@/assets/icons/Home";
+import Library from "@/assets/icons/Library";
+import Search from "@/assets/icons/Search";
 import COLORS from "@/constants/Colors";
 import { device } from "@/utils/device";
 import * as Haptics from 'expo-haptics';
 import { Tabs } from "expo-router";
-import {
-    Home,
-    LibrarySquare,
-    Search,
-    UserRound
-} from "lucide-react-native";
 import React from "react";
 import { Platform } from "react-native";
 import 'react-native-reanimated';
@@ -21,15 +19,14 @@ export default function AppLayout() {
                 screenOptions={{
                     tabBarStyle: {
                         padding: 16,
-                        height: Platform.OS === 'ios' ? 95 : 60,
+                        height: Platform.OS === 'ios' ? 70 : 60,
                         borderTopColor: "#fff",
-                        // elevation: 4
                     },
                     title: '',
                     headerShown: false,
                     tabBarHideOnKeyboard: true,
                     tabBarInactiveTintColor: COLORS.textGray,
-                    tabBarActiveTintColor: COLORS.indigo,
+                    tabBarActiveTintColor: COLORS.black,
                     headerShadowVisible: false,
                     // tabBarShowLabel: false,
                 }}
@@ -43,48 +40,32 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name="home"
                     options={{
-                        tabBarIcon: ({ color, focused }) => (
-                            <Home
-                                strokeWidth={focused ? 1.8 : 1.5}
-                                size={30}
-                                color={color}
-                            />
+                        tabBarIcon: ({ focused }) => (
+                            <Home focused={focused} />
                         )
                     }}
                 />
                 <Tabs.Screen
                     name="exercises"
                     options={{
-                        tabBarIcon: ({ color, focused }) => (
-                            <Search
-                                strokeWidth={focused ? 1.8 : 1.5}
-                                size={30}
-                                color={color}
-                            />
+                        tabBarIcon: ({ focused }) => (
+                            <Search focused={focused} />
                         )
                     }}
                 />
                 <Tabs.Screen
                     name="workouts"
                     options={{
-                        tabBarIcon: ({ color, focused }) => (
-                            <LibrarySquare
-                                strokeWidth={focused ? 1.8 : 1.5}
-                                size={30}
-                                color={color}
-                            />
+                        tabBarIcon: ({ focused }) => (
+                            <Library focused={focused} />
                         )
                     }}
                 />
                 <Tabs.Screen
                     name="profile"
                     options={{
-                        tabBarIcon: ({ color, focused }) => (
-                            <UserRound
-                                strokeWidth={focused ? 1.8 : 1.5}
-                                size={30}
-                                color={color}
-                            />
+                        tabBarIcon: ({ focused }) => (
+                            <Account focused={focused} />
                         )
                     }}
                 />

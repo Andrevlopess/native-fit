@@ -43,8 +43,6 @@ export default function CredentialsSignUpForm() {
     const { mutate, isPending } = useMutation({
         mutationKey: ['signUp'],
         mutationFn: SignUp,
-        // onSuccess: () => router.replace('/home'),
-        // onError: console.error
     })
 
     const handleLogin = (data: SignUpParams) => {

@@ -12,6 +12,7 @@ web-build/
 .env*.local
 app/formatter.json
 utils/postgres-func.sql
+.env
 
 
 # macOS
