@@ -30,11 +30,10 @@ const EmptyComponent = () =>
 export default function AddToWorkoutScreen() {
     const { exerciseId } = useLocalSearchParams<{ exerciseId: string }>();
 
-
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
 
-    const { user } = useAuth()
+    const { user } = useAuth();
 
     const { data: workouts = [], isPending, error } = useQuery({
         queryKey: ['workouts', debouncedSearch],

@@ -51,9 +51,10 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
         mutationKey: ['add-exercise-to'],
         mutationFn: WorkoutApi.addExercise,
         onSuccess: (data) => {
-            console.log(data);
-            
-            queryClient.invalidateQueries({ queryKey: ["workout-exercises"]});
+
+            data.map(inserted =>
+                queryClient.invalidateQueries({ queryKey: ["workout-exercises", inserted.workout_id] }))
+
             router.back();
         },
     })
@@ -104,7 +105,7 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
                         )
                     })}
                     {error &&
-                        <Snackbar message={error.message} variant='error'/>
+                        <Snackbar message={error.message} variant='error' />
                     }
                 </View>
 

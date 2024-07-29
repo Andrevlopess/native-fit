@@ -4,7 +4,7 @@ import { s } from "@/styles/global";
 import { Portal } from "@gorhom/portal";
 import { padding } from "aes-js";
 import React, { ElementType, useEffect, useState } from "react";
-import { StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
+import { ActivityIndicator, StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 import Animated, { FadeInDown, FadeInUp, FadeOutDown, FadeOutUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -31,6 +31,7 @@ interface SnackbarProps {
     duration?: number
     position?: Position;
     containerStyle?: StyleProp<ViewStyle>
+    isLoading?: boolean;
 }
 
 
@@ -43,6 +44,7 @@ export const Snackbar = ({
     position = "bottom",
     containerStyle,
     icon: Icon,
+    isLoading = false,
     onActionPress
 }: SnackbarProps) => {
 
@@ -91,7 +93,11 @@ export const Snackbar = ({
                     containerStyle,
                 ]}
             >
-                {Icon && <Icon size={24} color={COLORS.white} />}
+                {isLoading
+                    ? <ActivityIndicator color={COLORS.white} size={24} />
+                    : Icon && <Icon size={24} color={COLORS.white} />
+                }
+
                 <Text style={[
                     s.flex1,
                     s.medium,

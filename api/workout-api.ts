@@ -167,6 +167,19 @@ export class WorkoutApi {
       throw error;
     }
   }
+  static async teste(): Promise<string[]> {
+    try {
+      const { data, error } = await supabase.rpc("teste")
+      console.log(data);
+      
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   static async saveOnHistory(params: SaveOnHistoryParams) {
     try {

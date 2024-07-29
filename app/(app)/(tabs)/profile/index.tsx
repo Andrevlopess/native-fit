@@ -1,7 +1,9 @@
+import { WorkoutApi } from '@/api/workout-api'
 import Button from '@/components/ui/Button'
 import { LineDivisor } from '@/components/ui/Divisors'
 import { AuthContext, useAuth } from '@/contexts/AuthContext'
 import { s } from '@/styles/global'
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import React, { useContext, useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
@@ -13,6 +15,14 @@ export default function ProfileIndexScreen() {
   const { Logout } = useContext(AuthContext)
 
   const { user } = useAuth()
+
+  const { data } = useQuery({
+    queryKey: ['teste'],
+    queryFn: WorkoutApi.teste
+  })
+
+  console.log(data);
+
 
   return (
 

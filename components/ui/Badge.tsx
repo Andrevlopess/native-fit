@@ -22,8 +22,8 @@ export function Badge({ text, isSelected, ...props }: BagdeProps) {
     }
 
     const SelectedStyles: Styles = {
-        container: [s.bgIndigo100],
-        text: [s.textIndigo700]
+        container: [s.bgBlack],
+        text: [s.textWhite]
     }
     const UnselectedStyles: Styles = {
         container: [s.bgGray100],

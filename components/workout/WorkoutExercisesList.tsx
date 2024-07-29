@@ -13,6 +13,7 @@ import SkeletonList from '../ui/SkeletonList'
 import MessageView from '../views/MessageView'
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 import { IExercise } from '@/types/exercise'
+import { Snackbar } from '../ui/Snackbar'
 
 const AddExerciseCard = ({ id }: { id: string }) =>
     <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8, s.bgWhite, s.radius8]}>
@@ -41,7 +42,7 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
         queryFn: () => WorkoutApi.fetchExercises({ id: workoutId })
     })
 
-    const { mutate, isPending: isRemoving } = useMutation({
+    const { mutate, isPending: isRemoving, isSuccess } = useMutation({
         mutationKey: ['remove-exercise-from-workout', workoutId],
         mutationFn: WorkoutApi.removeExercise,
         // onSettled: () => {
@@ -108,6 +109,14 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
 
     return (
         <>
+            {isRemoving &&
+                <Snackbar message='Removendo exercício' isLoading/>
+            }
+            {isSuccess &&
+                <Snackbar message='Exercício removido'/>
+            }
+
+            
             <View style={[s.flex1, s.mt12]} >
                 {isPending
                     ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />

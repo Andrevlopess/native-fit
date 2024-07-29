@@ -82,14 +82,14 @@ export default function WorkoutScreen() {
 
 
 
-                                {!!workout.exercises_count &&
+                               
                                     <Button
                                         text='Iniciar treino'
                                         asLink={{ pathname: `/working-out/${id}` }}
                                         size='small'
                                         // rounded
                                     />
-                                }
+                                
                             </View>
                             <WorkoutExercisesList workoutId={id} />
                         </View>
