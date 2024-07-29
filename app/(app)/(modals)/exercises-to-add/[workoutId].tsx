@@ -48,8 +48,10 @@ export default function ExericesToAddModal() {
     const { mutate, isPending, variables } = useMutation({
         mutationKey: ['add-exercise-to', workoutId],
         mutationFn: WorkoutApi.addExercise,
-        onMutate: () =>
-            queryClient.invalidateQueries({ queryKey: ["workout-exercises", workoutId] }),
+        onMutate: () => {
+
+            queryClient.invalidateQueries({ queryKey: ["workout-exercises", workoutId] })
+        },
         onError: err => console.error(err.message)
     })
 
@@ -85,7 +87,7 @@ export default function ExericesToAddModal() {
     const renderFooter = () => {
         if (!isFetchingNextPage) return null;
         return (
-            <ActivityIndicator color={COLORS.indigo} style={[s.p12, s.mxAuto]} />
+            <ActivityIndicator color={COLORS.black} style={[s.p12, s.mxAuto]} />
         );
     };
 

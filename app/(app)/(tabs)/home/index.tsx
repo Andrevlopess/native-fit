@@ -118,7 +118,7 @@ export default function HomeIndexScreen() {
         contentContainerStyle={[s.gap8]}
       >
 
-        <AnimatedLargeTitle title={user?.user_metadata.username} offset={offset} style={[s.px12]} />
+        {/* <AnimatedLargeTitle title={user?.user_metadata.username} offset={offset} style={[s.px12]} /> */}
 
         {/* <WorkoutsCarouselList />
          */}

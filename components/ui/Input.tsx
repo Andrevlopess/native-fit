@@ -12,7 +12,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
+import { useSharedValue } from "react-native-reanimated";
 
 export interface IInputProps extends TextInputProps {
   icon?: React.ElementType;
@@ -88,8 +88,8 @@ const Input = ({
           ref={ref}
           placeholderTextColor={error ? COLORS.red : COLORS.placeholderGray}
           secureTextEntry={secure}
-          cursorColor={COLORS.indigo}
-          selectionColor={`${COLORS.indigo}30`}
+          cursorColor={COLORS.black}
+          selectionColor={`${COLORS.black}30`}
           enablesReturnKeyAutomatically
           clearButtonMode="always"
           style={[

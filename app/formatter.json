@@ -1,33 +1,14 @@
-{
-  "app_metadata": { "provider": "email", "providers": ["email"] },
-  "aud": "authenticated",
-  "created_at": "2024-07-27T11:57:27.398691Z",
-  "email": "andrellopes021@gmail.com",
-  "email_confirmed_at": "2024-07-27T11:57:27.40655783Z",
-  "id": "e99801b0-4f75-485c-b5b9-9f446f870478",
-  "identities": [
-    {
-      "created_at": "2024-07-27T11:57:27.403468Z",
-      "email": "andrellopes021@gmail.com",
-      "id": "e99801b0-4f75-485c-b5b9-9f446f870478",
-      "identity_data": [],
-      "identity_id": "78b43d77-13e7-4fdd-bd68-14833c801110",
-      "last_sign_in_at": "2024-07-27T11:57:27.403419752Z",
-      "provider": "email",
-      "updated_at": "2024-07-27T11:57:27.403468Z",
-      "user_id": "e99801b0-4f75-485c-b5b9-9f446f870478"
-    }
-  ],
-  "is_anonymous": false,
-  "last_sign_in_at": "2024-07-27T11:57:27.409598243Z",
-  "phone": "",
-  "role": "authenticated",
-  "updated_at": "2024-07-27T11:57:27.411933Z",
-  "user_metadata": {
-    "email": "andrellopes021@gmail.com",
-    "email_verified": false,
-    "phone_verified": false,
-    "sub": "e99801b0-4f75-485c-b5b9-9f446f870478",
-    "username": "andrevlopes"
+[
+  {
+    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
+    "workout_id": "8001d6b0-4356-493d-8b29-16721225afb2"
+  },
+  {
+    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
+    "workout_id": "ec119a07-b631-45b5-ac7b-c959a8341fc3"
+  },
+  {
+    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
+    "workout_id": "7b81f4f0-d726-47dd-9fd1-3e95cfce022b"
   }
-}
+]

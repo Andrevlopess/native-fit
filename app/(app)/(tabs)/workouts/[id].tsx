@@ -51,7 +51,7 @@ export default function WorkoutScreen() {
                     <Link href={{
                         pathname: `/edit-workout/${id}`,
                         params: { name: workout.name, description: workout.description }
-                    }} style={[s.bold, s.textIndigo600, s.textBase, s.p12]}>
+                    }} style={[s.bold, s.textBlack, s.textBase, s.p12]}>
                         Editar
                     </Link>
             }} />
@@ -80,11 +80,7 @@ export default function WorkoutScreen() {
                         <View>
                             <View style={[s.flexRow, s.gap4, s.p12]}>
 
-                                {/* <Link asChild href={`/(app)/(modals)/exercises-to-add/${id}`} style={[s.mlAuto]}>
-                                    <Button variant='tertiary' size='small' rounded>
-                                        <Plus color={COLORS.gray900} />
-                                    </Button>
-                                </Link> */}
+
 
                                 {!!workout.exercises_count &&
                                     <Button

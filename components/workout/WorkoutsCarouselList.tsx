@@ -37,6 +37,7 @@ export default function WorkoutsCarouselList() {
 
     const workouts: IWorkout[] = [
         {
+            
             id: '1',
             createdat: 'as',
             description: 'teste',
@@ -110,7 +111,7 @@ export default function WorkoutsCarouselList() {
             <View style={[s.justifyBetween, s.itemsCenter, s.flexRow, s.px12]}>
                 <Text style={[s.bold, s.text2XL]}>Treino de hoje</Text>
                 <Link asChild href={`/(app)/(modals)/exercises-to-add/48f2846e-7f8e-495d-afda-f2ff607c339a`}>
-                    <Button text='Ver todos' variant='tertiary' size='small' rounded />
+                    <Button text='Ver todos' variant='secondary' size='small' rounded />
                 </Link>
             </View>
 

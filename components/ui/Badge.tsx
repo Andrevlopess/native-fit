@@ -1,6 +1,4 @@
-import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
-import { Check } from 'lucide-react-native';
 import React from 'react';
 import { StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
@@ -44,7 +42,7 @@ export function Badge({ text, isSelected, ...props }: BagdeProps) {
             entering={FadeIn}
             layout={LinearTransition.springify().stiffness(500).damping(60)}> */}
 
-            {/* {isSelected && <Check color={COLORS.indigo} />} */}
+            {/* {isSelected && <Check color={COLORS.black} />} */}
             <Text style={[
                 DefaultStyles.text,
                 isSelected ? SelectedStyles.text : UnselectedStyles.text

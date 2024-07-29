@@ -1,15 +1,13 @@
+import { WorkoutApi } from '@/api/workout-api';
 import COLORS from '@/constants/Colors';
-import { supabase } from '@/lib/supabase';
 import { s } from '@/styles/global';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { router } from 'expo-router';
 import React, { useCallback } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { DateData, MarkedDates } from 'react-native-calendars/src/types';
 import Button from '../ui/Button';
-import { WorkoutApi } from '@/api/workout-api';
 
 
 let today = new Date().toISOString().split('T')[0]
@@ -35,7 +33,7 @@ export default function MonthHistoryCalendar() {
         {
             selected: true,
             disabled: false,
-            color: COLORS.indigo,
+            color: COLORS.black,
             textColor: COLORS.white,
             customContainerStyle: s.radius12
         };
@@ -64,10 +62,9 @@ export default function MonthHistoryCalendar() {
 
         return (
             <View style={[s.flexRow, s.justifyBetween, s.itemsStart, s.py8, s.flex1]}>
-                <Text style={[s.textXL, s.semibold, s.textIndigo600]}>Atividades de {month}</Text>
-                {isPending && <ActivityIndicator color={COLORS.indigo} />}
+                <Text style={[s.textXL, s.semibold, s.textBlack]}>Atividades de {month}</Text>
                 {/* <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{year}</Text> */}
-                <Button text='Ver mais' size='small' variant='tertiary' asLink={'/workouts/history'} rounded />
+                <Button text='Ver mais' size='small' variant='secondary' asLink={'/workouts/history'} rounded />
 
             </View>
         );
@@ -92,10 +89,10 @@ export default function MonthHistoryCalendar() {
             theme={{
                 textMonthFontFamily: 'Inter_500Medium',
                 textDayFontFamily: 'Inter_500Medium',
-                todayTextColor: COLORS.indigo,
+                todayTextColor: COLORS.black,
                 textDayStyle: s.medium,
                 textDisabledColor: COLORS.iosTextGray,
-                selectedDayBackgroundColor: COLORS.indigo,
+                selectedDayBackgroundColor: COLORS.black,
                 selectedDayTextColor: COLORS.white
             }}
         />

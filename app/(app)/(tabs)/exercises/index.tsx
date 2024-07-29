@@ -137,7 +137,7 @@ export default function LibraryIndexScreen() {
               {hasNextPage &&
                 <Button
                   style={[s.m12]}
-                  variant='tertiary'
+                  variant='secondary'
                   text='Buscar mais'
                   onPress={() => fetchNextPage()}
                   isLoading={isFetchingNextPage}

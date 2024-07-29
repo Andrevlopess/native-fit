@@ -8,6 +8,7 @@ import { PlusCircle } from 'lucide-react-native'
 import React from 'react'
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated'
+import CircleDivisor from '../ui/Divisors'
 
 
 const DEFAULT_IMAGE_SIZE = 70;
@@ -91,13 +92,13 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                         <Animated.Image
                             src={exercise.gifurl}
                             style={[s.radius8, imageAnimation]}
-                            defaultSource={require('@/assets/images/react-logo.png')}                 
+                            defaultSource={require('@/assets/images/icon.png')}                 
                         />
                     </Pressable>
                     : <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
                         <Image
                             placeholder={
-                                require('@/assets/images/react-logo.png')
+                                require('@/assets/images/icon.png')
                             }
                             source={exercise.gifurl}
                             style={[s.radius8, { height: DEFAULT_IMAGE_SIZE, width: DEFAULT_IMAGE_SIZE }]} />
@@ -115,6 +116,7 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                     <View style={[s.flexRow, s.gap6, s.itemsCenter]}>
 
                         <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
+                        <CircleDivisor/>
                         <Text style={[s.regular, s.textGray400]}>{exercise.target}</Text>
                     </View>
 

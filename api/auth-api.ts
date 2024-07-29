@@ -37,7 +37,19 @@ export class AuthApi {
         password: params.password,
       });
 
-      if (error) throw error;
+      if (error) {
+        let message;
+
+        switch (error.message) {
+          case "Invalid login credentials":
+            message = "Email ou senha incorretos.";
+            break;
+          default:
+            message = "Não foi possível entrar na sua conta.";
+            break;
+        }
+        throw new Error(message);
+      }
 
       return data;
     } catch (error) {

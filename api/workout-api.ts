@@ -1,11 +1,11 @@
-import { DEFAULT_USER_UUID } from "@/constants/user";
-
+import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
 import { IWorkout } from "@/types/workout";
 type Period = "all-time" | "year" | "month" | "week";
 
 export interface FindAllWorkoutParams {
+  userId?: string;
   search?: string;
 }
 export interface FindOneWorkoutParams {
@@ -60,12 +60,14 @@ export type AddExerciseResponse = {
 export class WorkoutApi {
   private constructor() {}
 
-  static async findAll(params: FindAllWorkoutParams = {}): Promise<IWorkout[]> {
+  static async findAll(params: FindAllWorkoutParams): Promise<IWorkout[]> {
     try {
+      if (!params.userId) throw new Error("User not found");
+
       let query = supabase
         .from("workouts")
         .select()
-        .eq("owner_id", DEFAULT_USER_UUID)
+        .eq("owner_id", params.userId)
         .ilike("name", `%${params.search}%`)
         .returns<IWorkout[]>();
 
@@ -101,7 +103,6 @@ export class WorkoutApi {
       const { data: workout, error } = await supabase
         .from("workouts")
         .insert({
-          owner_id: DEFAULT_USER_UUID,
           name: params.name,
           description: params.description,
         })
@@ -154,7 +155,7 @@ export class WorkoutApi {
   static async fetchHistory(params: FetchHistoryParams): Promise<string[]> {
     try {
       const { data, error } = await supabase
-        .rpc("workedout_dates", {period: params.period})
+        .rpc("workedout_dates", { period: params.period })
         .returns<{ doneat: string }[]>();
 
       if (error) throw error;
@@ -172,7 +173,6 @@ export class WorkoutApi {
       const { data, error } = await supabase
         .from("workouts_history")
         .insert({
-          user_id: DEFAULT_USER_UUID,
           workout_id: params.id,
         })
         .select("id")
@@ -226,6 +226,9 @@ export class WorkoutApi {
     });
 
     try {
+      if (!params.workouts || !params.exercise)
+        throw new Error("Parâmetros inválidos");
+
       const { data, error } = await supabase
         .from("workout_exercises")
         .upsert(insertArray)
@@ -233,6 +236,7 @@ export class WorkoutApi {
 
       if (error?.code === "23505")
         throw new Error("Esse exercício já foi adicionado!");
+
       if (error) throw error;
 
       return data;

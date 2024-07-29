@@ -1,7 +1,7 @@
 import COLORS from "@/constants/Colors";
 import { s } from "@/styles/global";
 import { IWorkout } from "@/types/workout";
-import { CheckCircle, CheckCircle2, Circle } from "lucide-react-native";
+import { CheckCircle2, Circle } from "lucide-react-native";
 import { Text, TouchableOpacity, View } from "react-native";
 
 
@@ -44,7 +44,7 @@ export const SelectableWorkoutListCard =
 
                 <View style={[s.radiusFull, s.bgGray100, s.p6, s.mlAuto]}>
                     {isSelected
-                        ? <CheckCircle2 size={28} color={COLORS.indigo} />
+                        ? <CheckCircle2 size={28} color={COLORS.black} />
                         : <Circle size={28} color={COLORS.gray} />}
                 </View>
             </TouchableOpacity>

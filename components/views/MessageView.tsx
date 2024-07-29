@@ -22,12 +22,12 @@ export default function MessageView({ icon: Icon, message, description, children
             s.bgWhite,
             s.p12,
             s.mt42
-            ]}>
+        ]}>
 
             {Icon && <Icon size={96} color={COLORS.gray} strokeWidth={1.4} />}
 
-            <Text style={[s.bold, s.textXL, s.mt12, s.textCenter]}>{message}</Text>
-            <Text style={[s.medium, s.textBase, s.textGray500, s.textCenter, {marginBottom: 24}]}>{description}</Text>
+            <Text style={[s.bold, s.text2XL, s.mt12, s.textCenter]}>{message}</Text>
+            <Text style={[s.medium, s.textBase, s.textGray500, s.textCenter, { marginBottom: 12 }]}>{description}</Text>
 
             {children}
         </View>

@@ -4,6 +4,7 @@ import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
 import WorkoutSelectableList from '@/components/workout/WorkoutSelectableList'
+import { useAuth } from '@/contexts/AuthContext'
 import { useDebounce } from '@/hooks/useDebounceCallback'
 import { s } from '@/styles/global'
 import { device } from '@/utils/device'
@@ -29,16 +30,18 @@ const EmptyComponent = () =>
 export default function AddToWorkoutScreen() {
     const { exerciseId } = useLocalSearchParams<{ exerciseId: string }>();
 
+
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
 
+    const { user } = useAuth()
 
     const { data: workouts = [], isPending, error } = useQuery({
         queryKey: ['workouts', debouncedSearch],
-        queryFn: () => WorkoutApi.findAll({ search: debouncedSearch })
+        queryFn: () => WorkoutApi.findAll({ userId: user?.id, search: debouncedSearch })
     })
 
-    
+
 
     const NotFoundComponent = () =>
         <MessageView
@@ -84,7 +87,7 @@ export default function AddToWorkoutScreen() {
             >
 
 
-                <Button text='Novo treino' variant='secondary' size='small' asLink='/new-workout' />
+                <Button text='Novo treino' size='small' variant='secondary' asLink='/new-workout' />
                 <SearchInput
                     onChangeText={setSearch}
                     placeholder='Encontrar treino'

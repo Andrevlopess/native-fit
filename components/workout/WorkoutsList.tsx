@@ -11,6 +11,7 @@ import Button from '../ui/Button';
 import SkeletonList from '../ui/SkeletonList';
 import MessageView from '../views/MessageView';
 import { WorkoutListCard } from './WorkoutListCard';
+import { useAuth } from '@/contexts/AuthContext';
 
 
 const NewWorkoutCard = () =>
@@ -19,7 +20,7 @@ const NewWorkoutCard = () =>
             <View style={[s.radius12, s.bgGray200, s.itemsCenter, s.justifyCenter, { height: 60, width: 60 }]}>
                 <Plus color={COLORS.white} />
             </View>
-            <Text style={[s.textBase, s.medium]}>Adicionar um novo treino</Text>
+            <Text style={[s.textBase, s.medium]}>Criar um novo treino</Text>
         </TouchableOpacity>
     </Link>
 
@@ -28,39 +29,41 @@ const EmptyComponent = () =>
         icon={Inbox}
         message='Você ainda não criou nenhum treino!'
         description='Começe criando um treino para se exercitar'>
-        <Button text='Criar treino' size='small' variant='secondary' asLink={'/new-workout'} />
+        <Button text='Criar treino' variant='secondary' asLink={'/new-workout'} />
     </MessageView>
-
-const ErrorComponent = () =>
-    <MessageView
-        icon={X}
-        message='Não conseguimos buscar seus treinos!'
-        description='Verifique sua conexão e tente novamente' />
-
-
-
 
 
 export default function WorkoutsList() {
 
-    const { data: workouts, isPending, isError } = useQuery({
+
+    const { user } = useAuth()
+
+    const { data: workouts = [], isFetching, isError, isRefetching, refetch } = useQuery({
         queryKey: ['workouts'],
-        queryFn: () => WorkoutApi.findAll({ search: '' })
+        queryFn: () => WorkoutApi.findAll({ userId: user?.id, search: '' })
     })
 
 
     return (
-
         <View style={[s.p12]}>
             <Text style={[s.textGray800, s.semibold, s.textXL]}>Meus treinos</Text>
             <View style={[s.py24, s.gap12]}>
 
-
-
-                {isPending
+                {isFetching
                     ? <SkeletonList length={3} />
                     : isError
-                        ? <ErrorComponent />
+                        ? <MessageView
+                            icon={X}
+                            message='Não conseguimos buscar seus treinos!'
+                            description='Verifique sua conexão e tente novamente'
+                        >
+                            <Button
+                                isLoading={isRefetching}
+                                onPress={() => refetch()}
+                                variant='secondary'
+                                text='Tentar novamente' />
+                        </MessageView>
+
                         : !workouts.length
                             ? <EmptyComponent />
                             : <View style={[s.gap12]}>

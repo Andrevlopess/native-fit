@@ -7,7 +7,7 @@ import React, { ForwardedRef, PropsWithChildren, forwardRef } from 'react';
 import { ActivityIndicator, ColorValue, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
 
-type Variant = 'primary' | 'secondary' | 'tertiary' | 'ghost';
+type Variant = 'primary' | 'secondary' | 'ghost';
 type Size = 'small' | 'medium' | 'large';
 
 type VariantStyles =
@@ -34,40 +34,27 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
     const disabled = props.disabled;
 
     const sizedStyles: Record<Size, StyleProp<ViewStyle>[]> = {
-        small: [s.px12, s.py10],
-        medium: [s.p14],
-        large: [s.p18]
+        small: [s.px8, s.py8],
+        medium: [s.px12, s.py10],
+        large: [s.p14]
     }
 
     const textStylesBySize: Record<Size, StyleProp<TextStyle>[]> = {
-        small: [s.textBase, s.semibold],
-        medium: [s.textLG, s.bold],
+        small: [s.textSM, s.semibold],
+        medium: [s.textBase, s.semibold],
         large: [s.textXL, s.bold]
     }
 
     const activityIndicatorSizes: Record<Size, number> = {
-        large: 32,
-        medium: 28,
-        small: 24
+        large: 31,
+        medium: 27,
+        small: 22
     }
 
     const variantStyles: VariantStyles = {
         primary: {
             container: [
-
-                disabled ? s.bgGray300 : s.bgIndigo600,
-                rounded ? s.radiusFull : s.radius12,
-                sizedStyles[size],
-                s.itemsCenter,
-                s.justifyCenter,
-                s.flexRow,
-            ],
-            text: [textStylesBySize[size], s.textWhite, s.px12],
-            activityIndicator: { color: COLORS.white }
-        },
-        secondary: {
-            container: [
-                disabled ? s.bgGray50 : s.bgBlack,
+                disabled ? s.bgStone200 : s.bgBlack,
                 rounded ? s.radiusFull : s.radius12,
                 sizedStyles[size],
                 s.itemsCenter,
@@ -76,30 +63,28 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
             text: [disabled ? s.textStone400 : s.textWhite, textStylesBySize[size], s.px12],
             activityIndicator: { color: COLORS.white }
         },
-        tertiary: {
+        secondary: {
             container: [
-                disabled ? s.bgGray50 : s.bgGray100,
+                disabled ? s.bgStone50 : s.bgGray200,
                 rounded ? s.radiusFull : s.radius12,
                 sizedStyles[size],
                 s.itemsCenter,
                 s.justifyCenter,
-
             ],
-            text: [disabled ? s.textStone400 : s.textGray500, textStylesBySize[size]],
-            activityIndicator: { color: COLORS.textGray }
+            text: [disabled ? s.textStone300 : s.textBlack, textStylesBySize[size], s.px12],
+            activityIndicator: { color: COLORS.black }
         },
         ghost: {
             container: [
                 sizedStyles[size],
-                // s.py8,
                 s.itemsCenter,
                 s.justifyCenter,
             ],
-            text: [textStylesBySize[size], s.px12, disabled ? s.textStone400 : s.textIndigo600],
-            activityIndicator: { color: COLORS.indigo }
+            text: [textStylesBySize[size], s.px12, disabled ? s.textStone300 : s.textBlack],
+            activityIndicator: { color: COLORS.black }
         }
     }
-    
+
     if (asLink) return (
         <Link href={asLink}
             asChild
@@ -110,7 +95,7 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
             <TouchableOpacity
                 {...props}
                 ref={ref}
-                disabled={isLoading}
+                disabled={isLoading || props.disabled}
                 activeOpacity={0.8}
             >
                 {props.children

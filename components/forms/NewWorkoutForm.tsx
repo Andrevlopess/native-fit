@@ -8,7 +8,7 @@ import { Text, View } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { WorkoutApi } from '@/api/workout-api'
 
 
@@ -22,6 +22,9 @@ type NewWorkoutValues = z.infer<typeof NewWorkoutSchema>
 
 export default function NewWorkoutForm() {
 
+
+
+    const queryCLient = useQueryClient()
 
     const { control, handleSubmit } = useForm<NewWorkoutValues>({
         resolver: zodResolver(NewWorkoutSchema),
@@ -37,6 +40,8 @@ export default function NewWorkoutForm() {
         mutationFn: WorkoutApi.create,
         onError: console.error,
         onSuccess: ({ id, description, name }) => {
+            queryCLient.invalidateQueries({ queryKey: ['workouts'] })
+
             router.replace(`/workouts`)
             router.push({
                 pathname: `/workouts/${id}`,

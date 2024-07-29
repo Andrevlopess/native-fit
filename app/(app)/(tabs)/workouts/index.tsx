@@ -32,11 +32,11 @@ export default function MyWorkoutsScreen() {
                                 asChild
                                 href={'/workouts/new-workout'}>
                                 <TouchableOpacity>
-                                    <Plus color={COLORS.indigo} />
+                                    <Plus color={COLORS.black} />
                                 </TouchableOpacity>
                             </Link>
                             <Button asLink={'/workouts/history'} variant='ghost'>
-                                <History color={COLORS.indigo} />
+                                <History color={COLORS.black} />
                             </Button>
                         </View>
                     ,
@@ -58,11 +58,7 @@ export default function MyWorkoutsScreen() {
                 contentContainerStyle={[s.gap12, s.py12]}>
 
                 <AnimatedLargeTitle title='Treinos' offset={offset} style={[s.px12]} />
-
-            
-
                 <Divisor />
-
                 <WorkoutsList />
 
 

@@ -1,15 +1,18 @@
 import Button from '@/components/ui/Button'
-import { AuthContext } from '@/contexts/AuthContext'
+import { LineDivisor } from '@/components/ui/Divisors'
+import { AuthContext, useAuth } from '@/contexts/AuthContext'
 import { s } from '@/styles/global'
 import { Stack } from 'expo-router'
-import React, { useContext } from 'react'
-import { View } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { ScrollView, Text, View } from 'react-native'
 
 export default function ProfileIndexScreen() {
 
 
   // const handleMoveTouch = useCallback(() => { }, [])
   const { Logout } = useContext(AuthContext)
+
+  const { user } = useAuth()
 
   return (
 
@@ -28,13 +31,16 @@ export default function ProfileIndexScreen() {
       />
 
 
-      <View style={[s.flex1, s.bgWhite, s.p12, s.itemsCenter, s.justifyCenter]}>
+      <ScrollView
+        contentContainerStyle={[s.gap4, s.p12]}
+        style={[s.flex1, s.bgWhite]}>
 
-        <Button text='Logout' onPress={() => {
-          Logout()
-
-        }} />
-      </View>
+        <Text style={[s.text2XL, s.textBlack]}>{user?.id}</Text>
+        <Text style={[s.text2XL, s.textBlack]}>{user?.user_metadata.username}</Text>
+        <Text style={[s.text2XL, s.textBlack]}>{user?.email}</Text>
+        <Text style={[s.text2XL, s.textBlack]}>{user?.role}</Text>
+        <Button text='Exit' onPress={Logout} />
+      </ScrollView>
     </>
 
   )

@@ -56,7 +56,7 @@ export default function ExerciseListSection({ title, filter }: ExerciseListSecti
   const renderFooter = () => {
     if (!isFetchingNextPage) return null;
     return (
-      <ActivityIndicator color={COLORS.indigo} style={[s.p12, s.mxAuto]} />
+      <ActivityIndicator color={COLORS.black} style={[s.p12, s.mxAuto]} />
     );
   };
 

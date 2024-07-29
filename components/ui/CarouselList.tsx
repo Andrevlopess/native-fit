@@ -3,15 +3,13 @@ import { SCREEN_WIDTH } from '@/constants/Dimensions';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
 import React from 'react';
-import { Dimensions, FlatListProps, ListRenderItemInfo, View } from 'react-native';
+import { FlatListProps, ListRenderItemInfo, View } from 'react-native';
 import Animated, {
     Extrapolation,
     SharedValue,
     interpolate,
     interpolateColor,
-    useAnimatedScrollHandler,
-    useAnimatedStyle,
-    useSharedValue,
+    useAnimatedStyle
 } from 'react-native-reanimated';
 
 const MARGIN_HORIZONTAL = 6;
@@ -55,7 +53,7 @@ export const SectionIndicatorComponent = ({ inputRange, scrollX }: AnimatedProps
             width: interpolate(scrollX.value, inputRange, [6, 24, 6], Extrapolation.CLAMP),
             height: 6,
             backgroundColor: interpolateColor(scrollX.value, inputRange,
-                [COLORS.gray, COLORS.indigo, `${COLORS.indigo}50`]),
+                [COLORS.gray, COLORS.black, `${COLORS.black}50`]),
         };
     });
 

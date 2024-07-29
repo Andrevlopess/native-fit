@@ -74,9 +74,6 @@ export const HistoryCalendar = () => {
         queryFn: () => WorkoutApi.fetchHistory({ period: 'all-time' })
     });
 
-    console.log(dates);
-
-
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
         const isStartingDay =
@@ -90,7 +87,7 @@ export const HistoryCalendar = () => {
         {
             selected: true,
             disabled: false,
-            color: COLORS.indigo,
+            color: COLORS.black,
             textColor: COLORS.white,
             customContainerStyle: s.radius12
         };
@@ -119,10 +116,10 @@ export const HistoryCalendar = () => {
 
         return (
             <View style={[s.flexRow, s.justifyBetween, s.itemsCenter, s.py8, s.flex1]}>
-                <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{month}</Text>
-                {isPending && <ActivityIndicator color={COLORS.indigo} />}
+                <Text style={[s.textXL, s.semibold, s.textBlack]}>{month}</Text>
+                {isPending && <ActivityIndicator color={COLORS.black} />}
 
-                <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{year}</Text>
+                <Text style={[s.textXL, s.semibold, s.textBlack]}>{year}</Text>
             </View>
         );
     }
@@ -163,10 +160,10 @@ export const HistoryCalendar = () => {
                         theme={{
                             textDayFontFamily: 'Inter_500Medium',
                             textMonthFontFamily: 'Inter_500Medium',
-                            todayTextColor: COLORS.indigo,
+                            todayTextColor: COLORS.black,
                             textDayStyle: s.medium,
                             textDisabledColor: COLORS.iosTextGray,
-                            selectedDayBackgroundColor: COLORS.indigo,
+                            selectedDayBackgroundColor: COLORS.black,
                             selectedDayTextColor: COLORS.white,
                         }}
                     />

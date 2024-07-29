@@ -4,6 +4,8 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export default function AuthLayout() {
 
+  console.log('rendered auth');
+  
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) return <Redirect href={'/home'} />
   SplashScreen.hideAsync()
