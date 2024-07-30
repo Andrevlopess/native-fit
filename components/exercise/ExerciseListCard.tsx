@@ -24,7 +24,6 @@ interface ExerciseListCardProps {
 
 export default function ExerciseListCard({ exercise, width, showsAddButton = true, readOnly = false, enableExpandImage = true }: ExerciseListCardProps) {
 
-    const rest = (({ id, ...rest }) => rest)(exercise);
 
     const AnimatedLink = Animated.createAnimatedComponent(Link)
 
@@ -53,11 +52,8 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
             //     stiffness: 500,
             //     damping: 60
             // }),
-
         }
     })
-
-
 
     const handleToggleExpand = () => {
         if (!enableExpandImage) return;
@@ -69,10 +65,9 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
         <AnimatedLink
             disabled={readOnly}
             href={{
-                pathname: `/exercise-details/${exercise.id}`,
-                params: rest
+                pathname: `/exercise-details/[id]`,
+                params: { ...exercise }
             }}
-            // href={`/(app)/exercises/${exercise.id}`}
             asChild
             push
             style={[
@@ -93,7 +88,7 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                             src={exercise.gifurl}
                             style={[s.radius8, imageAnimation]}
                             fadeDuration={0}
-                            // defaultSource={require('@/assets/images/icon.png')}                 
+                        // defaultSource={require('@/assets/images/icon.png')}                 
                         />
                     </Pressable>
                     : <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
@@ -110,14 +105,14 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
 
                 <View style={[s.gap4, s.flex1]}>
                     <Text
-                        style={[s.medium, s.textBase, { lineHeight: 18 }]}
+                        style={[s.medium, s.textBase, s.flex1, { lineHeight: 18 }]}
                         numberOfLines={2}>
                         {exercise.name}
                     </Text>
                     <View style={[s.flexRow, s.gap6, s.itemsCenter]}>
 
                         <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
-                        <CircleDivisor/>
+                        <CircleDivisor />
                         <Text style={[s.regular, s.textGray400]}>{exercise.target}</Text>
                     </View>
 
@@ -127,7 +122,10 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                     <Link
                         style={[s.mrAuto, s.myAuto, s.bgGray100, s.radiusFull, s.p8]}
                         asChild
-                        href={`/(app)/(modals)/add-to-workout/${exercise.id}`}
+                        href={{
+                            pathname: '/add-to-workout/[exerciseId]',
+                            params: { exerciseId: exercise.id }
+                        }}
                     // href={`/(app)/teste`}
                     >
                         <TouchableOpacity activeOpacity={0.8}>

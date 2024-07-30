@@ -1,16 +1,18 @@
-import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import React, { useCallback, useMemo } from 'react'
-import { Text, View } from 'react-native'
+import { Dimensions, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import ExerciseListCard from './ExerciseListCard'
+import { SCREEN_WIDTH } from '@gorhom/bottom-sheet'
+
 
 const padding = 12;
 const CARD_WIDTH = SCREEN_WIDTH - padding * 4
 
-const FeaturedExercisesSection = ({ exercises }: { exercises: IExercise[] }) => {
 
+const FeaturedExercisesSection = ({ exercises }: { exercises: IExercise[] }) => {
+    
     return (
         <View style={[s.flex1]}>
             {exercises.map((exercise, index) => (

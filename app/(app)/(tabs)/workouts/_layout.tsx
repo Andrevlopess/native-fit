@@ -10,7 +10,10 @@ export const unstable_settings = {
 export default function WorkoutsLayout() {
   return (
     // <WorkoutProvider>
-      <Stack screenOptions={{headerShadowVisible: false}} initialRouteName="index"  />
+    <Stack
+      screenOptions={{ headerShadowVisible: false }}
+      initialRouteName="index" />
+        
     // </WorkoutProvider> 
   );
 }

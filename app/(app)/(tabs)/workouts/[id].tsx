@@ -40,21 +40,27 @@ export default function WorkoutScreen() {
 
     return (
         <>
-            <Stack.Screen options={{
-                title: workout?.name || "",
-                // headerLargeTitle: true,
-                headerTitleAlign: 'left',
-                headerBackTitleVisible: false,
-                headerTitle: ({ children }) =>
-                    <AnimatedHeaderTitle offset={offset} title={children} />,
-                headerRight: () => workout &&
-                    <Link href={{
-                        pathname: `/edit-workout/${id}`,
-                        params: { name: workout.name, description: workout.description }
-                    }} style={[s.bold, s.textBlack, s.textBase, s.p12]}>
-                        Editar
-                    </Link>
-            }} />
+            <Stack.Screen
+                getId={({ params }) => {
+                    console.log('para metros', params);
+                    return params?.id
+
+                }}
+                options={{
+                    title: workout?.name || "",
+                    // headerLargeTitle: true,
+                    headerTitleAlign: 'left',
+                    headerBackTitleVisible: false,
+                    headerTitle: ({ children }) =>
+                        <AnimatedHeaderTitle offset={offset} title={children} />,
+                    headerRight: () => workout &&
+                        <Link href={{
+                            pathname: `/edit-workout/[id]`,
+                            params: { id: workout.id, name: workout.name, description: workout.description }
+                        }} style={[s.bold, s.textBlack, s.textBase, s.p12]}>
+                            Editar
+                        </Link>
+                }} />
 
             {isPending
                 ? <LoadingView />

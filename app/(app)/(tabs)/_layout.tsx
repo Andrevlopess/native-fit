@@ -22,8 +22,10 @@ export default function AppLayout() {
                         padding: 16,
                         height: Platform.OS === 'ios' ? 70 : 60,
                         borderTopColor: "#fff",
+                        borderWidth: 0
                     },
                     title: '',
+                    
                     headerShown: false,
                     tabBarHideOnKeyboard: true,
                     tabBarInactiveTintColor: COLORS.textGray,
@@ -57,7 +59,6 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name="workouts"
                     options={{
-                        href: null,
                         tabBarIcon: ({ focused }) => (
                             <Library focused={focused} />
                         )
