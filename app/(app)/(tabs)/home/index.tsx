@@ -8,13 +8,14 @@ import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { Stack } from 'expo-router'
+import { router, Stack, useNavigation, useRouter } from 'expo-router'
 import React from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import MonthHistoryCalendar from '@/components/workout/MonthHistoryCalendar'
 import { useAuth } from '@/contexts/AuthContext'
 import { Marquee } from '@/components/ui/Marquee'
+import Button from '@/components/ui/Button'
 const exercises: IExercise[] =
   [
     {
@@ -96,6 +97,10 @@ export default function HomeIndexScreen() {
   const { offset, scrollHandler } = useScrollValue('y');
   const { user } = useAuth()
 
+  const nav = useNavigation()
+  const rou = useRouter()
+
+
   return (
 
     <>
@@ -123,6 +128,18 @@ export default function HomeIndexScreen() {
         {/* <WorkoutsCarouselList />
          */}
         <MonthHistoryCalendar />
+
+        <Button  text='go to workout' onPress={() => 
+         router.navigate('workouts/7b81f4f0-d726-47dd-9fd1-3e95cfce022b')
+        }/>
+        <Button  text='go to workout w push' onPress={() => {
+
+          // router.push('workouts/7b81f4f0-d726-47dd-9fd1-3e95cfce022b')
+          router.push('teste')
+          // router.replace('workouts/7b81f4f0-d726-47dd-9fd1-3e95cfce022b')
+        }
+        }/>
+        {/* <Button  text='go to workout' asLink={'workouts/7b81f4f0-d726-47dd-9fd1-3e95cfce022b'}/> */}
 
         <FeaturedExercices title='Destaques' exercises={exercises} />
 

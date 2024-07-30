@@ -64,14 +64,12 @@ export class WorkoutApi {
     try {
       if (!params.userId) throw new Error("User not found");
 
-      let query = supabase
+      const { data: workouts, error } = await supabase
         .from("workouts")
         .select()
         .eq("owner_id", params.userId)
         .ilike("name", `%${params.search}%`)
         .returns<IWorkout[]>();
-
-      const { data: workouts, error } = await query;
 
       if (error) throw error;
 
@@ -124,13 +122,13 @@ export class WorkoutApi {
         .from("workouts")
         .update({ name: params.name, description: params.description })
         .eq("id", params.id)
-        .select("id, name, description")
-        .returns<IWorkout>()
-        .single();
+        .select();
+
+      console.log("udated", workout);
 
       if (error) throw error;
 
-      return workout;
+      return workout[0] as IWorkout;
     } catch (error) {
       throw error;
     }
@@ -169,9 +167,8 @@ export class WorkoutApi {
   }
   static async teste(): Promise<string[]> {
     try {
-      const { data, error } = await supabase.rpc("teste")
+      const { data, error } = await supabase.rpc("teste");
       console.log(data);
-      
 
       if (error) throw error;
 

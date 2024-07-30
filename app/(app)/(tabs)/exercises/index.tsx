@@ -42,10 +42,9 @@ export default function LibraryIndexScreen() {
     fetchNextPage }
     = useSearchExercise({
       search: debouncedSearch,
-      filter: filter
+      filter: filter,
+      select: (data) => data.pages.flatMap((page) => page),
     })
-
-
 
 
   const NotFoundComponent = () =>

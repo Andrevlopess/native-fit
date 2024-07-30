@@ -92,14 +92,15 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                         <Animated.Image
                             src={exercise.gifurl}
                             style={[s.radius8, imageAnimation]}
-                            defaultSource={require('@/assets/images/icon.png')}                 
+                            fadeDuration={0}
+                            // defaultSource={require('@/assets/images/icon.png')}                 
                         />
                     </Pressable>
                     : <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
                         <Image
-                            placeholder={
-                                require('@/assets/images/icon.png')
-                            }
+                            // placeholder={
+                            //     require('@/assets/images/icon.png')
+                            // }
                             source={exercise.gifurl}
                             style={[s.radius8, { height: DEFAULT_IMAGE_SIZE, width: DEFAULT_IMAGE_SIZE }]} />
                     </View>

@@ -53,7 +53,7 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
         mutationKey: ['edit-workout', workoutId],
         mutationFn: WorkoutApi.edit,
         onError: console.error,
-        onSuccess: ({ id, name, description }) => {
+        onSuccess: (data) => {
             clientela.invalidateQueries({ queryKey: ["workouts", workoutId] })
             router.back();
 
@@ -62,6 +62,9 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
     })
 
     const handleSubmitForm = (data: NewWorkoutValues) => {
+
+        console.log('daaaaaa', data);
+        
         mutate(data)
     }
 

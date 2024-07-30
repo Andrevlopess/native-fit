@@ -1,13 +1,23 @@
 import { ExerciseApi, SearchExercisesParams } from "@/api/exercise-api";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { IExercise } from "@/types/exercise";
+import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
+
+// type teste = {id:string}
+// type testee2 = {name:string}
+// interface slk extendsteste {teste}
+
+interface SearchExerciseProps extends Omit<SearchExercisesParams, "pageParam"> {
+  select?: (data: InfiniteData<IExercise[], number>) => IExercise[]
+}
 
 export const useSearchExercise = ({
   search = "",
   filter = "",
   limit = 15,
-}: Omit<SearchExercisesParams, "pageParam">) => {
+  select,
+}: SearchExerciseProps) => {
   return useInfiniteQuery({
-    queryKey: ["search-exercises"],
+    queryKey: ["search-exercises", { search, filter }],
     queryFn: ({ pageParam }) =>
       ExerciseApi.search({
         search,
@@ -20,6 +30,6 @@ export const useSearchExercise = ({
       lastPage.length > 0 ? allPages.length + 1 : undefined,
     enabled: !!search || !!filter,
     retry: false,
-    select: (data) => data.pages.flatMap((page) => page),
+    select
   });
 };

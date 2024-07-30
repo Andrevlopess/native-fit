@@ -4,14 +4,12 @@ import React from 'react';
 
 
 export default function AppRootLayout() {
-
-    console.log('rendered app');
     const { isAuthenticated } = useAuth();
     if (!isAuthenticated) return <Redirect href={'/auth'} />
     SplashScreen.hideAsync()
 
     return (
-        <Stack initialRouteName='(tabs)' screenOptions={{ headerShown: false }}>
+        <Stack initialRouteName='(tabs)' screenOptions={{ headerShown: false, headerTransparent: true }}>
             <Stack.Screen name='(tabs)' options={{ headerShadowVisible: false }} />
             <Stack.Screen name='(modals)'
                 options={{

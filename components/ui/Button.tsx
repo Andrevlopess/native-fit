@@ -28,7 +28,16 @@ interface IButton extends TouchableOpacityProps {
     asLink?: ExpoRouter.Href;
 }
 
-function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant = 'primary', rounded = false, ...props }: IButton,
+function Button({ text,
+    isLoading,
+    textStyles,
+    asLink,
+    size = 'medium',
+    variant = 'primary',
+    rounded = false,
+    style,
+    ...props
+}: IButton,
     ref: ForwardedRef<TouchableOpacity>) {
 
     const disabled = props.disabled;
@@ -90,7 +99,7 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
             asChild
             style={[
                 variantStyles[variant].container,
-                props.style
+                style
             ]}>
             <TouchableOpacity
                 {...props}
@@ -121,7 +130,7 @@ function Button({ text, isLoading, textStyles, asLink, size = 'medium', variant 
             activeOpacity={0.8}
             style={[
                 variantStyles[variant].container,
-                props.style
+                style
             ]}>
             {props.children
                 ? props.children

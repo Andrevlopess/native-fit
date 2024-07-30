@@ -16,10 +16,10 @@ let today = new Date().toISOString().split('T')[0]
 export default function MonthHistoryCalendar() {
 
     const { data: dates, isPending } = useQuery({
-        queryKey: ['workout-history', {period: 'month'}],
+        queryKey: ['workout-history', { period: 'month' }],
         queryFn: () => WorkoutApi.fetchHistory({ period: 'month' })
     })
-    
+
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
         const isStartingDay =
@@ -52,7 +52,8 @@ export default function MonthHistoryCalendar() {
         // avoid clicking an non workedout day
         if (marked && !Object.keys(marked).includes(day.dateString)) return;
 
-        router.push(`/workouts/history/${day.dateString}`)
+        // router.push('workouts')
+        router.push(`workouts/history/${day.dateString}`)
 
     }, [marked]);
 
@@ -64,7 +65,12 @@ export default function MonthHistoryCalendar() {
             <View style={[s.flexRow, s.justifyBetween, s.itemsStart, s.py8, s.flex1]}>
                 <Text style={[s.textXL, s.semibold, s.textBlack]}>Atividades de {month}</Text>
                 {/* <Text style={[s.textXL, s.semibold, s.textIndigo600]}>{year}</Text> */}
-                <Button text='Ver mais' size='small' variant='secondary' asLink={'/workouts/history'} rounded />
+                <Button
+                    text='Ver mais'
+                    size='small'
+                    variant='secondary'
+                    asLink={'/workouts/history'}
+                    rounded />
 
             </View>
         );

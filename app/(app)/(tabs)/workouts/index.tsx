@@ -18,7 +18,9 @@ import Animated, { FadeIn } from 'react-native-reanimated'
 
 export default function MyWorkoutsScreen() {
 
-    const { offset, scrollHandler } = useScrollValue('y');
+    const { offset, scrollHandler } = useScrollValue();
+    console.log('please');
+    
 
     return (
         <>

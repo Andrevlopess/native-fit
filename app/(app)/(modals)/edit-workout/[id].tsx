@@ -23,9 +23,6 @@ export default function EditWorkoutModal() {
     const { id } = useLocalSearchParams<SearchParams>();
     if (!id) return;
 
-
-
-
     return (
         <>
             <Stack.Screen options={{

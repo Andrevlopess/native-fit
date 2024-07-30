@@ -1,6 +1,8 @@
+import { ExerciseApi } from '@/api/exercise-api'
 import { WorkoutApi } from '@/api/workout-api'
 import SwipeableExerciseListCard from '@/components/exercise/ExerciseListSwipeableCard'
 import SearchInput from '@/components/ui/SearchInput'
+import LoadingView from '@/components/views/LoadingView'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
 import COLORS from '@/constants/Colors'
@@ -9,7 +11,7 @@ import { useSearchExercise } from '@/hooks/useSearchExercise'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Stack, router, useLocalSearchParams } from 'expo-router'
 import { CircleX, Search, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
@@ -26,49 +28,49 @@ const CancelButton = () => (
 
 export default function ExericesToAddModal() {
     const { workoutId } = useLocalSearchParams<{ workoutId: string }>();
+    if (!workoutId) return;
 
     const insets = useSafeAreaInsets();
-    const [search, setSearch] = useState('perna');
+    const [search, setSearch] = useState('');
     const [filter, setFilter] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
     const queryClient = useQueryClient();
 
-    const {
-        data: exercises = [],
-        error,
-        isFetching,
-        isFetchingNextPage,
-        isError,
-        fetchNextPage }
-        = useSearchExercise({
-            search: debouncedSearch,
-            filter: filter
-        })
+    const { data: workoutExercises = [] } = useQuery({
+        queryKey: ['workout-exercises', workoutId],
+        queryFn: () => WorkoutApi.fetchExercises({ id: workoutId })
+    })
 
-    const { mutate, isPending, variables } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationKey: ['add-exercise-to', workoutId],
         mutationFn: WorkoutApi.addExercise,
         onMutate: () => {
-
             queryClient.invalidateQueries({ queryKey: ["workout-exercises", workoutId] })
         },
         onError: err => console.error(err.message)
     })
 
 
+    const {
+        data: exercises = [],
+        error,
+        hasNextPage,
+        isFetching,
+        isFetchingNextPage,
+        isError,
+        fetchNextPage }
+        = useSearchExercise({
+            search: debouncedSearch,
+            filter: filter,
+            select(data) {
+                const exercises = data.pages.flatMap((page) => page);
+                return exercises.filter(exercise => !workoutExercises.map(ex => ex.id).includes(exercise.id))
+            }
+        })
+
+
     function handleAddExerciseToThisWorkout(exerciseId: string) {
         if (!workoutId) return;
-
-        //todo: fix this 'cannot read 'length' of undefined'
-        // queryClient.setQueryData(
-        //     ["search-exercises"],
-        //     (prev: any) => {
-        //         const exercises = prev.pages.flatMap((page: any) => page)
-        //         const filtered = exercises.filter((exercise: IExercise) => exercise.id !== exerciseId);
-
-        //         return filtered
-        //     }
-        // )
 
         mutate({
             exercise: exerciseId,
@@ -76,6 +78,9 @@ export default function ExericesToAddModal() {
         });
     }
 
+
+
+    
     // render components
     const renderItem = ({ item }: { item: IExercise }) =>
         <SwipeableExerciseListCard
@@ -124,6 +129,22 @@ export default function ExericesToAddModal() {
                     containerStyles={[s.m12]}
                 />
 
+                {/* {
+                    isFetching
+                        ? <LoadingView />
+                        : !!error
+                            ? <MessageView
+                                icon={CircleX}
+                                message="Ocorreu um erro!"
+                                description={error?.message || 'Estamos tentando resolver este problema!'} />
+                            : exercises.length
+                                ? <MessageView
+                                    icon={SearchX}
+                                    message='Sem resultados'
+                                    description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
+                                />
+                                : 
+} */}
                 <RequestResultsView
                     isError={isError}
                     isPending={isFetching && !isFetchingNextPage}

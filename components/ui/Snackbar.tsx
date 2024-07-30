@@ -40,7 +40,7 @@ export const Snackbar = ({
     message,
     actionText,
     variant = 'default',
-    duration = 3000, // Default duration in milliseconds
+    duration = 1500, // Default duration in milliseconds
     position = "bottom",
     containerStyle,
     icon: Icon,

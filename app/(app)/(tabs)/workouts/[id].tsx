@@ -74,25 +74,21 @@ export default function WorkoutScreen() {
                             {workout.description &&
                                 <Text style={[s.medium, s.textBase, s.textGray600]}>{workout.description?.trim()}</Text>
                             }
+
+
+
                         </View>
+                        <Button
+                            text='Iniciar treino'
+                            asLink={{ pathname: `/working-out/${id}` }}
+                            style={[s.m12]}
+                        />
+                        <WorkoutExercisesList workoutId={id} />
 
 
-                        <View>
-                            <View style={[s.flexRow, s.gap4, s.p12]}>
 
 
 
-                               
-                                    <Button
-                                        text='Iniciar treino'
-                                        asLink={{ pathname: `/working-out/${id}` }}
-                                        size='small'
-                                        // rounded
-                                    />
-                                
-                            </View>
-                            <WorkoutExercisesList workoutId={id} />
-                        </View>
 
 
                     </Animated.ScrollView>

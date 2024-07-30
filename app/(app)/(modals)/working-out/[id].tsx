@@ -102,7 +102,7 @@ export default function DoingWorkoutScreen() {
 
             <WorkingOutFlow
                 workoutId={id}
-                onWorkoutCompleted={() => handleCompletedWorkout}
+                onWorkoutCompleted={handleCompletedWorkout}
             />
 
         </>

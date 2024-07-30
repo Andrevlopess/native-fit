@@ -16,6 +16,7 @@ export default function AppLayout() {
     return (
         <>
             <Tabs
+                // backBehavior="initialRoute"
                 screenOptions={{
                     tabBarStyle: {
                         padding: 16,
@@ -56,6 +57,7 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name="workouts"
                     options={{
+                        href: null,
                         tabBarIcon: ({ focused }) => (
                             <Library focused={focused} />
                         )
