@@ -41,11 +41,6 @@ export default function WorkoutScreen() {
     return (
         <>
             <Stack.Screen
-                getId={({ params }) => {
-                    console.log('para metros', params);
-                    return params?.id
-
-                }}
                 options={{
                     title: workout?.name || "",
                     // headerLargeTitle: true,

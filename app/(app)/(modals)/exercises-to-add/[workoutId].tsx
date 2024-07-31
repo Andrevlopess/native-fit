@@ -1,6 +1,7 @@
 import { ExerciseApi } from '@/api/exercise-api'
 import { WorkoutApi } from '@/api/workout-api'
 import SwipeableExerciseListCard from '@/components/exercise/ExerciseListSwipeableCard'
+import { BadgesControl } from '@/components/ui/BadgesControl'
 import SearchInput from '@/components/ui/SearchInput'
 import LoadingView from '@/components/views/LoadingView'
 import MessageView from '@/components/views/MessageView'
@@ -18,6 +19,10 @@ import React, { useState } from 'react'
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native'
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+
+const badges = ['Cardio', 'Quadríceps', 'Costas', 'Peito', 'Ombro', 'Panturrilha'];
+
 
 const CancelButton = () => (
     <TouchableOpacity onPress={() => router.back()}>
@@ -80,7 +85,7 @@ export default function ExericesToAddModal() {
 
 
 
-    
+
     // render components
     const renderItem = ({ item }: { item: IExercise }) =>
         <SwipeableExerciseListCard
@@ -121,13 +126,23 @@ export default function ExericesToAddModal() {
 
             <View style={[s.flex1, s.bgWhite, s.gap12, { paddingBottom: insets.bottom }]}>
 
-                <SearchInput
-                    onChangeText={setSearch}
-                    placeholder='Encontrar exercício'
-                    value={search}
-                    autoFocus
-                    containerStyles={[s.m12]}
-                />
+                <View style={[]}>
+
+                    <SearchInput
+                        onChangeText={setSearch}
+                        placeholder='Encontrar exercício'
+                        value={search}
+                        autoFocus
+                        containerStyles={[s.m12]}
+                    />
+                    
+                    <BadgesControl
+                        badges={badges}
+                        selectedBadge={filter}
+                        onSelect={setFilter}
+                        disabled={isFetching} />
+                </View>
+
 
                 {/* {
                     isFetching

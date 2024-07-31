@@ -103,14 +103,13 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
 
 
 
-                <View style={[s.gap4, s.flex1]}>
+                <View style={[s.gap4, s.flex1, s.justifyCenter]}>
                     <Text
-                        style={[s.medium, s.textBase, s.flex1, { lineHeight: 18 }]}
+                        style={[s.medium, s.textBase, { lineHeight: 18 }]}
                         numberOfLines={2}>
                         {exercise.name}
                     </Text>
                     <View style={[s.flexRow, s.gap6, s.itemsCenter]}>
-
                         <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
                         <CircleDivisor />
                         <Text style={[s.regular, s.textGray400]}>{exercise.target}</Text>

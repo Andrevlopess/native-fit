@@ -11,11 +11,13 @@ export default function AppRootLayout() {
     return (
         <Stack initialRouteName='(tabs)' screenOptions={{ headerShown: false, headerTransparent: true }}>
             <Stack.Screen name='(tabs)' options={{ headerShadowVisible: false }} />
+
             <Stack.Screen name='(modals)'
                 options={{
                     headerShadowVisible: false,
                     presentation: 'modal',
-                    animation: 'fade_from_bottom'
+                    animation: 'fade_from_bottom',
+                    animationTypeForReplace: 'push'
                 }} />
         </Stack>
     )

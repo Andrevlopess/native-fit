@@ -95,14 +95,13 @@ export default function LibraryIndexScreen() {
           contentInsetAdjustmentBehavior='automatic'
         // stickyHeaderIndices={[2]}
         >
-          <View style={[s.px12, s.gap8]}>
-            <AnimatedLargeTitle title='Biblioteca' offset={offset} />
+          <View style={[s.gap8]}>
+            <AnimatedLargeTitle title='Biblioteca' offset={offset} style={[s.px12]} />
             <SearchInput
               onChangeText={setSearch}
               placeholder='Busque por um exercício'
               value={search}
-            // onFocus={() => scrollRef.current?.scrollTo({ y: 60 })}
-            // onBlur={() => scrollRef.current?.scrollTo({ y: 0 })}
+              style={[s.px12]}
             />
             <BadgesControl
               badges={badges}

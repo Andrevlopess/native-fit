@@ -27,7 +27,7 @@ export function BadgesControl({ badges, selectedBadge, disabled, onSelect }: Bad
             horizontal
             showsHorizontalScrollIndicator={false}
             style={[s.bgWhite, s.py8]}
-            contentContainerStyle={[s.gap8]}
+            contentContainerStyle={[s.gap8,s.px12]}
             renderItem={renderItem}
             keyExtractor={item => item}
         />

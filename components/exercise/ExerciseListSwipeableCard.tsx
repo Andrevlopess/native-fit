@@ -156,7 +156,8 @@ export default function SwipeableExerciseListCard({
                     return;
                 }
 
-                router.navigate(`/(app)/(modals)/add-to-workout/${exercise.id}`)
+                router.navigate(`/add-to-workout/${exercise.id}`)
+                // router.navigate(`/(app)/(modals)/add-to-workout/${exercise.id}`)
                 ref.current?.close();
                 break;
             default:

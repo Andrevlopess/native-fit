@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { Marquee } from '@/components/ui/Marquee'
 import Button from '@/components/ui/Button'
 import { useNavigation } from '@react-navigation/native';
+import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
 
 const exercises: IExercise[] =
   [
@@ -95,14 +96,8 @@ const exercises: IExercise[] =
   ]
 export default function HomeIndexScreen(navigation: any) {
 
-  console.log(navigation);
-
-
   const { offset, scrollHandler } = useScrollValue('y');
   const { user } = useAuth()
-
-  const nav = useNavigation()
-  const rou = useRouter()
 
 
   return (
@@ -132,13 +127,7 @@ export default function HomeIndexScreen(navigation: any) {
 
         {/* <WorkoutsCarouselList />
          */}
-        <MonthHistoryCalendar />
-
-        <Button
-          text='go to workout'
-          onPress={() => {
-          }}
-        />
+        <HistoryCalendar period='month' />
 
         <FeaturedExercices title='Destaques' exercises={exercises} />
 

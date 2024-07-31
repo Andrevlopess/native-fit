@@ -9,7 +9,6 @@ const signIn = async () => {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
         // setState({ userInfo, error: undefined });
-        console.log(userInfo);
 
         if (!userInfo.idToken) throw new Error('No id token provided')
 

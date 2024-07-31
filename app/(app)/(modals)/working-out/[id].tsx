@@ -37,7 +37,7 @@ export default function DoingWorkoutScreen() {
         mutationKey: ['save-on-history', id],
         mutationFn: WorkoutApi.saveOnHistory,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['workout-history'] })
+            queryClient.invalidateQueries({ queryKey: ['workouts-history'] })
         }
     });
 

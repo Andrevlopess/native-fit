@@ -34,13 +34,9 @@ export default function ExerciseListAddCard({ exercise, width, onPress, ...props
                 onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
                     router.navigate({
-                        pathname: `/(modals)/exercise-details/${exercise.id}`,
+                        pathname: '/exercise-details/[id]',
                         params: {
-                            name: exercise.name,
-                            bodypart: exercise.bodypart,
-                            gifurl: exercise.gifurl,
-                            equipment: exercise.equipment,
-                            target: exercise.target
+                          ...exercise
                         }
                     })
                 }}

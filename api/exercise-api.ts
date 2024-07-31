@@ -38,8 +38,6 @@ export class ExerciseApi {
         query: params.search,
       });
 
-      console.log(exercises);
-      
       if (error) throw error;
 
       return exercises as IExercise[];

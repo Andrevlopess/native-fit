@@ -1,13 +1,9 @@
 import { WorkoutApi } from '@/api/workout-api';
-import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import SkeletonList from '@/components/ui/SkeletonList';
-import LoadingView from '@/components/views/LoadingView';
 import { WorkoutListCard } from '@/components/workout/WorkoutListCard';
-import { supabase } from '@/lib/supabase';
 import { s } from '@/styles/global';
 import { IWorkout } from '@/types/workout';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
@@ -23,7 +19,7 @@ export default function DayWorkoutsHistory() {
 
     const { data: workouts, isPending } = useQuery({
         queryKey: ['workout-day-history', day],
-        queryFn: () =>  WorkoutApi.findDaySchedule(day)
+        queryFn: () => WorkoutApi.findDaySchedule(day)
     })
 
 

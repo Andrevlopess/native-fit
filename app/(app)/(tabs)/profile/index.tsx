@@ -21,8 +21,6 @@ export default function ProfileIndexScreen() {
     queryFn: WorkoutApi.teste
   })
 
-  console.log(data);
-
 
   return (
 

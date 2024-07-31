@@ -62,9 +62,7 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
     })
 
     const handleSubmitForm = (data: NewWorkoutValues) => {
-
-        console.log('daaaaaa', data);
-        
+    
         mutate(data)
     }
 

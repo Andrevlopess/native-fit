@@ -4,13 +4,14 @@ import React, { useCallback } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import { CalendarList, DateData } from 'react-native-calendars';
 
-import { WorkoutApi } from '@/api/workout-api';
+import { HistoryPeriod, WorkoutApi } from '@/api/workout-api';
 import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { LocaleConfig } from 'react-native-calendars';
 import { MarkedDates } from 'react-native-calendars/src/types';
 import Divisor from '../ui/Divisors';
 import LoadingView from '../views/LoadingView';
+import Button from '../ui/Button';
 
 LocaleConfig.locales['pt-br'] = {
     monthNames: [
@@ -64,15 +65,23 @@ LocaleConfig.locales['pt-br'] = {
 
 LocaleConfig.defaultLocale = 'pt-br';
 
-
 let today = new Date().toISOString().split('T')[0]
 
-export const HistoryCalendar = () => {
+interface HistoryCalendarProps {
+    workoutId?: string;
+    period: HistoryPeriod;
+}
+
+
+export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => {
 
     const { data: dates, isPending } = useQuery({
-        queryKey: ['workout-history'],
-        queryFn: () => WorkoutApi.fetchHistory({ period: 'all-time' })
+        queryKey: ['workouts-history', { workoutId, period }],
+        queryFn: () => WorkoutApi.fetchHistory({ workoutId, period })
     });
+
+    console.log(dates);
+
 
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
@@ -102,11 +111,10 @@ export const HistoryCalendar = () => {
     }, {});
 
     const onDayPress = useCallback((day: DateData) => {
-
         // avoid clicking an non workedout day
         if (marked && !Object.keys(marked).includes(day.dateString)) return;
 
-        router.push(`/workouts/history/${day.dateString}`)
+        router.push(`/history/${day.dateString}`)
 
     }, [marked]);
 
@@ -120,6 +128,14 @@ export const HistoryCalendar = () => {
                 {isPending && <ActivityIndicator color={COLORS.black} />}
 
                 <Text style={[s.textXL, s.semibold, s.textBlack]}>{year}</Text>
+
+                {period !== 'all-time'
+                    && <Button
+                        text='Ver mais'
+                        size='small'
+                        variant='secondary'
+                        asLink={'/history'}
+                        rounded />}
             </View>
         );
     }
@@ -135,7 +151,6 @@ export const HistoryCalendar = () => {
 
         const startMonth = new Date(startDateStr).getMonth();
         const endMonth = new Date(endDateStr).getMonth();
-
         return endMonth - startMonth;
     })();
 
@@ -147,13 +162,12 @@ export const HistoryCalendar = () => {
                     : <CalendarList
                         markingType='period'
                         current={today}
-                        pastScrollRange={pastScrollRange}
+                        pastScrollRange={period === 'month' ? 0 : pastScrollRange}
                         futureScrollRange={0}
                         onDayPress={onDayPress}
                         markedDates={marked}
-                        ListHeaderComponent={<Text style={[s.bold, s.text3XL, s.bgWhite, s.p12]}>Histórico</Text>}
-                        ItemSeparatorComponent={() => <Divisor />}
                         disabledByDefault
+                        disableMonthChange
                         disableAllTouchEventsForDisabledDays
                         disableAllTouchEventsForInactiveDays
                         renderHeader={renderCustomHeader}
@@ -167,9 +181,32 @@ export const HistoryCalendar = () => {
                             selectedDayTextColor: COLORS.white,
                         }}
                     />
-
-
             }
+
+            {/* <Calendar
+                hideArrows={true}
+                onDayPress={onDayPress}
+                markingType='period'
+                current={today}
+                markedDates={marked}
+                renderHeader={renderCustomHeader}
+                hideExtraDays
+                disabledByDefault
+                
+                disableAllTouchEventsForDisabledDays
+                disableAllTouchEventsForInactiveDays
+                enableSwipeMonths={false}
+                theme={{
+                    textMonthFontFamily: 'Inter_500Medium',
+                    textDayFontFamily: 'Inter_500Medium',
+                    todayTextColor: COLORS.black,
+                    textDayStyle: s.medium,
+                    textDisabledColor: COLORS.iosTextGray,
+                    selectedDayBackgroundColor: COLORS.black,
+                    selectedDayTextColor: COLORS.white
+                }}
+            /> */}
+
 
         </>
     );

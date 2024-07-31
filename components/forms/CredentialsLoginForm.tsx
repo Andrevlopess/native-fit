@@ -41,7 +41,6 @@ export default function CredentialsLoginForm() {
     const handleLogin = (data: LoginParams) => {
         mutate(data)
     }
-    console.log('render');
 
     const [visible, setvisible] = useState(false)
 

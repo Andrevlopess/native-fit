@@ -2,7 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
 import { IWorkout } from "@/types/workout";
-type Period = "all-time" | "year" | "month" | "week";
+export type HistoryPeriod = "all-time" | "year" | "month" | "week";
 
 export interface FindAllWorkoutParams {
   userId?: string;
@@ -42,7 +42,8 @@ interface EditWorkoutParams {
 }
 
 interface FetchHistoryParams {
-  period: Period;
+  period: HistoryPeriod;
+  workoutId?: string;
 }
 
 interface AddExerciseParams {
@@ -124,8 +125,6 @@ export class WorkoutApi {
         .eq("id", params.id)
         .select();
 
-      console.log("udated", workout);
-
       if (error) throw error;
 
       return workout[0] as IWorkout;
@@ -153,22 +152,21 @@ export class WorkoutApi {
   static async fetchHistory(params: FetchHistoryParams): Promise<string[]> {
     try {
       const { data, error } = await supabase
-        .rpc("workedout_dates", { period: params.period })
+        .rpc("workedout_dates", { workoutId: params.workoutId, period: params.period })
         .returns<{ doneat: string }[]>();
 
       if (error) throw error;
 
       const dates = data.map((date) => date.doneat);
-
       return dates;
     } catch (error) {
       throw error;
     }
   }
+
   static async teste(): Promise<string[]> {
     try {
       const { data, error } = await supabase.rpc("teste");
-      console.log(data);
 
       if (error) throw error;
 
@@ -254,4 +252,5 @@ export class WorkoutApi {
       throw error;
     }
   }
+
 }

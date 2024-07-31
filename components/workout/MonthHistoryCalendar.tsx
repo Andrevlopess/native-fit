@@ -13,12 +13,17 @@ import Button from '../ui/Button';
 let today = new Date().toISOString().split('T')[0]
 
 
+interface MonthHistoryCalendarProps {
+    workoutId?: string;
+}
+
 export default function MonthHistoryCalendar() {
 
     const { data: dates, isPending } = useQuery({
-        queryKey: ['workout-history', { period: 'month' }],
+        queryKey: ['workouts-history', { period: 'month' }],
         queryFn: () => WorkoutApi.fetchHistory({ period: 'month' })
     })
+
 
 
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
@@ -53,7 +58,7 @@ export default function MonthHistoryCalendar() {
         if (marked && !Object.keys(marked).includes(day.dateString)) return;
 
         // router.push('workouts')
-        router.push(`workouts/history/${day.dateString}`)
+        router.push(`/history/${day.dateString}`)
 
     }, [marked]);
 
@@ -69,7 +74,7 @@ export default function MonthHistoryCalendar() {
                     text='Ver mais'
                     size='small'
                     variant='secondary'
-                    asLink={'/workouts/history'}
+                    asLink={'/history'}
                     rounded />
 
             </View>
@@ -81,7 +86,6 @@ export default function MonthHistoryCalendar() {
         <Calendar
             hideArrows={true}
             onDayPress={onDayPress}
-            // displayLoadingIndicator={isPending}
             markingType='period'
             current={today}
             markedDates={marked}

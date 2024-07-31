@@ -19,9 +19,7 @@ import Animated, { FadeIn } from 'react-native-reanimated'
 export default function MyWorkoutsScreen() {
 
     const { offset, scrollHandler } = useScrollValue();
-    console.log('please');
-    
-
+  
     return (
         <>
             <Stack.Screen
@@ -32,12 +30,12 @@ export default function MyWorkoutsScreen() {
                         <View style={[s.flexRow, s.itemsCenter, s.justifyCenter]}>
                             <Link
                                 asChild
-                                href={'/workouts/new-workout'}>
+                                href='/new-workout'>
                                 <TouchableOpacity>
                                     <Plus color={COLORS.black} />
                                 </TouchableOpacity>
                             </Link>
-                            <Button asLink={'/workouts/history'} variant='ghost'>
+                            <Button asLink={'/history'} variant='ghost'>
                                 <History color={COLORS.black} />
                             </Button>
                         </View>
