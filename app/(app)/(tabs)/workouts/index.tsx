@@ -58,7 +58,6 @@ export default function MyWorkoutsScreen() {
                 contentContainerStyle={[s.gap12, s.py12]}>
 
                 <AnimatedLargeTitle title='Treinos' offset={offset} style={[s.px12]} />
-                <Divisor />
                 <WorkoutsList />
 
 

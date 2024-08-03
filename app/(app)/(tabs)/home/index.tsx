@@ -8,7 +8,7 @@ import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { router, Stack, useRouter } from 'expo-router'
+import { Redirect, router, Stack, useRouter } from 'expo-router'
 import React from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
@@ -98,6 +98,7 @@ export default function HomeIndexScreen(navigation: any) {
 
   const { offset, scrollHandler } = useScrollValue('y');
   const { user } = useAuth()
+
 
 
   return (

@@ -46,35 +46,35 @@ export default function WorkoutsList() {
 
     return (
         <View style={[s.p12]}>
-            <Text style={[s.textGray800, s.semibold, s.textXL]}>Meus treinos</Text>
-            <View style={[s.py24, s.gap12]}>
+            {/* <Text style={[s.textGray800, s.semibold, s.textXL]}>Meus treinos</Text> */}
+            {/* <View style={[s.py24, s.gap12]}> */}
 
-                {isFetching
-                    ? <SkeletonList length={3} />
-                    : isError
-                        ? <MessageView
-                            icon={X}
-                            message='Não conseguimos buscar seus treinos!'
-                            description='Verifique sua conexão e tente novamente'
-                        >
-                            <Button
-                                isLoading={isRefetching}
-                                onPress={() => refetch()}
-                                variant='secondary'
-                                text='Tentar novamente' />
-                        </MessageView>
+            {isFetching
+                ? <SkeletonList length={3} />
+                : isError
+                    ? <MessageView
+                        icon={X}
+                        message='Não conseguimos buscar seus treinos!'
+                        description='Verifique sua conexão e tente novamente'
+                    >
+                        <Button
+                            isLoading={isRefetching}
+                            onPress={() => refetch()}
+                            variant='secondary'
+                            text='Tentar novamente' />
+                    </MessageView>
 
-                        : !workouts.length
-                            ? <EmptyComponent />
-                            : <View style={[s.gap12]}>
-                                {workouts.map((workout, i) => (
-                                    <WorkoutListCard workout={workout} key={`${i},${workout.id}`} index={i} />
-                                ))}
-                                <NewWorkoutCard />
-                            </View>
-                }
+                    : !workouts.length
+                        ? <EmptyComponent />
+                        : <View style={[s.gap12]}>
+                            {workouts.map((workout, i) => (
+                                <WorkoutListCard workout={workout} key={`${i},${workout.id}`} index={i} />
+                            ))}
+                            <NewWorkoutCard />
+                        </View>
+            }
 
-            </View>
+            {/* </View> */}
         </View>
     )
 }

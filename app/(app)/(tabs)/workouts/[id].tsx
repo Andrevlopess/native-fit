@@ -34,7 +34,7 @@ export default function WorkoutScreen() {
 
     const { data: workout, isPending } = useQuery({
         queryKey: ["workouts", id],
-        queryFn: () => WorkoutApi.findOne({ id }),
+        queryFn: () => WorkoutApi.findOne({ id })
         // retry: false,    
     });
 
@@ -68,61 +68,28 @@ export default function WorkoutScreen() {
                         onScroll={scrollHandler}
                         style={[s.flex1, s.bgWhite]}
                         contentContainerStyle={[s.pb12]}
+                        stickyHeaderIndices={[1]}
+                        stickyHeaderHiddenOnScroll
                     >
 
                         <View style={[s.px12]}>
                             <AnimatedLargeTitle title={workout.name} offset={offset} />
                             {workout.description &&
-                                <Text style={[s.medium, s.textBase, s.textGray600]}>{workout.description?.trim()}</Text>
+                                <Text style={[s.medium, s.textBase, s.textGray600]}>
+                                    {workout.description?.trim()}</Text>
                             }
-
-
-
                         </View>
-                        <Button
+
+                        {!!workout.exercises_count && <Button
                             text='Iniciar treino'
                             asLink={{ pathname: `/working-out/${id}` }}
-                            style={[s.m12]}
-                        />
+                            style={[s.px12, s.py6, s.bgWhite]}
+                        />}
+
                         <WorkoutExercisesList workoutId={id} />
-
-
-
-
-
-
-
                     </Animated.ScrollView>
             }
 
         </>
     )
 }
-{/* <View style={[s.flexRow, s.p12]}>
-    {workout?.exercises?.map((exercise, i) =>
-        <View style={[s.shadow6, s.radius8, {
-            marginLeft: -20, zIndex: 10 - i,
-            transform: [
-                {
-                    rotateY: '-20deg'
-
-                },
-                {
-                    rotateY: '3deg'
-
-                },
-                {
-                    rotateZ: '-10deg'
-                    // translateY: i * 5
-                }
-            ]
-        }]}>
-            <Image
-                source={exercise.gifurl}
-                style={[{
-                    height: 100, width: 100,
-                }
-                ]} />
-        </View>
-    )}
-</View> */}

@@ -19,8 +19,7 @@ export default function DoingWorkoutScreen() {
     const queryClient = useQueryClient();
     
     if (!id) return <PageNotFound />
-
-
+    
     const { data: workout, isPending } = useQuery({
         queryKey: ["workouts", id],
         queryFn: () => WorkoutApi.findOne({ id })  

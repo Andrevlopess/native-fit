@@ -5,6 +5,8 @@ import { s } from '@/styles/global';
 import { Redirect, SplashScreen } from 'expo-router';
 import React from 'react';
 
+
+
 export default function Index() {
 
     SplashScreen.hideAsync()
@@ -13,6 +15,6 @@ export default function Index() {
     if (isLoading) return <LoadingView style={[s.bgBlack]} loadingColor={COLORS.white} />;
 
     return isAuthenticated
-        ? <Redirect href={'/home'} />
+        ? <Redirect href={'/(app)/workouts/8001d6b0-4356-493d-8b29-16721225afb2'} />
         : <Redirect href={'/auth'} />
 }

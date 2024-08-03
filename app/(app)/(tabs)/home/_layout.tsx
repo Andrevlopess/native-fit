@@ -1,6 +1,5 @@
-import React from "react";
 import { Stack } from "expo-router";
-import LogoImage from "@/components/LogoImage";
+import React from "react";
 
 export default function HomeLayout() {
   return (

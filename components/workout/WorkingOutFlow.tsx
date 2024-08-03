@@ -1,20 +1,20 @@
 import { WorkoutApi } from '@/api/workout-api'
 import COLORS from '@/constants/Colors'
-import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
 import { useQuery } from '@tanstack/react-query'
 import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
-import Animated, { FadeInDown, useAnimatedRef, useSharedValue, withSpring } from 'react-native-reanimated'
+import Animated, { useAnimatedRef, useSharedValue, withSpring } from 'react-native-reanimated'
 import ExerciseListCard from '../exercise/ExerciseListCard'
+import {WorkingOutExerciseCard} from '../exercise/working-out/WorkingOutExerciseCard'
 import Button from '../ui/Button'
-import Divisor from '../ui/Divisors'
+import { LineDivisor } from '../ui/Divisors'
 import HeaderStepBar from '../ui/HeaderStepBar'
 import LoadingView from '../views/LoadingView'
 import RestingWorkoutView from './RestingWorkoutView'
-const IMAGE_SIZE = SCREEN_WIDTH * 0.9
+
 
 
 interface IWorkingOutFlowProps {
@@ -31,7 +31,7 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
     })
 
 
-    const [activeIndex, setActiveIndex] = useState(exercises.length - 1);
+    const [activeIndex, setActiveIndex] = useState(0);
     const [isResting, setIsResting] = useState(false)
 
     const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -56,11 +56,7 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
             })
         }
 
-        setIsResting(isResting ? false : true);
-        // setIsResting(isResting ? false : true);
-        // scrollRef.current?.scrollTo({ y: activeIndex * 200 })
-
-
+        setIsResting(!isResting);
     };
 
     const handlePrev = () => {
@@ -69,7 +65,7 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
             setActiveIndex((prev) => (prev - 1) % exercises.length);
         }
 
-        setIsResting(isResting ? false : true);
+        setIsResting(!isResting);
 
         progress.value = withSpring(100 / (exercises.length - 1) * (activeIndex - 1), {
             stiffness: 500,
@@ -115,35 +111,10 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
                         progress.value = 0
                 }} variant='secondary' size='small' /> */}
 
-                                            <View style={[s.gap24, s.py24]}>
-
-                                                <Animated.Image
-                                                    source={{ uri: doing.gifurl }}
-                                                    style={[s.radius8, s.mxAuto, s.bgGray50, { height: IMAGE_SIZE, width: IMAGE_SIZE }]} />
-
-                                                <Animated.Text
-                                                    entering={FadeInDown}
-                                                    style={[s.bold, s.text2XL, s.textCenter, s.px12]}>{doing.name}</Animated.Text>
-
-                                                <Animated.Text
-                                                    entering={FadeInDown.delay(50)}
-                                                    style={[s.bold, s.text4XL, s.textCenter, s.px12]}>4 x 12</Animated.Text>
-
-                                                <Animated.View
-                                                    entering={FadeInDown.delay(80)}
-                                                    style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4]}>
-
-                                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.target}</Text>
-                                                    <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
-                                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.bodypart}</Text>
-                                                    <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />
-                                                    <Text style={[s.medium, s.textGray600, s.textLG]}>{doing.equipment}</Text>
-                                                </Animated.View>
-
-                                            </View>
+                                            <WorkingOutExerciseCard exercise={doing} />
 
 
-                                            <Divisor text={
+                                            <LineDivisor text={
                                                 isLastExercise ? 'Você chegou ao fim' : 'Descanse 1 minuto'
                                             } />
 

@@ -127,7 +127,7 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
                 <Text style={[s.textXL, s.semibold, s.textBlack]}>{month}</Text>
                 {isPending && <ActivityIndicator color={COLORS.black} />}
 
-                <Text style={[s.textXL, s.semibold, s.textBlack]}>{year}</Text>
+                {period === 'all-time' && <Text style={[s.textXL, s.semibold, s.textBlack]}>{year}</Text>}
 
                 {period !== 'all-time'
                     && <Button
@@ -162,15 +162,19 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
                     : <CalendarList
                         markingType='period'
                         current={today}
-                        pastScrollRange={period === 'month' ? 0 : pastScrollRange}
+                        pastScrollRange={0}
                         futureScrollRange={0}
                         onDayPress={onDayPress}
                         markedDates={marked}
+                        hideArrows
+                        hideExtraDays
                         disabledByDefault
+                        scrollEnabled={period !== 'month'}
                         disableMonthChange
                         disableAllTouchEventsForDisabledDays
                         disableAllTouchEventsForInactiveDays
                         renderHeader={renderCustomHeader}
+                        enableSwipeMonths={false}
                         theme={{
                             textDayFontFamily: 'Inter_500Medium',
                             textMonthFontFamily: 'Inter_500Medium',
@@ -182,32 +186,6 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
                         }}
                     />
             }
-
-            {/* <Calendar
-                hideArrows={true}
-                onDayPress={onDayPress}
-                markingType='period'
-                current={today}
-                markedDates={marked}
-                renderHeader={renderCustomHeader}
-                hideExtraDays
-                disabledByDefault
-                
-                disableAllTouchEventsForDisabledDays
-                disableAllTouchEventsForInactiveDays
-                enableSwipeMonths={false}
-                theme={{
-                    textMonthFontFamily: 'Inter_500Medium',
-                    textDayFontFamily: 'Inter_500Medium',
-                    todayTextColor: COLORS.black,
-                    textDayStyle: s.medium,
-                    textDisabledColor: COLORS.iosTextGray,
-                    selectedDayBackgroundColor: COLORS.black,
-                    selectedDayTextColor: COLORS.white
-                }}
-            /> */}
-
-
         </>
     );
 };
