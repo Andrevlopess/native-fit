@@ -8,7 +8,7 @@ import React, { useState } from 'react'
 import { ScrollView, Text, View } from 'react-native'
 import Animated, { useAnimatedRef, useSharedValue, withSpring } from 'react-native-reanimated'
 import ExerciseListCard from '../exercise/ExerciseListCard'
-import {WorkingOutExerciseCard} from '../exercise/working-out/WorkingOutExerciseCard'
+import { WorkingOutExerciseCard } from '../exercise/working-out/WorkingOutExerciseCard'
 import Button from '../ui/Button'
 import { LineDivisor } from '../ui/Divisors'
 import HeaderStepBar from '../ui/HeaderStepBar'
@@ -40,7 +40,6 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
     const isLastExercise = activeIndex === exercises.length - 1;
 
     const handleNext = () => {
-
         if (isLastExercise && !isResting) {
             onWorkoutCompleted(workoutId);
             router.back();
@@ -77,7 +76,6 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
 
     const doing = exercises[activeIndex];
 
-
     return (
         <>
             {
@@ -102,66 +100,20 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
                                         />
                                         :
                                         <ScrollView
+                                            contentInsetAdjustmentBehavior='automatic'
+                                            automaticallyAdjustKeyboardInsets
                                             style={[s.flex1]}
                                             contentContainerStyle={[s.py12, s.gap12, { paddingBottom: 96 }]}
                                         >
-                                            {/* <Button text='reset' onPress={() => {
-                    setIsResting(false)
-                    setActiveIndex(0),
-                        progress.value = 0
-                }} variant='secondary' size='small' /> */}
 
-                                            <WorkingOutExerciseCard exercise={doing} />
+                                            <WorkingOutExerciseCard
+                                                isLastExercise={isLastExercise}
+                                                nextExercise={exercises[activeIndex + 1]}
+                                                onCompletedExercise={handleNext}
+                                                exercise={doing} />
 
-
-                                            <LineDivisor text={
-                                                isLastExercise ? 'Você chegou ao fim' : 'Descanse 1 minuto'
-                                            } />
-
-                                            {!isLastExercise &&
-                                                <View style={[s.p12, s.gap12]}>
-                                                    <Text style={[s.semibold, s.textXL, s.textGray600]}>
-                                                        Próximo exercício
-                                                    </Text>
-
-                                                    <ExerciseListCard
-                                                        exercise={exercises[activeIndex + 1]}
-                                                        showsAddButton={false} />
-                                                </View>
-                                            }
                                         </ScrollView>
                                 }
-
-
-                                <LinearGradient
-                                    locations={[0, 0.4]}
-                                    dither={false}
-                                    colors={['transparent', COLORS.white]}
-                                    style={[s.p12, s.absolute, s.flexRow, s.gap12,
-                                    { bottom: 0, left: 0, right: 0, paddingTop: 24 }]}
-                                >
-
-                                    {activeIndex !== 0 &&
-                                        <Button
-                                            text={'Voltar'}
-                                            onPress={handlePrev}
-                                            variant='secondary'
-                                        />
-                                    }
-                                    <Button
-                                        text={isLastExercise
-                                            ? 'Finalizar'
-                                            : isResting
-                                                ? 'Estou pronto'
-                                                : 'Próximo'
-                                        }
-                                        style={[s.flex1]}
-                                        onPress={handleNext}
-                                    />
-                                </LinearGradient>
-
-
-
                             </View >
 
                         </>

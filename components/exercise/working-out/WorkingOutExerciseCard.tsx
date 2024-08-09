@@ -6,17 +6,21 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import Animated, { FadeInDown } from 'react-native-reanimated'
 import SeriesManager from './SeriesManager'
+import ExerciseListCard from '../ExerciseListCard'
+import { LinearGradient } from 'expo-linear-gradient'
+import COLORS from '@/constants/Colors'
+import Button from '@/components/ui/Button'
 
 const IMAGE_SIZE = SCREEN_WIDTH * 0.9
 
 interface WorkingOutExerciseCardProps {
-    exercise: IExercise
+    exercise: IExercise;
+    nextExercise: IExercise;
+    isLastExercise: boolean;
+    onCompletedExercise: () => void;
 }
 
-export function WorkingOutExerciseCard({ exercise }: WorkingOutExerciseCardProps) {
-
-
-
+export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise, onCompletedExercise }: WorkingOutExerciseCardProps) {
 
     return (
         <View style={[s.gap24, s.py24]}>
@@ -46,9 +50,46 @@ export function WorkingOutExerciseCard({ exercise }: WorkingOutExerciseCardProps
             </Animated.View>
 
             <LineDivisor />
+
             <SeriesManager />
 
+            <LineDivisor text={
+                isLastExercise ? 'Você chegou ao fim' : 'Descanse 1 minuto'
+            } />
 
+            {!isLastExercise &&
+                <View style={[s.p12, s.gap12]}>
+                    <Text style={[s.semibold, s.textXL, s.textGray600]}>
+                        Próximo exercício
+                    </Text>
+
+                    <ExerciseListCard
+                        exercise={nextExercise}
+                        showsAddButton={false} />
+                </View>
+            }
+
+
+            <LinearGradient
+                locations={[0, 0.4]}
+                // dither={false}
+                colors={['transparent', COLORS.white]}
+                style={[s.p12, s.absolute, s.flexRow, s.gap12,
+                { bottom: 0, left: 0, right: 0, paddingTop: 24 }]}
+            >
+                {/* {activeIndex !== 0 &&
+                    <Button
+                        text={'Voltar'}
+                        onPress={handlePrev}
+                        variant='secondary'
+                    />
+                } */}
+                <Button
+                    text={'Próximo'}
+                    style={[s.flex1]}
+                    onPress={onCompletedExercise}
+                />
+            </LinearGradient>
         </View>
     )
 }

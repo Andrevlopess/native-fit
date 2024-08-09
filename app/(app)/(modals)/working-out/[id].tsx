@@ -68,6 +68,7 @@ export default function DoingWorkoutScreen() {
             <Stack.Screen options={{
                 title: workout.name,
                 headerTitleAlign: 'center',
+                presentation: 'fullScreenModal',
                 headerBackVisible: false,
                 header: () => (
                     <View style={[

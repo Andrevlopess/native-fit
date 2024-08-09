@@ -24,7 +24,7 @@ export default function SeriesManager() {
     const { control, register } = useForm<SerieValues>({
         resolver: zodResolver(SerieSchema),
         defaultValues: {
-            serie: [{ }]
+            serie: [{}]
         }
     });
     const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
@@ -33,28 +33,36 @@ export default function SeriesManager() {
     });
 
     return (
-        <View style={[s.flex1, s.p12, s.flexRow, s.justifyBetween, s.itemsCenter]}>
-            <Text style={[s.bold, s.textXL, s.px12]}>Séries</Text>
-            <Button variant='secondary' text='Nova série' size='small' onPress={() => append({reps: 0, weight: 0})} />
+        <View style={[s.flex1, s.p12, s.gap12]}>
+            <View style={[s.flexRow, s.justifyBetween, s.itemsCenter]}>
+                <Text style={[s.bold, s.textXL, s.px12]}>Séries</Text>
+                <Button variant='secondary' text='Nova série' size='small' onPress={() => append({ reps: 0, weight: 0 })} />
+            </View>
+
 
             {fields.map((field, index) =>
-                <View key={field.id}>
+                <View key={field.id} style={[s.flexRow, s.gap4]}>
                     <ControlledInput
                         name={`serie.${index}.weight`}
                         control={control}
-                        value={field.weight.toString()}
+                        value={`${field.weight}`}
+                        placeholder='Carga em kg'
+                        keyboardType='numeric'
                     />
 
                     <ControlledInput
                         name={`serie.${index}.reps`}
                         control={control}
-                        value={field.reps.toString()}
+                        keyboardType='numeric'
+                        placeholder='Repetições'
+                        value={`${field.reps}`}
                     />
-                    <Button onPress={() => remove(index)}>
-                        <X color={COLORS.red}/>
+                    <Button onPress={() => remove(index)} variant='ghost'>
+                        <X color={COLORS.red} />
                     </Button>
                 </View>
             )}
+
         </View>
     )
 }
