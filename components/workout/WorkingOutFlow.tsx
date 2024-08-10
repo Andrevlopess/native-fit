@@ -90,7 +90,6 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
                                 style={[s.flex1, s.bgWhite, s.gap4]}
                             // stickyHeaderIndices={[0]}
                             >
-
                                 {
                                     isResting
                                         ? <RestingWorkoutView
@@ -98,21 +97,11 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
                                             // onTimerEnd={() => {}}
                                             onTimerEnd={handleNext}
                                         />
-                                        :
-                                        <ScrollView
-                                            contentInsetAdjustmentBehavior='automatic'
-                                            automaticallyAdjustKeyboardInsets
-                                            style={[s.flex1]}
-                                            contentContainerStyle={[s.py12, s.gap12, { paddingBottom: 96 }]}
-                                        >
-
-                                            <WorkingOutExerciseCard
-                                                isLastExercise={isLastExercise}
-                                                nextExercise={exercises[activeIndex + 1]}
-                                                onCompletedExercise={handleNext}
-                                                exercise={doing} />
-
-                                        </ScrollView>
+                                        : <WorkingOutExerciseCard
+                                            isLastExercise={isLastExercise}
+                                            nextExercise={exercises[activeIndex + 1]}
+                                            onCompletedExercise={handleNext}
+                                            exercise={doing} />
                                 }
                             </View >
 

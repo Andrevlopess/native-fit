@@ -1,18 +1,14 @@
 import { WorkoutApi } from '@/api/workout-api';
-import NotFoundScreen from '@/app/+not-found';
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle';
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle';
 import Button from '@/components/ui/Button';
 import LoadingView from '@/components/views/LoadingView';
 import MessageView from '@/components/views/MessageView';
 import WorkoutExercisesList from '@/components/workout/WorkoutExercisesList';
-import COLORS from '@/constants/Colors';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
-import { IWorkout } from '@/types/workout';
 import { useQuery } from '@tanstack/react-query';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
-import { Plus } from 'lucide-react-native';
 import React from 'react';
 import { Text, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -80,7 +76,7 @@ export default function WorkoutScreen() {
                             }
                         </View>
 
-                        {!!workout.exercises_count && <Button
+                        {<Button
                             text='Iniciar treino'
                             asLink={{ pathname: `/working-out/${id}` }}
                             style={[s.px12, s.py6, s.bgWhite]}
