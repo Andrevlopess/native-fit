@@ -78,7 +78,6 @@ function ControlledInputInner<FormType extends FieldValues>(
                     {...inputProps}
                     ref={ref}
                     value={value}
-                    
                     onBlur={onBlur}
                     error={error?.message ?? inputProps.error}
                     onChangeText={onChange}

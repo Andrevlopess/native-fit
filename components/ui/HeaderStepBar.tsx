@@ -1,7 +1,7 @@
 import { SCREEN_WIDTH } from "@/constants/Dimensions";
 import { s } from "@/styles/global";
 import React, { memo } from "react";
-import { useAnimatedValue, View } from "react-native";
+import { View } from "react-native";
 import Animated, { SharedValue, useAnimatedStyle } from "react-native-reanimated";
 
 function HeaderStepBar({
@@ -25,7 +25,7 @@ function HeaderStepBar({
             ]}
         >
             <Animated.View
-                style={[s.bgIndigo500, s.radiusFull, anim]}
+                style={[s.bgBlack, s.radiusFull, anim]}
             />
         </View>
 

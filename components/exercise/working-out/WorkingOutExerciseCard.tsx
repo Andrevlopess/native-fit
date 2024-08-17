@@ -1,11 +1,14 @@
+import { ExerciseApi } from '@/api/exercise-api'
 import Button from '@/components/ui/Button'
 import { LineDivisor } from '@/components/ui/Divisors'
 import COLORS from '@/constants/Colors'
 import { SCREEN_WIDTH } from '@/constants/Dimensions'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { ScrollView, Text, View } from 'react-native'
 import Animated, { FadeInDown, LinearTransition } from 'react-native-reanimated'
@@ -38,6 +41,7 @@ const ExerciseDetailsCard = ({ exercise }: { exercise: IExercise }) => <View sty
     </Animated.View>
 </View>
 interface WorkingOutExerciseCardProps {
+    workoutId: string
     exercise: IExercise;
     nextExercise: IExercise;
     isLastExercise: boolean;
@@ -47,24 +51,32 @@ interface WorkingOutExerciseCardProps {
 
 const SerieSchema = z.object({
     serie: z.object({
-        weight: z.string().min(1, 'Adicione uma carga'),
-        reps: z.string().min(1, 'Adicione repetições')
+        weight: z.string().min(1, 'Obrigatório'),
+        reps: z.string().min(1, 'Obrigatório')
     }).array()
 })
 
 export type SerieValues = z.infer<typeof SerieSchema>
 
+// todo: block a new serie util the last serie isDirty;
+// todo: if its a core exercise, the weight is optional
 
-export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise, onCompletedExercise }: WorkingOutExerciseCardProps) {
+export function WorkingOutExerciseCard({
+    exercise,
+    isLastExercise,
+    nextExercise,
+    workoutId,
+    onCompletedExercise,
+}: WorkingOutExerciseCardProps) {
 
-
+    const ref = useRef<ScrollView>(null)
 
     const { control, handleSubmit, formState: { isDirty }, getValues } = useForm<SerieValues>({
-        // resolver: zodResolver(SerieSchema),
+        resolver: zodResolver(SerieSchema),
         defaultValues: {
             serie: [{
-                reps: '10',
-                weight: ' 50.2'
+                reps: '12',
+                weight: '30.20'
             }]
         }
     });
@@ -75,34 +87,35 @@ export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise,
     });
 
 
-
+    const { mutate, isPending } = useMutation({
+        mutationFn: ExerciseApi.addSerie,
+        // onSettled: onCompletedExercise,
+        onError: console.log
+    })
 
     const handleCompleteExercise = (data: SerieValues) => {
-        console.log('sefoder');
+        onCompletedExercise()
+        mutate({
+            exercise_id: exercise.id,
+            workout_id: workoutId,
+            series: data
+        })
 
-        console.log(data);
+
     }
 
 
     const handleRemoveSerie = (index: number) => {
-        console.log(fields.length);
-
         if (fields.length === 1) return;
         remove(index)
     }
 
-    const isLastSerieEmpty = fields[fields.length - 1].reps === '' || fields[fields.length - 1].weight === ''
+
+    // const isLastSerieEmpty = fields[fields.length - 1].reps === '' || fields[fields.length - 1].weight === ''
 
     const handleInsertSerie = () => {
-
-        if (isLastSerieEmpty) {
-            console.log(' deu red');
-            return;
-        }
-
-        append({ reps: '', weight: '' })
+        append({ reps: '12', weight: '12' })
     }
-
 
     return (
         <>
@@ -111,14 +124,13 @@ export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise,
                 automaticallyAdjustKeyboardInsets
                 style={[s.flex1]}
                 contentContainerStyle={[s.gap24, s.py24, { paddingBottom: 96 }]}
+                ref={ref}
+            // onScroll={({nativeEvent}) => console.log(nativeEvent.contentOffset)}
             >
-
 
                 <ExerciseDetailsCard exercise={exercise} />
 
                 <LineDivisor />
-
-
 
                 <View
                     style={[s.flex1, s.gap12, s.p12]}>
@@ -127,17 +139,20 @@ export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise,
                     </View>
 
                     {
-                        fields.map((field, index) => <SeriesManager
-                            key={field.id}
-                            control={control}
-                            field={field}
-                            index={index}
-                            handleRemove={handleRemoveSerie} />)
+                        fields.map((field, index) =>
+                            <SeriesManager
+                                onFocus={() => ref.current?.scrollTo({ 'y': 545, 'animated': true })}
+                                // onBlur={() => ref.current?.scrollTo({ 'y': 0 })}
+                                key={field.id}
+                                control={control}
+                                field={field}
+                                index={index}
+                                handleRemove={handleRemoveSerie} />)
                     }
 
                     <Animated.View layout={LinearTransition.springify().stiffness(500).damping(60)}>
                         <Button
-                            disabled={fields.length < 1 || isLastSerieEmpty}
+                            disabled={fields.length < 1}
                             variant='secondary'
                             text='Nova série'
                             size='small'
@@ -145,8 +160,6 @@ export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise,
                     </Animated.View>
 
                 </View>
-
-
 
 
 
@@ -178,6 +191,7 @@ export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise,
             >
 
                 <Button
+                    isLoading={isPending}
                     disabled={!isDirty}
                     text={'Próximo'}
                     style={[s.flex1]}
@@ -186,4 +200,4 @@ export function WorkingOutExerciseCard({ exercise, isLastExercise, nextExercise,
             </LinearGradient>
         </>
     )
-}
+} 

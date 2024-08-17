@@ -1,4 +1,4 @@
-import { SerieValues } from "@/components/exercise/working-out/SeriesManager";
+import { SerieValues } from "@/components/exercise/working-out/WorkingOutExerciseCard";
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
 
@@ -13,14 +13,13 @@ interface FindOneParams {
   id: string;
 }
 
-
 export interface AddSerieParams {
   workout_id: string;
   exercise_id: string;
-  series: SerieValues[]
+  series: SerieValues;
 }
 export class ExerciseApi {
-  private constructor() { }
+  private constructor() {}
 
   static async findOne(params: FindOneParams) {
     try {
@@ -38,12 +37,15 @@ export class ExerciseApi {
 
   static async search(params: SearchExercisesParams) {
     try {
-      const { data: exercises, error } = await supabase.rpc("search_exercises", {
-        filter: params.filter,
-        page_num: params.pageParam,
-        page_size: params.limit,
-        query: params.search,
-      });
+      const { data: exercises, error } = await supabase.rpc(
+        "search_exercises",
+        {
+          filter: params.filter,
+          page_num: params.pageParam,
+          page_size: params.limit,
+          query: params.search,
+        }
+      );
 
       if (error) throw error;
 
@@ -53,30 +55,32 @@ export class ExerciseApi {
     }
   }
 
-  static async addSerie(params: AddSerieParams) {
+  static async addSerie({ series, workout_id, exercise_id }: AddSerieParams) {
     try {
-  
-    console.log(params.series);
-
-      // params.series.map(exercise_serie => ({ 
-      //   series: exercise_serie.serie.length,
-      //   max_weight: exercise_serie.series.sort((a, b) => b.weight - a.weight)[0],
-      //   total_reps: exercise_serie.series.reduce((acc, cur) => acc + cur.reps, 0)
-      // }))
-
-      // best_serie: exercise_serie.series.sort((a, b) => (b.weight / b.reps) - (a.weight / a.reps))[0]
-
-      // const { data, error } = await supabase
-      //   .from('exercises_series')
-      // .insert()
+      
+      const bestSerie = series.serie.sort((a, b) => (+b.weight / +b.reps) - (+a.weight / +a.reps))[0]
 
 
+      const serie = {
+        workout_id: workout_id,
+        exercise_id: exercise_id,
+        series: series.serie.length,
+        max_weight: series.serie.sort((a, b) => +b.weight - +a.weight)[0].weight,
+        best_serie_weight: bestSerie.weight,
+        best_serie_reps: bestSerie.reps
+      };
+     
 
-      console.log(params.series);
+      const { data, error } = await supabase
+        .from("exercises_series")
+        .insert(serie)
+        .select("id");
 
+      if (error) throw error;
+
+      return data;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 }
-

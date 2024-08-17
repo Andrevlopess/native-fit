@@ -49,7 +49,7 @@ const Input = ({
   // })
 
   return (
-    <View style={[containerStyles, [props.editable === false && { opacity: 0.5 }], s.flex1]}
+    <View style={[containerStyles, [props.editable === false && { opacity: 0.5 }]]}
     //  onLayout={({ nativeEvent }) => console.log(label, nativeEvent.layout)}
     >
       {secondaryLabel && (

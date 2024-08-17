@@ -17,12 +17,12 @@ export default function DoingWorkoutScreen() {
     const { id } = useLocalSearchParams<SearchParams>();
     const { top } = useSafeAreaInsets();
     const queryClient = useQueryClient();
-    
+
     if (!id) return <PageNotFound />
-    
+
     const { data: workout, isPending } = useQuery({
         queryKey: ["workouts", id],
-        queryFn: () => WorkoutApi.findOne({ id })  
+        queryFn: () => WorkoutApi.findOne({ id })
     });
 
     if (isPending)
@@ -36,7 +36,11 @@ export default function DoingWorkoutScreen() {
         mutationKey: ['save-on-history', id],
         mutationFn: WorkoutApi.saveOnHistory,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['workouts-history'] })
+            queryClient.invalidateQueries({ queryKey: ['workouts-history'] });
+            router.replace({
+                pathname: '/workout-statistics/[id]',
+                params: {id}
+            })
         }
     });
 
@@ -88,13 +92,6 @@ export default function DoingWorkoutScreen() {
                             text='Desistir'
                             size='small'
                         />
-
-                        {/* <Button
-                            variant='ghost'
-                            onPress={handleGiveUp}
-                            text='Finalizar'
-                            size='small'
-                        /> */}
                     </View>
                 ),
 

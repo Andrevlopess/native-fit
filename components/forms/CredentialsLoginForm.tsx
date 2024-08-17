@@ -29,7 +29,7 @@ export default function CredentialsLoginForm() {
         resolver: zodResolver(loginShema),
         defaultValues: {
             email: 'andrellopes021@gmail.com',
-            password: 'testeasd123'
+            password: 'teste123'
         }
     })
 
@@ -41,9 +41,6 @@ export default function CredentialsLoginForm() {
     const handleLogin = (data: LoginParams) => {
         mutate(data)
     }
-
-    const [visible, setvisible] = useState(false)
-
 
 
     return (

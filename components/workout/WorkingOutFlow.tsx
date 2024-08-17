@@ -42,7 +42,7 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
     const handleNext = () => {
         if (isLastExercise && !isResting) {
             onWorkoutCompleted(workoutId);
-            router.back();
+            // router.back();
             return;
         }
 
@@ -98,6 +98,7 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
                                             onTimerEnd={handleNext}
                                         />
                                         : <WorkingOutExerciseCard
+                                            workoutId={workoutId}
                                             isLastExercise={isLastExercise}
                                             nextExercise={exercises[activeIndex + 1]}
                                             onCompletedExercise={handleNext}

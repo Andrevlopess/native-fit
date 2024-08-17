@@ -19,19 +19,19 @@ export const WorkoutListCard = ({ workout: { id, name, description, exercises_co
         <Link
             href={{ pathname: `/(app)/workouts/${id}`, params: { name, description } }}
             asChild
-            style={[s.flex1, s.flexRow, s.gap12]}
+            style={[s.flex1, s.flexRow, s.gap12, s.itemsCenter]}
         // onLayout={({nativeEvent}) => console.log(nativeEvent.layout)}
         >
             <AnimatedPressable>
 
                 <View style={[s.bgGray200, s.radius14, { height: 60, width: 60 }]} />
-                <View style={[s.gap4, s.justifyCenter]} >
+                <View style={[s.gap4, s.justifyCenter, s.flex1]} >
                     <Text
                         style={[s.medium, s.textBase, { lineHeight: 18 }]}
                         numberOfLines={2}>
                         {name}
                     </Text>
-                    <View style={[s.flexRow, s.itemsCenter, s.gap4]}>
+                    <View style={[s.flexRow, s.itemsCenter, s.gap4, {flexWrap: 'wrap'}]}>
                         {description &&
                             <>
                                 <Text style={[s.regular, s.textGray400]}>{description}</Text>

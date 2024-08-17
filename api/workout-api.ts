@@ -1,4 +1,3 @@
-import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
 import { IWorkout } from "@/types/workout";
@@ -8,17 +7,10 @@ export interface FindAllWorkoutParams {
   userId?: string;
   search?: string;
 }
-export interface FindOneWorkoutParams {
-  id: string;
-}
 
-export interface FetchExercisesParams {
+export interface FetchWithId {
   id: string;
 }
-export interface SaveOnHistoryParams {
-  id: string;
-}
-
 export interface CreateWorkoutResponse {
   id: string;
   name: string;
@@ -80,7 +72,7 @@ export class WorkoutApi {
     }
   }
 
-  static async findOne(params: FindOneWorkoutParams) {
+  static async findOne(params: FetchWithId) {
     try {
       const { data: workout, error } = await supabase
         .from("workouts")
@@ -133,9 +125,7 @@ export class WorkoutApi {
     }
   }
 
-  static async fetchExercises(
-    params: FetchExercisesParams
-  ): Promise<IExercise[]> {
+  static async fetchExercises(params: FetchWithId): Promise<IExercise[]> {
     try {
       let { data: exercises, error } = await supabase
         .rpc("workout_exercises", { workoutid: params.id })
@@ -152,7 +142,10 @@ export class WorkoutApi {
   static async fetchHistory(params: FetchHistoryParams): Promise<string[]> {
     try {
       const { data, error } = await supabase
-        .rpc("workedout_dates", { workoutId: params.workoutId, period: params.period })
+        .rpc("workedout_dates", {
+          workoutId: params.workoutId,
+          period: params.period,
+        })
         .returns<{ doneat: string }[]>();
 
       if (error) throw error;
@@ -164,19 +157,19 @@ export class WorkoutApi {
     }
   }
 
-  static async teste(): Promise<string[]> {
-    try {
-      const { data, error } = await supabase.rpc("teste");
+  // static async teste(): Promise<string[]> {
+  //   try {
+  //     const { data, error } = await supabase.rpc("teste");
 
-      if (error) throw error;
+  //     if (error) throw error;
 
-      return data;
-    } catch (error) {
-      throw error;
-    }
-  }
+  //     return data;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
-  static async saveOnHistory(params: SaveOnHistoryParams) {
+  static async saveOnHistory(params: FetchWithId) {
     try {
       const { data, error } = await supabase
         .from("workouts_history")
@@ -253,4 +246,21 @@ export class WorkoutApi {
     }
   }
 
+  static async fetchStatistics(params: FetchWithId) {
+    try {
+      console.log('fetching', params.id);
+      
+      const { data, error } = await supabase.rpc("workout_statistics", {
+        workoutId: params.id,
+      });
+
+      if (error) throw error;
+
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
