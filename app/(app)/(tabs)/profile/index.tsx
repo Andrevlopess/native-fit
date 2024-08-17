@@ -16,12 +16,6 @@ export default function ProfileIndexScreen() {
 
   const { user } = useAuth()
 
-  const { data } = useQuery({
-    queryKey: ['teste'],
-    queryFn: WorkoutApi.teste
-  })
-
-
   return (
 
     <>
