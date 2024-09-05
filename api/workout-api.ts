@@ -48,7 +48,14 @@ export type AddExerciseResponse = {
   exercise_id: string;
 }[];
 
-// end todo
+export type ExerciseStatistics = {
+  exercise_id: string;
+  best_serie_reps: number;
+  best_serie_weight: number;
+  pr: number;
+  series: number;
+  times_done: number;
+}
 
 export class WorkoutApi {
   private constructor() {}
@@ -181,6 +188,13 @@ export class WorkoutApi {
 
       if (error) throw error;
 
+      await supabase
+        .from("exercises_series")
+        .update({
+          workout_history_id: data.id,
+        })
+        .single();
+
       return data.id;
     } catch (error) {
       throw error;
@@ -248,17 +262,15 @@ export class WorkoutApi {
 
   static async fetchStatistics(params: FetchWithId) {
     try {
-      console.log('fetching', params.id);
-      
       const { data, error } = await supabase.rpc("workout_statistics", {
-        workoutId: params.id,
+        workoutid: params.id,
       });
 
       if (error) throw error;
 
       console.log(data);
 
-      return data;
+      return data as ExerciseStatistics[];
     } catch (error) {
       throw error;
     }

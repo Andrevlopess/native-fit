@@ -18,7 +18,6 @@ const BackButton = () => (
 
 export default function ExerciseDetailsModal() {
 
-
     const params = useLocalSearchParams
         <{
             id: string,

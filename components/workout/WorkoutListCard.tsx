@@ -17,7 +17,7 @@ export const WorkoutListCard = ({ workout: { id, name, description, exercises_co
 
     return (
         <Link
-            href={{ pathname: `/(app)/workouts/${id}`, params: { name, description } }}
+            href={{ pathname: `/(app)/workouts/[id]`, params: { id, name, description } }}
             asChild
             style={[s.flex1, s.flexRow, s.gap12, s.itemsCenter]}
         // onLayout={({nativeEvent}) => console.log(nativeEvent.layout)}

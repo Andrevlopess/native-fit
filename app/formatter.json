@@ -1,14 +1,66 @@
 [
   {
-    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
-    "workout_id": "8001d6b0-4356-493d-8b29-16721225afb2"
+    "best_serie_reps": 25,
+    "best_serie_weight": 13,
+    "exercise_id": "1910f0dd-c7a2-4321-86fb-1823967d784d",
+    "pr": 13,
+    "series": 1,
+    "times_done": 14
   },
   {
-    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
-    "workout_id": "ec119a07-b631-45b5-ac7b-c959a8341fc3"
+    "best_serie_reps": 25,
+    "best_serie_weight": 12,
+    "exercise_id": "1910f0dd-c7a2-4321-86fb-1823967d784d",
+    "pr": 12,
+    "series": 1,
+    "times_done": 14
   },
   {
+    "best_serie_reps": 8,
+    "best_serie_weight": 30,
     "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
-    "workout_id": "7b81f4f0-d726-47dd-9fd1-3e95cfce022b"
+    "pr": 30,
+    "series": 3,
+    "times_done": 14
+  },
+  {
+    "best_serie_reps": 5,
+    "best_serie_weight": 10,
+    "exercise_id": "1910f0dd-c7a2-4321-86fb-1823967d784d",
+    "pr": 10,
+    "series": 2,
+    "times_done": 14
+  },
+  {
+    "best_serie_reps": 12,
+    "best_serie_weight": 30.2000007629395,
+    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
+    "pr": 30.2000007629395,
+    "series": 2,
+    "times_done": 14
+  },
+  {
+    "best_serie_reps": 12,
+    "best_serie_weight": 30.2000007629395,
+    "exercise_id": "1910f0dd-c7a2-4321-86fb-1823967d784d",
+    "pr": 30.2000007629395,
+    "series": 2,
+    "times_done": 14
+  },
+  {
+    "best_serie_reps": 22,
+    "best_serie_weight": 12,
+    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
+    "pr": 12,
+    "series": 1,
+    "times_done": 14
+  },
+  {
+    "best_serie_reps": 33,
+    "best_serie_weight": 12,
+    "exercise_id": "63d9d5e4-050c-4b6d-9c70-bd29e61129d3",
+    "pr": 12,
+    "series": 1,
+    "times_done": 14
   }
 ]

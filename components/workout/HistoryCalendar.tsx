@@ -9,9 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { LocaleConfig } from 'react-native-calendars';
 import { MarkedDates } from 'react-native-calendars/src/types';
-import Divisor from '../ui/Divisors';
-import LoadingView from '../views/LoadingView';
 import Button from '../ui/Button';
+import LoadingView from '../views/LoadingView';
 
 LocaleConfig.locales['pt-br'] = {
     monthNames: [
@@ -79,8 +78,6 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
         queryKey: ['workouts-history', { workoutId, period }],
         queryFn: () => WorkoutApi.fetchHistory({ workoutId, period })
     });
-
-    console.log(dates);
 
 
 
@@ -162,7 +159,7 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
                     : <CalendarList
                         markingType='period'
                         current={today}
-                        pastScrollRange={0}
+                        pastScrollRange={pastScrollRange}
                         futureScrollRange={0}
                         onDayPress={onDayPress}
                         markedDates={marked}

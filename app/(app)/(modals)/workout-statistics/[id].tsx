@@ -1,19 +1,30 @@
 import { WorkoutApi } from '@/api/workout-api';
-import Button from '@/components/ui/Button';
+import ExerciseStatisticCard from '@/components/exercise/ExerciseStatisticCard';
+import SkeletonList from '@/components/ui/SkeletonList';
 import LoadingView from '@/components/views/LoadingView';
+import MessageView from '@/components/views/MessageView';
 import PageNotFound from '@/components/views/PageNotFound';
-import WorkingOutFlow from '@/components/workout/WorkingOutFlow';
 import { s } from '@/styles/global';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Stack, useLocalSearchParams } from 'expo-router';
+import { Inbox } from 'lucide-react-native';
 import React from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 // todo: workout done exercises with each pr;
 // todo: total de vezes que eu fiz esse treino;
 // todo: 
+
+
+const EmptyComponent = () =>
+    <MessageView
+        icon={Inbox}
+        message='Nenhuma estatística encontrada'
+        description='Adicione exercícios ao seu treino!' />
+
 
 type SearchParams = { id: string }
 
@@ -30,11 +41,16 @@ export default function DoingWorkoutScreen() {
     });
 
 
+    const { data: exercises, isPending: isExercisesPending } = useQuery({
+        queryKey: ['workout-exercises', id],
+        queryFn: () => WorkoutApi.fetchExercises({ id })
+    })
+
     const { data: statistics, isPending: isStatisticPending, refetch } = useQuery({
         queryKey: ["workout-statistics", id],
-        queryFn: () => WorkoutApi.fetchStatistics({ id })
+        queryFn: () => WorkoutApi.fetchStatistics({ id }),
+        retry: false,
     });
-
 
     if (isPending)
         return <LoadingView />
@@ -42,8 +58,11 @@ export default function DoingWorkoutScreen() {
     if (!workout)
         return <Text>Workout not found</Text>
 
+    if (!statistics || !exercises)
+        return <Text>Satistics not found</Text>
 
-    console.log(statistics);
+
+    const statisticCards = statistics.map(sts => ({...sts, ...exercises.find(ex => ex.id === sts.exercise_id)}));
 
     return (
         <>
@@ -71,9 +90,45 @@ export default function DoingWorkoutScreen() {
                 }} />
 
 
+            <View style={[s.flex1, s.mt12]} >
+                {isPending
+                    ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />
+                    : !statisticCards?.length || !exercises?.length
+                        ? <EmptyComponent />
+                        : <>
 
+                            <View style={[s.flexRow, s.gap6, s.itemsCenter, s.p12]}>
+                                <Text style={[s.semibold, s.textXL]}>Exercícios</Text>
+                                {
+                                    !!statisticCards.length &&
+                                    <>
+                                        <View style={[
+                                            s.bgGray800,
+                                            s.radiusFull,
+                                            { height: 8, width: 8 }]} />
 
-            <Button text='fetch' onPress={() => refetch()} />
+                                        <Text style={[s.semibold, s.textXL]}>
+                                            {statisticCards.length}
+                                        </Text>
+                                    </>
+                                }
+                            </View>
+
+                            {statisticCards.map((statistic, i) =>
+                                <Animated.View
+                                    key={statistic.exercise_id}
+                                    entering={FadeIn.springify().stiffness(500).damping(60)}
+                                    layout={LinearTransition.springify().stiffness(500).damping(60)}
+                                >
+                                    {/* <ExerciseStatisticCard
+                                      statistic={statistic} /> */}
+                                </Animated.View >
+
+                            )}
+
+                        </>
+                }
+            </View>
         </>
     )
 }
