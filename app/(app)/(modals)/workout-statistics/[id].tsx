@@ -1,22 +1,19 @@
 import { WorkoutApi } from '@/api/workout-api';
 import ExerciseStatisticCard from '@/components/exercise/ExerciseStatisticCard';
+import Button from '@/components/ui/Button';
 import SkeletonList from '@/components/ui/SkeletonList';
 import LoadingView from '@/components/views/LoadingView';
 import MessageView from '@/components/views/MessageView';
 import PageNotFound from '@/components/views/PageNotFound';
 import { s } from '@/styles/global';
+import { IExercise } from '@/types/exercise';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { Inbox } from 'lucide-react-native';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-
-// todo: workout done exercises with each pr;
-// todo: total de vezes que eu fiz esse treino;
-// todo: 
 
 
 const EmptyComponent = () =>
@@ -59,10 +56,13 @@ export default function DoingWorkoutScreen() {
         return <Text>Workout not found</Text>
 
     if (!statistics || !exercises)
-        return <Text>Satistics not found</Text>
+        return <Text>Statistics not found</Text>
+
+    console.log(statistics);
 
 
-    const statisticCards = statistics.map(sts => ({...sts, ...exercises.find(ex => ex.id === sts.exercise_id)}));
+    const statisticCards = statistics.map(sts =>
+        ({ ...sts, ...exercises.find(ex => ex.id === sts.exercise_id) }));
 
     return (
         <>
@@ -78,27 +78,34 @@ export default function DoingWorkoutScreen() {
                             s.itemsCenter,
                             s.bgWhite,
                             s.flexRow,
+                            s.borderBottom1,
+                            s.borderGray200,
                             { paddingTop: top, paddingLeft: 12 }]}>
 
                             <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
                                 {workout.name}
                             </Text>
 
+                            <Button
+                                variant='ghost'
+                                asLink={'/workouts'}
+                                text='Continuar'
+                            // size='small'
+                            />
                         </View>
                     ),
 
                 }} />
 
 
-            <View style={[s.flex1, s.mt12]} >
+            <ScrollView style={[s.flex1, s.bgWhite]} contentContainerStyle={[s.py12]} >
                 {isPending
                     ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />
                     : !statisticCards?.length || !exercises?.length
                         ? <EmptyComponent />
                         : <>
-
                             <View style={[s.flexRow, s.gap6, s.itemsCenter, s.p12]}>
-                                <Text style={[s.semibold, s.textXL]}>Exercícios</Text>
+                                <Text style={[s.semibold, s.textXL]}>Exercícios do treino</Text>
                                 {
                                     !!statisticCards.length &&
                                     <>
@@ -114,21 +121,29 @@ export default function DoingWorkoutScreen() {
                                 }
                             </View>
 
-                            {statisticCards.map((statistic, i) =>
-                                <Animated.View
-                                    key={statistic.exercise_id}
-                                    entering={FadeIn.springify().stiffness(500).damping(60)}
-                                    layout={LinearTransition.springify().stiffness(500).damping(60)}
-                                >
-                                    {/* <ExerciseStatisticCard
-                                      statistic={statistic} /> */}
-                                </Animated.View >
+                            {statistics.map((statistic, i) => {
 
-                            )}
+                                const exercise =
+                                    exercises.find(ex => ex.id === statistic.exercise_id)
+                                    ?? {} as IExercise
 
+                                return (
+                                    <Animated.View
+                                        key={statistic.id}
+                                        entering={FadeIn.springify().stiffness(500).damping(60)}
+                                        layout={LinearTransition.springify().stiffness(500).damping(60)}
+                                    >
+                                        <ExerciseStatisticCard
+                                            statistic={statistic} exercise={exercise} />
+                                    </Animated.View >
+
+                                )
+                            })}
+
+                            <Button text='Ok' asLink={'/workouts'} style={[s.m12]} />
                         </>
                 }
-            </View>
+            </ScrollView>
         </>
     )
 }

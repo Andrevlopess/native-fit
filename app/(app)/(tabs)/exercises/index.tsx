@@ -101,7 +101,7 @@ export default function LibraryIndexScreen() {
               onChangeText={setSearch}
               placeholder='Busque por um exercício'
               value={search}
-              style={[s.px12]}
+              containerStyles={[s.mx12]}
             />
             <BadgesControl
               badges={badges}

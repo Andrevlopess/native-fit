@@ -75,8 +75,8 @@ export function WorkingOutExerciseCard({
         resolver: zodResolver(SerieSchema),
         defaultValues: {
             serie: [{
-                reps: '12',
-                weight: '30.20'
+                reps: '2',
+                weight: '100.00'
             }]
         }
     });
@@ -89,7 +89,6 @@ export function WorkingOutExerciseCard({
 
     const { mutate, isPending } = useMutation({
         mutationFn: ExerciseApi.addSerie,
-        // onSettled: onCompletedExercise,
         onError: console.log
     })
 
@@ -114,7 +113,7 @@ export function WorkingOutExerciseCard({
     // const isLastSerieEmpty = fields[fields.length - 1].reps === '' || fields[fields.length - 1].weight === ''
 
     const handleInsertSerie = () => {
-        append({ reps: '12', weight: '12' })
+        append({ reps: '10', weight: '80.00' })
     }
 
     return (

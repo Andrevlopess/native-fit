@@ -29,11 +29,11 @@ export default function SignUpScreen() {
                 }}
             />
 
-            <ScrollView style={[s.flex1, s.bgWhite, s.p12]}>
+            <View style={[s.flex1, s.bgWhite, s.p12]}>
 
                 <CredentialsSignUpForm />
 
-            </ScrollView>
+            </View>
 
 
         </>

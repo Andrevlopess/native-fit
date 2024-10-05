@@ -83,7 +83,8 @@ export default function CredentialsLoginForm() {
             <Button
                 text='Criar uma conta'
                 variant='ghost'
-                asLink={'/auth/signUp'} />
+                asLink={'/auth/signUp'} 
+                />
 
 
         </View>

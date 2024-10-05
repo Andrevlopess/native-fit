@@ -1,4 +1,4 @@
-import { AuthApi } from '@/api/auth-api'
+import { useAuth } from '@/contexts/AuthContext'
 import { s } from '@/styles/global'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
@@ -8,9 +8,7 @@ import { View } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
-import Divisor, { LineDivisor } from '../ui/Divisors'
-import { router } from 'expo-router'
-import { useAuth } from '@/contexts/AuthContext'
+import { LineDivisor } from '../ui/Divisors'
 
 const signUpSchema = z.object({
     name: z.string().min(1, 'Nome obrigatório'),
@@ -83,19 +81,17 @@ export default function CredentialsSignUpForm() {
 
             <Button
                 text='Criar conta'
-                variant='secondary'
+                // variant='secondary'
                 isLoading={isPending}
                 size="small"
                 onPress={handleSubmit(handleLogin)} />
 
-            <LineDivisor text='Já tem uma conta' styles={[s.mtAuto]} />
+            <LineDivisor text='Já tem uma conta?' styles={[s.mtAuto]} />
 
             <Button
                 text='Acessar minha conta'
                 variant='ghost'
-                size="small"
-                asLink={'/auth/login'} />
-
+                asLink={'/auth/signUp'} />
 
         </View>
     )

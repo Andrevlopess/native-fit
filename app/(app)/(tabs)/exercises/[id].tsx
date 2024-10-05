@@ -127,10 +127,11 @@ export default function ExerciseDetailsScreen() {
                                     style={{ height: IMAGE_SIZE, width: IMAGE_SIZE }} />
                             </View>
 
-                            <Text style={[s.bold, s.text2XL]}>{details.name}</Text>
-                            <Text style={[s.bold, s.text2XL]}>{details.bodypart}</Text>
+                            <Text style={[s.bold, s.text3XL]}>{details.name}</Text>
+
+                            {/* <Text style={[s.bold, s.text2XL]}>{details.bodypart}</Text>
                             <Text style={[s.bold, s.text2XL]}>{details.equipment}</Text>
-                            <Text style={[s.bold, s.text2XL]}>{details.target}</Text>
+                            <Text style={[s.bold, s.text2XL]}>{details.target}</Text> */}
 
                         </Animated.ScrollView>
                         : <MessageView

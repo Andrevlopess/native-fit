@@ -49,6 +49,7 @@ export type AddExerciseResponse = {
 }[];
 
 export type ExerciseStatistics = {
+  id: number,
   exercise_id: string;
   best_serie_reps: number;
   best_serie_weight: number;
@@ -267,8 +268,6 @@ export class WorkoutApi {
       });
 
       if (error) throw error;
-
-      console.log(data);
 
       return data as ExerciseStatistics[];
     } catch (error) {

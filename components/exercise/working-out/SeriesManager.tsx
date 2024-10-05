@@ -12,8 +12,8 @@ import { SerieValues } from './WorkingOutExerciseCard';
 
 const WEIGHT_MASK = createNumberMask({
     prefix: [''],
-    separator: ',',
-    delimiter: '.',
+    separator: '.',
+    delimiter: '',
     precision: 2,
 });
 

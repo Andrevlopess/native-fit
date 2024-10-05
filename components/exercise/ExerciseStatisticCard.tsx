@@ -5,38 +5,44 @@ import { IExercise } from '@/types/exercise'
 import { Image } from 'expo-image'
 import React from 'react'
 import { Text, View } from 'react-native'
+import ExerciseListCard from './ExerciseListCard'
 
 
 const DEFAULT_IMAGE_SIZE = 70;
 const EXPANDED_IMAGE_SIZE = SCREEN_WIDTH - 24;
 
+const PRMedal = ({ pr }: { pr: number }) =>
+    <View style={[s.itemsCenter]}>
+        <Image source={require('@/assets/icons/svg/PrMedal.svg')} style={[s.shadow3, { width: 150, height: 150 }]} />
+        <Text style={[s.textBlack, s.black, s.text4XL, s.mt12]}>{pr} kg</Text>
+        <Text style={[s.semibold, s.textLG, s.textGray600]}>Recorde pessoal</Text>
+    </View>
 
-interface IStatisticCard {
-    exercise: IExercise,
-    statistic: ExerciseStatistics
-}
+
+const BestSerieMedal = ({ reps, weight }: { reps: number, weight: number }) =>
+    <View style={[s.itemsCenter]}>
+        <Image source={require('@/assets/icons/svg/BestSerieMedal.svg')} style={[s.shadow3, { width: 150, height: 150 }]} />
+        <Text style={[s.textBlack, s.black, s.text4XL, s.mt12]}> {weight} kg</Text>
+        <Text style={[s.bold, s.text2XL,s.textGray600]}>{reps} reps.</Text>
+
+    </View>
 
 
 
-export default function ExerciseStatisticCard({ statistic }: { statistic: IExercise & ExerciseStatistics }) {
+export default function ExerciseStatisticCard({ statistic, exercise }: { statistic: ExerciseStatistics, exercise: IExercise }) {
 
 
     return (
-        <View>
+        <View style={[s.mt12, s.borderBottom1, s.borderGray200, s.pb12]}>
 
-            <Image
-                // placeholder={
-                //     require('@/assets/images/icon.png')
-                // }
-                source={statistic.gifurl}
-                style={[s.radius8, { height: DEFAULT_IMAGE_SIZE, width: DEFAULT_IMAGE_SIZE }]} />
-            <Text>{statistic.name}</Text>
-            <Text>{statistic.best_serie_reps}</Text>
-            <Text>{statistic.best_serie_weight}</Text>
-            <Text>{statistic.target}</Text>
-            <Text>{statistic.times_done}</Text>
-            <Text>{statistic.name}</Text>
-            <Text>{statistic.name}</Text>
+            <ExerciseListCard exercise={exercise} showsAddButton={false} />
+            <View style={[s.p12, s.gap12, s.flexRow, { justifyContent: 'space-around' }]}>
+                <PRMedal pr={statistic.pr} />
+                <BestSerieMedal reps={statistic.best_serie_reps} weight={statistic.best_serie_weight} />
+            </View>
+            <Text style={[s.p12, s.semibold, s.textLG, s.textCenter]}>Você já fez esse exercício {statistic.times_done} vezes</Text>
+
         </View>
     )
+
 }

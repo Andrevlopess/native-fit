@@ -59,8 +59,7 @@ export class ExerciseApi {
     try {
       
       const bestSerie = series.serie.sort((a, b) => (+b.weight / +b.reps) - (+a.weight / +a.reps))[0]
-
-
+      
       const serie = {
         workout_id: workout_id,
         exercise_id: exercise_id,
