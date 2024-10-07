@@ -98,18 +98,18 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
 
             </ScrollView>
 
-            <LinearGradient
+            {/* <LinearGradient
                 locations={[0, 0.4]}
-                dither={false}
+                // dither={false}
                 colors={['transparent', COLORS.white]}
                 style={[s.p12, s.absolute, s.flexRow, s.gap12,
                 { bottom: 0, left: 0, right: 0, paddingTop: 24 }]}
-            >
+            > */}
 
                 <Button
                     text='Salvar'
                     size='small'
-                    style={[s.flex1]}
+                    style={[s.mx12, s.my24]}
                     variant='secondary'
                     isLoading={isPending}
                     disabled={!(dirtyFields.name || dirtyFields.description)}
@@ -117,7 +117,7 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
                     onPress={handleSubmit(handleSubmitForm)}
 
                 />
-            </LinearGradient>
+            {/* </LinearGradient> */}
         </>
 
 

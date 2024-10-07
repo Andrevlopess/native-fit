@@ -58,8 +58,6 @@ export default function DoingWorkoutScreen() {
     if (!statistics || !exercises)
         return <Text>Statistics not found</Text>
 
-    console.log(statistics);
-
 
     const statisticCards = statistics.map(sts =>
         ({ ...sts, ...exercises.find(ex => ex.id === sts.exercise_id) }));

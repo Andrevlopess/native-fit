@@ -69,9 +69,8 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                 params: { ...exercise }
             }}
             asChild
-            push
             style={[
-                s.flex1,
+                // s.flex1,
                 // s.border1,
                 cardAnimation,
                 s.gap16,
@@ -109,7 +108,7 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                         numberOfLines={2}>
                         {exercise.name}
                     </Text>
-                    <View style={[s.flexRow, s.gap6, s.itemsCenter]}>
+                    <View style={[s.flexRow, s.gap6, s.itemsCenter, {flexWrap: 'wrap'}]}>
                         <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
                         <CircleDivisor />
                         <Text style={[s.regular, s.textGray400]}>{exercise.target}</Text>

@@ -18,11 +18,11 @@ import { Snackbar } from '../ui/Snackbar'
 const AddExerciseCard = ({ id }: { id: string }) =>
     <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8, s.bgWhite, s.radius8]}>
         <TouchableOpacity activeOpacity={0.8}>
-            <View style={[s.bgGray200, s.itemsCenter, s.justifyCenter,
+            <View style={[s.bgGray200, s.itemsCenter, s.justifyCenter, s.radius10,
             { height: 70, width: 70 }]}>
                 <Plus color={COLORS.white} />
             </View>
-            <Text style={[s.textBase, s.medium]}>Adicionar exercício</Text>
+            <Text style={[s.textLG, s.medium]}>Adicionar exercício</Text>
         </TouchableOpacity>
     </Link>
 
@@ -112,6 +112,7 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
             {isRemoving &&
                 <Snackbar message='Removendo exercício' isLoading/>
             }
+            
             {isSuccess &&
                 <Snackbar message='Exercício removido'/>
             }

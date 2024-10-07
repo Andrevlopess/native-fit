@@ -26,9 +26,9 @@ export default function ExerciseDetailsScreen() {
 
     const { data: details, isError, isPending, error } = useQuery({
         queryKey: ['exercise', id],
-        queryFn: () => ExerciseApi.findOne({id})
+        queryFn: () => ExerciseApi.findOne({ id })
     });
-    
+
 
 
     const imageHeight = SCREEN_WIDTH / 1.2
@@ -67,6 +67,7 @@ export default function ExerciseDetailsScreen() {
         <>
             <Stack.Screen options={{
                 title: '',
+                headerBackTitle: "Voltar"
                 // header: ({ back, navigation }) => {
                 //     return (
                 //         <Animated.View

@@ -41,7 +41,7 @@ export default function WorkoutScreen() {
                     title: workout?.name || "",
                     // headerLargeTitle: true,
                     headerTitleAlign: 'left',
-                    headerBackTitleVisible: false,
+                    headerBackTitleVisible: true,
                     headerTitle: ({ children }) =>
                         <AnimatedHeaderTitle offset={offset} title={children} />,
                     headerRight: () => workout &&
@@ -79,7 +79,7 @@ export default function WorkoutScreen() {
                         {<Button
                             text='Iniciar treino'
                             asLink={{ pathname: `/working-out/${id}` }}
-                            style={[s.px12, s.py6, s.bgWhite]}
+                            style={[s.px12, s.py6, s.bgWhite,s.mt12,]}
                         />}
 
                         <WorkoutExercisesList workoutId={id} />

@@ -58,9 +58,6 @@ const SerieSchema = z.object({
 
 export type SerieValues = z.infer<typeof SerieSchema>
 
-// todo: block a new serie util the last serie isDirty;
-// todo: if its a core exercise, the weight is optional
-
 export function WorkingOutExerciseCard({
     exercise,
     isLastExercise,
@@ -75,8 +72,8 @@ export function WorkingOutExerciseCard({
         resolver: zodResolver(SerieSchema),
         defaultValues: {
             serie: [{
-                reps: '2',
-                weight: '100.00'
+                reps: '',
+                weight: ''
             }]
         }
     });
@@ -99,8 +96,6 @@ export function WorkingOutExerciseCard({
             workout_id: workoutId,
             series: data
         })
-
-
     }
 
 
@@ -113,7 +108,7 @@ export function WorkingOutExerciseCard({
     // const isLastSerieEmpty = fields[fields.length - 1].reps === '' || fields[fields.length - 1].weight === ''
 
     const handleInsertSerie = () => {
-        append({ reps: '10', weight: '80.00' })
+        append({ reps: '', weight: '' })
     }
 
     return (
@@ -164,7 +159,7 @@ export function WorkingOutExerciseCard({
 
 
                 <LineDivisor text={
-                    isLastExercise ? 'Você chegou ao fim' : 'Descanse 1 minuto'
+                    isLastExercise ? 'Você chegou ao fim' : 'Descanse 3 minutos'
                 } />
 
                 {!isLastExercise &&
@@ -184,7 +179,7 @@ export function WorkingOutExerciseCard({
             <LinearGradient
                 locations={[0, 0.4]}
                 // dither={false}
-                colors={['transparent', COLORS.white]}
+                colors={['#FFFFFF00', COLORS.white]}
                 style={[s.p12, s.absolute, s.flexRow, s.gap12,
                 { bottom: 0, left: 0, right: 0, paddingTop: 24 }]}
             >

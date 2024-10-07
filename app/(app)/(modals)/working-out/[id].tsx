@@ -79,8 +79,7 @@ export default function DoingWorkoutScreen() {
                         s.justifyBetween,
                         s.itemsCenter,
                         s.bgWhite,
-                        s.flexRow,
-                        { paddingTop: top, paddingLeft: 12 }]}>
+                        s.flexRow,s.py12, {paddingLeft: 12}]}>
 
                         <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
                             {workout.name}
@@ -90,7 +89,7 @@ export default function DoingWorkoutScreen() {
                             variant='ghost'
                             onPress={handleGiveUp}
                             text='Desistir'
-                            size='small'
+                            // size='small'
                         />
                     </View>
                 ),

@@ -66,12 +66,13 @@ export default function LibraryIndexScreen() {
         options={{
           title: 'Biblioteca',
           headerTitleAlign: 'center',
+          // headerLargeTitle: true,
           headerLeft: () => <LogoImage />,
           headerTitle:
             device.android
               ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
               : undefined,
-          // headerLargeTitle: true,
+          headerLargeTitle: true,
           headerSearchBarOptions:
             device.ios
               ? {
@@ -96,7 +97,8 @@ export default function LibraryIndexScreen() {
         // stickyHeaderIndices={[2]}
         >
           <View style={[s.gap8]}>
-            <AnimatedLargeTitle title='Biblioteca' offset={offset} style={[s.px12]} />
+            {device.android &&
+              <AnimatedLargeTitle title='Biblioteca' offset={offset} style={[s.px12]} />}
             <SearchInput
               onChangeText={setSearch}
               placeholder='Busque por um exercício'

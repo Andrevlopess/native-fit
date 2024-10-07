@@ -1,10 +1,8 @@
 import { s } from '@/styles/global';
 import React, { useEffect, useState } from 'react';
-import { Text, Vibration, View } from 'react-native';
-import Animated, { Easing, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import Button from './Button';
+import { Text, Vibration } from 'react-native';
+import { Easing, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import * as Haptics from 'expo-haptics'
 
 interface TimerProps {
     timer: number,
@@ -14,12 +12,11 @@ interface TimerProps {
 export default function Timer({ timer: initialTimer, onTimerEnd }: TimerProps) {
 
     const [timer, setTimer] = useState<number>(initialTimer);
-    // const [maxTimer, setMaxTimer] = useState<number>(initialTimer);
     const timerBar = useSharedValue(initialTimer);
 
     useEffect(() => {
         if (timer <= 0) {
-            // Haptics.selectionAsync()
+            // setTimer(10)
             Vibration.vibrate()
             onTimerEnd();
             return;
@@ -27,6 +24,7 @@ export default function Timer({ timer: initialTimer, onTimerEnd }: TimerProps) {
 
         const timeout = setTimeout(() => {
             setTimer(prev => prev - 1);
+
             timerBar.value = withTiming(timer - 1, {
                 duration: 1000,
                 easing: Easing.linear,
@@ -71,11 +69,13 @@ export default function Timer({ timer: initialTimer, onTimerEnd }: TimerProps) {
 
     // const anim = useAnimatedStyle(() => {
     //     return {
-    //         width: `${(timerBar.value / maxTimer) * 100}%`, // Use maxTimer for width calculation
+    //         width: `${(timerBar.value / timer) * 100}%`, // Use maxTimer for width calculation
     //     };
     // });
 
-    return <Text style={[s.bold, s.text4XL, s.textCenter]}>{formatTime(timer)}</Text>
+
+    return  <Text style={[s.bold, s.text7XL, s.textCenter]}>{formatTime(timer)}</Text>
+ 
 
 
     // return (

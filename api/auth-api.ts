@@ -36,8 +36,6 @@ export class AuthApi {
         email: params.email,
         password: params.password,
       });
-
-      console.log(error, data);
       
       if (error) {
         let message;

@@ -19,7 +19,7 @@ import Animated, { FadeIn } from 'react-native-reanimated'
 export default function MyWorkoutsScreen() {
 
     const { offset, scrollHandler } = useScrollValue();
-  
+
     return (
         <>
             <Stack.Screen
@@ -57,7 +57,8 @@ export default function MyWorkoutsScreen() {
                 style={[s.flex1, s.bgWhite]}
                 contentContainerStyle={[s.gap12, s.py12]}>
 
-                <AnimatedLargeTitle title='Treinos' offset={offset} style={[s.px12]} />
+                {device.android &&
+                <AnimatedLargeTitle title='Treinos' offset={offset} style={[s.px12]} />}
                 <WorkoutsList />
 
 

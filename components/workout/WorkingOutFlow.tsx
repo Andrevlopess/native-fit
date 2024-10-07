@@ -1,16 +1,10 @@
 import { WorkoutApi } from '@/api/workout-api'
-import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
 import { useQuery } from '@tanstack/react-query'
-import { LinearGradient } from 'expo-linear-gradient'
-import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import Animated, { useAnimatedRef, useSharedValue, withSpring } from 'react-native-reanimated'
-import ExerciseListCard from '../exercise/ExerciseListCard'
 import { WorkingOutExerciseCard } from '../exercise/working-out/WorkingOutExerciseCard'
-import Button from '../ui/Button'
-import { LineDivisor } from '../ui/Divisors'
 import HeaderStepBar from '../ui/HeaderStepBar'
 import LoadingView from '../views/LoadingView'
 import RestingWorkoutView from './RestingWorkoutView'
@@ -88,14 +82,13 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
 
                             <View
                                 style={[s.flex1, s.bgWhite, s.gap4]}
-                            // stickyHeaderIndices={[0]}
                             >
                                 {
                                     isResting
                                         ? <RestingWorkoutView
                                             nextExercise={exercises[activeIndex]}
-                                            // onTimerEnd={() => {}}
-                                            onTimerEnd={handleNext}
+                                            onTimerEnd={() => {}}
+                                            // onTimerEnd={handleNext}
                                         />
                                         : <WorkingOutExerciseCard
                                             workoutId={workoutId}

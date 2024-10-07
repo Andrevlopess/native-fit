@@ -7,6 +7,6 @@ import { Path, Svg } from 'react-native-svg'
 export default function Home({ focused }: { focused: boolean }) {
     return focused
         ? <Image source={require('@/assets/icons/svg/Home.svg')} 
-        style={{flex:1, height: 30, width: 30}}  />
+        style={{height: 30, width: 30}}  />
         : <HomeIcon size={30} color={COLORS.black} />
 }
