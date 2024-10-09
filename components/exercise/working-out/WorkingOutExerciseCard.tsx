@@ -155,9 +155,6 @@ export function WorkingOutExerciseCard({
 
                 </View>
 
-
-
-
                 <LineDivisor text={
                     isLastExercise ? 'Você chegou ao fim' : 'Descanse 3 minutos'
                 } />

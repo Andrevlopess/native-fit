@@ -27,7 +27,6 @@ export default function WorkoutScreen() {
     }
     const { offset, scrollHandler } = useScrollValue('y');
 
-
     const { data: workout, isPending } = useQuery({
         queryKey: ["workouts", id],
         queryFn: () => WorkoutApi.findOne({ id })

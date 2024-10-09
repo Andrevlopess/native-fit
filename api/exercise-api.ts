@@ -1,6 +1,7 @@
 import { SerieValues } from "@/components/exercise/working-out/WorkingOutExerciseCard";
 import { supabase } from "@/lib/supabase";
 import { IExercise } from "@/types/exercise";
+import { IWorkout } from "@/types/workout";
 
 export interface SearchExercisesParams {
   search: string;
@@ -9,7 +10,7 @@ export interface SearchExercisesParams {
   pageParam: unknown;
 }
 
-interface FindOneParams {
+interface ExerciseIdAsParam {
   id: string;
 }
 
@@ -18,10 +19,11 @@ export interface AddSerieParams {
   exercise_id: string;
   series: SerieValues;
 }
+
 export class ExerciseApi {
   private constructor() {}
 
-  static async findOne(params: FindOneParams) {
+  static async findOne(params: ExerciseIdAsParam) {
     try {
       let { data: exercise, error } = await supabase
         .rpc("get-exercise-details", { exercise_id: params.id })
@@ -57,18 +59,19 @@ export class ExerciseApi {
 
   static async addSerie({ series, workout_id, exercise_id }: AddSerieParams) {
     try {
-      
-      const bestSerie = series.serie.sort((a, b) => (+b.weight / +b.reps) - (+a.weight / +a.reps))[0]
-      
+      const bestSerie = series.serie.sort(
+        (a, b) => +b.weight / +b.reps - +a.weight / +a.reps
+      )[0];
+
       const serie = {
         workout_id: workout_id,
         exercise_id: exercise_id,
         series: series.serie.length,
-        max_weight: series.serie.sort((a, b) => +b.weight - +a.weight)[0].weight,
+        max_weight: series.serie.sort((a, b) => +b.weight - +a.weight)[0]
+          .weight,
         best_serie_weight: bestSerie.weight,
-        best_serie_reps: bestSerie.reps
+        best_serie_reps: bestSerie.reps,
       };
-     
 
       const { data, error } = await supabase
         .from("exercises_series")
@@ -78,6 +81,40 @@ export class ExerciseApi {
       if (error) throw error;
 
       return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async fecthSimilarExercises(params: ExerciseIdAsParam) {
+    try {
+      const { data: exercises, error } = await supabase.rpc(
+        "get_similar_exercises",
+        {
+          exercise_id: params.id,
+        }
+      );
+
+      if (error) throw error;
+
+      return exercises as IExercise[];
+    } catch (error) {
+      throw error;
+    }
+  }
+  static async findWorkoutsWith(params: ExerciseIdAsParam) {
+
+    
+    try {
+      const { data: data, error } = await supabase.rpc(
+        "get_workouts_with_exercise",
+        {
+          exerciseid: params.id,
+        }
+      );
+
+      if (error) throw error;
+
+      return data as IWorkout[];
     } catch (error) {
       throw error;
     }

@@ -135,6 +135,7 @@ export class WorkoutApi {
 
   static async fetchExercises(params: FetchWithId): Promise<IExercise[]> {
     try {
+      
       let { data: exercises, error } = await supabase
         .rpc("workout_exercises", { workoutid: params.id })
         .returns<IExercise[]>();

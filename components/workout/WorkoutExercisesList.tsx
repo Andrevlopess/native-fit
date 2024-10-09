@@ -1,19 +1,19 @@
 import { WorkoutApi } from '@/api/workout-api'
 import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
+import { IExercise } from '@/types/exercise'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'expo-router'
 import { Inbox, Plus } from 'lucide-react-native'
 import React from 'react'
 import { Alert, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
 import SwipeableExerciseListCard from '../exercise/ExerciseListSwipeableCard'
 import Button from '../ui/Button'
 import SkeletonList from '../ui/SkeletonList'
-import MessageView from '../views/MessageView'
-import Animated, { FadeIn, LinearTransition } from 'react-native-reanimated'
-import { IExercise } from '@/types/exercise'
 import { Snackbar } from '../ui/Snackbar'
+import MessageView from '../views/MessageView'
 
 const AddExerciseCard = ({ id }: { id: string }) =>
     <Link asChild href={`/exercises-to-add/${id}`} style={[s.flexRow, s.gap16, s.itemsCenter, s.px12, s.mt8, s.bgWhite, s.radius8]}>
@@ -110,14 +110,14 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
     return (
         <>
             {isRemoving &&
-                <Snackbar message='Removendo exercício' isLoading/>
-            }
-            
-            {isSuccess &&
-                <Snackbar message='Exercício removido'/>
+                <Snackbar message='Removendo exercício' isLoading />
             }
 
-            
+            {isSuccess &&
+                <Snackbar message='Exercício removido' />
+            }
+
+
             <View style={[s.flex1, s.mt12]} >
                 {isPending
                     ? <SkeletonList length={5} skeletonHeight={80} contentContainerStyles={[s.p12]} />
