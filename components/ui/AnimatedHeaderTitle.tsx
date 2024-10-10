@@ -14,7 +14,7 @@ export default function AnimatedHeaderTitle({ offset, title }: AnimatedHeaderTit
 
     const headerTitleAnimation = useAnimatedStyle(() => {
 
-        if(!offset) return {}
+        if (!offset) return {}
         return {
             opacity: interpolate(offset.value, [30, 50], [0, 1]),
             transform: [

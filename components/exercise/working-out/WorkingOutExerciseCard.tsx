@@ -30,7 +30,7 @@ const ExerciseDetailsCard = ({ exercise }: { exercise: IExercise }) => <View sty
 
     <Animated.View
         entering={FadeInDown.delay(80)}
-        style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4]}>
+        style={[s.gap12, s.justifyCenter, s.flexRow, s.itemsCenter, s.px4, {flexWrap: 'wrap'}]}>
 
         <Text style={[s.medium, s.textGray600, s.textLG]}>{exercise.target}</Text>
         <View style={[s.bgGray800, s.radiusFull, { height: 8, width: 8 }]} />

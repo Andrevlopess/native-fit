@@ -18,6 +18,7 @@ import { Marquee } from '@/components/ui/Marquee'
 import Button from '@/components/ui/Button'
 import { useNavigation } from '@react-navigation/native';
 import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
+import LastWorkoutsDoneList from '@/components/workout/LastWorkoutsDoneList'
 
 const exercises: IExercise[] =
   [
@@ -107,7 +108,8 @@ export default function HomeIndexScreen(navigation: any) {
       <Stack.Screen
         redirect
         options={{
-          title: 'Início',
+          title: `Olá, ${user?.user_metadata.username}`,
+          headerLargeTitle: true,
           headerTitleAlign: 'center',
           headerLeft: () => <LogoImage />,
           headerTitle:
@@ -121,24 +123,27 @@ export default function HomeIndexScreen(navigation: any) {
         onScroll={scrollHandler}
         contentInsetAdjustmentBehavior='automatic'
         style={[s.flex1, s.bgWhite]}
-        contentContainerStyle={[s.gap8]}
+        contentContainerStyle={[s.gap24]}
       >
 
-        {/* <AnimatedLargeTitle title={user?.user_metadata.username} offset={offset} style={[s.px12]} /> */}
 
-        {/* <WorkoutsCarouselList />
-         */}
-        <HistoryCalendar period='month' />
+        {device.android &&
+          <AnimatedLargeTitle title={`Olá, ${user?.user_metadata.username}`} offset={offset} style={[s.px12]} />}
 
+        <WorkoutsCarouselList />
+
+        <View style={[s.mt12]}>
+          <Text style={[s.semibold, s.textXL, s.px12]}>Frequência de atividades</Text>
+          <HistoryCalendar period='month' />
+        </View>
+
+        <LastWorkoutsDoneList />
         <FeaturedExercices title='Destaques' exercises={exercises} />
-
       </Animated.ScrollView>
 
       {/* <View style={[s.flex1]}>
         <WorkoutsCarouselList />
       </View> */}
-
-
     </>
   )
 }

@@ -2,7 +2,7 @@ import COLORS from "@/constants/Colors";
 import { s } from "@/styles/global";
 import { IWorkout } from "@/types/workout";
 import { CheckCircle2, Circle } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
 
 
 interface SelectableWorkoutListCardProps {
@@ -17,9 +17,24 @@ export const SelectableWorkoutListCard =
                 activeOpacity={.8}
                 onPress={() => onSelect(id)}
                 style={[s.flexRow, s.gap12, s.itemsCenter]}>
-                <View style={[s.bgBlack, s.radius14, s.itemsCenter, s.justifyCenter, { height: 60, width: 60 }]}>
+                <ImageBackground
+                    source={require('@/assets/images/waves-bg.png')}
+                    resizeMode='contain'
+                    borderRadius={14}
+                    borderBottomLeftRadius={14}
+                    style={[
+                        s.radius14,
+                        s.shadow6,
+                        s.p12,
+                        // s.flex1,
+                        s.itemsCenter,
+                        s.justifyCenter,
+                        s.bgBlack,
+                        { height: 60, width: 60 }]}
+
+                >
                     <Text style={[s.textXL, s.semibold, s.textWhite, s.textCapitalize]}>{name.charAt(0)}</Text>
-                </View>
+                </ImageBackground>
 
                 <View style={[s.gap4, s.justifyCenter, s.flex1]} >
                     <Text

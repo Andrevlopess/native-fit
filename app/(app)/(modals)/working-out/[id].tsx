@@ -39,7 +39,7 @@ export default function DoingWorkoutScreen() {
             queryClient.invalidateQueries({ queryKey: ['workouts-history'] });
             router.replace({
                 pathname: '/workout-statistics/[id]',
-                params: {id}
+                params: { id }
             })
         }
     });
@@ -79,7 +79,7 @@ export default function DoingWorkoutScreen() {
                         s.justifyBetween,
                         s.itemsCenter,
                         s.bgWhite,
-                        s.flexRow,s.py12, {paddingLeft: 12}]}>
+                        s.flexRow, s.py12, { paddingLeft: 12, paddingTop: top }]}>
 
                         <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
                             {workout.name}
@@ -89,7 +89,6 @@ export default function DoingWorkoutScreen() {
                             variant='ghost'
                             onPress={handleGiveUp}
                             text='Desistir'
-                            // size='small'
                         />
                     </View>
                 ),

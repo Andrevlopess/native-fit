@@ -80,7 +80,6 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
     });
 
 
-
     const marked = dates?.reduce<MarkedDates>((acc, item, index, arr) => {
         const isStartingDay =
             index === 0 || new Date(arr[index - 1]).getTime()
@@ -156,7 +155,8 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
             {
                 isPending
                     ? <LoadingView />
-                    : <CalendarList
+                    :
+                    <CalendarList
                         markingType='period'
                         current={today}
                         pastScrollRange={pastScrollRange}
@@ -175,6 +175,7 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
                         theme={{
                             textDayFontFamily: 'Inter_500Medium',
                             textMonthFontFamily: 'Inter_500Medium',
+                            todayDotColor: COLORS.red,
                             todayTextColor: COLORS.black,
                             textDayStyle: s.medium,
                             textDisabledColor: COLORS.iosTextGray,
@@ -182,6 +183,7 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
                             selectedDayTextColor: COLORS.white,
                         }}
                     />
+
             }
         </>
     );

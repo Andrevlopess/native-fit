@@ -2,7 +2,7 @@ import { s } from '@/styles/global'
 import { IWorkout } from '@/types/workout'
 import { Link } from 'expo-router'
 import React from 'react'
-import { Pressable, Text, View } from 'react-native'
+import { ImageBackground, Pressable, Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 
 
@@ -24,9 +24,29 @@ export const WorkoutListCard = ({ workout: { id, name, description, exercises_co
         >
             <AnimatedPressable>
 
-                <View style={[s.bgBlack, s.radius14, s.itemsCenter, s.justifyCenter, { height: 60, width: 60 }]}>
+                {/* <View style={[s.bgBlack, s.radius12, s.itemsCenter,s.shadow6, s.justifyCenter, { height: 60, width: 60 }]}>
                     <Text style={[s.textXL, s.semibold,s.textWhite, s.textCapitalize]}>{name.charAt(0)}</Text>
-                </View>
+                </View> */}
+
+                <ImageBackground
+                    source={require('@/assets/images/waves-bg.png')}
+                    resizeMode='contain'
+                    borderRadius={14}
+                    borderBottomLeftRadius={14}
+                    style={[
+                        s.radius14,
+                        s.shadow6,
+                        s.p12,
+                        // s.flex1,
+                        s.itemsCenter,
+                        s.justifyCenter,
+                        s.bgBlack,
+                        { height: 60, width: 60 }]}
+
+                >
+                    <Text style={[s.textXL, s.semibold, s.textWhite, s.textCapitalize]}>{name.charAt(0)}</Text>
+                </ImageBackground>
+
                 <View style={[s.gap4, s.justifyCenter, s.flex1]} >
                     <Text
                         style={[s.medium, s.textBase, { lineHeight: 18 }]}

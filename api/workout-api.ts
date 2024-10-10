@@ -4,7 +4,7 @@ import { IWorkout } from "@/types/workout";
 export type HistoryPeriod = "all-time" | "year" | "month" | "week";
 
 export interface FindAllWorkoutParams {
-  userId?: string;
+  // userId?: string;
   search?: string;
 }
 
@@ -49,26 +49,37 @@ export type AddExerciseResponse = {
 }[];
 
 export type ExerciseStatistics = {
-  id: number,
+  id: number;
   exercise_id: string;
   best_serie_reps: number;
   best_serie_weight: number;
   pr: number;
   series: number;
   times_done: number;
-}
+};
+
+export type LastestWorkoutsDone = {
+  done_at: string;
+  workouts: IWorkout;
+};
 
 export class WorkoutApi {
   private constructor() {}
 
   static async findAll(params: FindAllWorkoutParams): Promise<IWorkout[]> {
     try {
-      if (!params.userId) throw new Error("User not found");
+
+      const {
+        data: { session }
+      } = await supabase.auth.getSession()
+
+
+      if (!session?.user.id) throw new Error("User not found");
 
       const { data: workouts, error } = await supabase
         .from("workouts")
         .select()
-        .eq("owner_id", params.userId)
+        .eq("owner_id", session?.user.id)
         .ilike("name", `%${params.search}%`)
         .returns<IWorkout[]>();
 
@@ -135,7 +146,6 @@ export class WorkoutApi {
 
   static async fetchExercises(params: FetchWithId): Promise<IExercise[]> {
     try {
-      
       let { data: exercises, error } = await supabase
         .rpc("workout_exercises", { workoutid: params.id })
         .returns<IExercise[]>();
@@ -271,6 +281,28 @@ export class WorkoutApi {
       if (error) throw error;
 
       return data as ExerciseStatistics[];
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async fetchLastestWorkoutsDone() {
+    try {
+      const { data, error } = await supabase
+        .from("workouts_history")
+        .select(
+          `
+        done_at, 
+        workouts:workout_id (*)
+      `
+        )
+        .order("done_at", { ascending: false })
+        .limit(3)
+        .returns<LastestWorkoutsDone[]>();
+
+      if (error) throw error;
+
+      return data;
     } catch (error) {
       throw error;
     }

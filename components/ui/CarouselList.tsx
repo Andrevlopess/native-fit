@@ -101,7 +101,7 @@ export function CarouselList<T>({
 
 
     return (
-        <View style={[s.py12, s.gap24]}>
+        <View style={[s.py12, s.gap12]}>
             <Animated.FlatList
                 //data={data}
                 ListHeaderComponent={<View />}
@@ -109,6 +109,7 @@ export function CarouselList<T>({
                 ListFooterComponent={<View />}
                 ListFooterComponentStyle={{ width: SPACER }}
 
+                contentContainerStyle={[s.py12]}
                 renderItem={renderItemWrapper}
                 onScroll={scrollHandler}
                 scrollEventThrottle={16}

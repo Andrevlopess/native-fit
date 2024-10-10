@@ -8,11 +8,12 @@ import COLORS from '@/constants/Colors';
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
 import { s } from '@/styles/global';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, useLocalSearchParams } from 'expo-router';
-import { BicepsFlexed, ChevronUp, Dumbbell, Target } from 'lucide-react-native';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { ArrowLeft, BicepsFlexed, ChevronUp, Dumbbell, Target } from 'lucide-react-native';
 import React from 'react';
-import { Text, View } from 'react-native';
-import Animated, { FadeIn, interpolate, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeIn, interpolate, interpolateColor, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // horizontal padding of 12 * 2
 const IMAGE_SIZE = SCREEN_WIDTH - 24;
@@ -21,6 +22,7 @@ const IMAGE_SIZE = SCREEN_WIDTH - 24;
 
 export default function ExerciseDetailsModal() {
 
+    const { top } = useSafeAreaInsets()
     const params = useLocalSearchParams
         <{
             id: string,
@@ -68,15 +70,29 @@ export default function ExerciseDetailsModal() {
         transform: [{
             translateY: interpolate(sv.value,
                 [-imageHeight, 0, imageHeight],
-                [-imageHeight, 0, imageHeight * 0.1])
+                [0, 0, imageHeight * 0.1])
         }]
     }));
 
+    const headerBackground = useAnimatedStyle(() => ({
+        backgroundColor: interpolateColor(
+            sv.value,
+            [imageHeight / 2, imageHeight * 0.7],
+            ['#FFFFFF00', '#FFFFFF']
+        ),
+        // borderColor: interpolateColor(
+        //     sv.value,
+        //     [imageHeight / 2, imageHeight * 0.7],
+        //     ['#CCCCCC00', "#CCCCCC50"]
+        // ),
+    }));
+
+    const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
+
     return (
         <>
-
             <Stack.Screen options={{
-                title: 'Exercício',
+                title: '',
                 presentation: 'modal',
                 // animation: 'fade_from_bottom',
                 headerTitleAlign: 'center',
@@ -84,8 +100,49 @@ export default function ExerciseDetailsModal() {
                 headerTransparent: true,
                 // headerBackTitleVisible: false,
                 // headerLeft: ({ canGoBack }) => <BackButton />,
-                headerTitle: ({ children }) => <Text style={[s.bold, s.textLG]}>{children}</Text>,
-            }} />
+                headerLeft: ({ }) =>
+                    <AnimatedTouchable
+                        activeOpacity={0.8}
+                        style={[
+                            s.radiusFull,
+                            s.shadow6,
+                            s.p8,
+                            s.bgWhite,
+                            headerBackground,
+                            s.mt12
+                        ]}
+                        onPress={() => router.back()}
+                    >
+                        <ArrowLeft color={COLORS.black} />
+                    </AnimatedTouchable>
+
+                // header: ({ back, navigation }) =>
+                //     <Animated.View
+                //         style={[
+                //             s.bgRed200,
+                //             s.p16,
+                //             s.flexRow,
+                //             s.gap12,
+                //             s.itemsCenter,
+                //             // s.shadow6,
+                //             s.borderBottom1,
+                //             { paddingTop: top },
+                //             ]}>
+                //         <TouchableOpacity
+                //             activeOpacity={0.8}
+                //             style={[
+                //                 s.radiusFull,
+                //                 s.p8,
+                //                 s.bgWhite,
+                //                 headerBackground
+                //             ]}
+                //             onPress={() => navigation.goBack()}>
+                //             <ArrowLeft color={COLORS.black} />
+                //         </TouchableOpacity>
+                //     </Animated.View>
+
+            }}
+            />
 
             <Animated.ScrollView
                 entering={FadeIn}
@@ -95,6 +152,7 @@ export default function ExerciseDetailsModal() {
                 <View style={{ paddingTop: 56 }}>
 
                     <Animated.Image
+                        defaultSource={require('@/assets/images/white-waves-bg.svg')}
                         source={{ uri: params.gifurl }}
                         style={[{ height: imageHeight, width: SCREEN_WIDTH }, imageAnimation]} />
                 </View>
@@ -112,7 +170,7 @@ export default function ExerciseDetailsModal() {
                     <ChevronUp color={COLORS.gray900} size={24} />
                 </Animated.View>
                 <LineDivisor />
-                <View style={[s.p12, s.gap24, s.bgWhite]}>
+                <View style={[s.px12, s.py24, s.gap24, s.bgWhite]}>
 
                     <View>
                         <Text style={[s.medium, s.textGray400, s.textBase]}>Exercício</Text>
@@ -169,19 +227,20 @@ export default function ExerciseDetailsModal() {
                     }
                 </View>
                 <LineDivisor />
-                {
-                    isPending
-                        ? <LoadingView />
-                        :
-                        similarExercises?.length && <FeaturedExercices
-                            title='Veja algumas opções similares'
-                            exercises={similarExercises}
-                            itemsPerSection={3} />
+                <View style={[s.mt24]}>
+                    {
+                        isPending
+                            ? <LoadingView />
+                            :
+                            similarExercises?.length && <FeaturedExercices
+                                title='Veja algumas opções similares'
+                                exercises={similarExercises}
+                                itemsPerSection={3} />
 
 
 
-                }
-
+                    }
+                </View>
 
 
 

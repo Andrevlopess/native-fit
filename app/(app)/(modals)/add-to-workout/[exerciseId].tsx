@@ -33,11 +33,10 @@ export default function AddToWorkoutScreen() {
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500).trim();
 
-    const { user } = useAuth();
 
     const { data: workouts = [], isPending, error } = useQuery({
         queryKey: ['workouts', debouncedSearch],
-        queryFn: () => WorkoutApi.findAll({ userId: user?.id, search: debouncedSearch })
+        queryFn: () => WorkoutApi.findAll({ search: debouncedSearch })
     })
 
 

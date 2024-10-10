@@ -1,47 +1,35 @@
 [
   {
-    "created_at": "2024-07-29T17:30:39.536581+00:00",
-    "description": "slk",
-    "exercises_count": 0,
-    "id": "7b81f4f0-d726-47dd-9fd1-3e95cfce022b",
-    "name": "teste",
-    "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658",
-    "workout_exercises": []
+    "done_at": "2024-10-23T15:47:21",
+    "workouts": {
+      "created_at": "2024-07-29T20:34:31.180318+00:00",
+      "description": "bsbs",
+      "exercises_count": 3,
+      "id": "a5ed4d30-f790-46f6-8533-c9e37f06d132",
+      "name": "e Qu",
+      "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658"
+    }
   },
   {
-    "created_at": "2024-07-29T20:26:51.899327+00:00",
-    "description": "criado papai",
-    "exercises_count": 1,
-    "id": "ec119a07-b631-45b5-ac7b-c959a8341fc3",
-    "name": "teste",
-    "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658",
-    "workout_exercises": [[]]
+    "done_at": "2024-10-22T15:47:08",
+    "workouts": {
+      "created_at": "2024-10-05T15:19:12.85046+00:00",
+      "description": "eu amo esta mulher",
+      "exercises_count": 2,
+      "id": "e340d285-4301-43e5-8748-2b743ade5752",
+      "name": "rafela linda do meu coração ",
+      "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658"
+    }
   },
   {
-    "created_at": "2024-10-05T15:19:12.85046+00:00",
-    "description": "eu amo esta mulher",
-    "exercises_count": 1,
-    "id": "e340d285-4301-43e5-8748-2b743ade5752",
-    "name": "rafela linda do meu coração ",
-    "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658",
-    "workout_exercises": []
-  },
-  {
-    "created_at": "2024-07-29T20:34:31.180318+00:00",
-    "description": "bsbs",
-    "exercises_count": 3,
-    "id": "a5ed4d30-f790-46f6-8533-c9e37f06d132",
-    "name": "e Qu",
-    "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658",
-    "workout_exercises": []
-  },
-  {
-    "created_at": "2024-07-29T20:28:18.155106+00:00",
-    "description": "só mais um agradecimento vai",
-    "exercises_count": 1,
-    "id": "8001d6b0-4356-493d-8b29-16721225afb2",
-    "name": "mais um pra dalem",
-    "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658",
-    "workout_exercises": []
+    "done_at": "2024-10-22T15:46:57",
+    "workouts": {
+      "created_at": "2024-07-29T20:26:51.899327+00:00",
+      "description": "criado papai",
+      "exercises_count": 1,
+      "id": "ec119a07-b631-45b5-ac7b-c959a8341fc3",
+      "name": "teste",
+      "owner_id": "81042d36-1d4d-4a53-80b8-78e4f6269658"
+    }
   }
 ]

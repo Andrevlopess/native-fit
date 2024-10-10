@@ -15,7 +15,7 @@ export default function Index() {
     if (isLoading) return <LoadingView style={[s.bgBlack]} loadingColor={COLORS.white} />;
 
     return isAuthenticated
-        // ? <Redirect href={'/(app)/home'} />
-        ? <Redirect href={'/(app)/workouts/ec119a07-b631-45b5-ac7b-c959a8341fc3'} />
+        ? <Redirect href={'/(app)/(tabs)/home'} />
+        // ? <Redirect href={'/(app)/workouts/ec119a07-b631-45b5-ac7b-c959a8341fc3'} />
         : <Redirect href={'/auth'} />
 }

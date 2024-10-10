@@ -12,6 +12,7 @@ import SkeletonList from '../ui/SkeletonList';
 import MessageView from '../views/MessageView';
 import { WorkoutListCard } from './WorkoutListCard';
 import { useAuth } from '@/contexts/AuthContext';
+import Search from '@/assets/icons/Search';
 
 
 const NewWorkoutCard = () =>
@@ -33,14 +34,12 @@ const EmptyComponent = () =>
     </MessageView>
 
 
-export default function WorkoutsList() {
+export default function WorkoutsList({ search }: { search: string }) {
 
-
-    const { user } = useAuth()
 
     const { data: workouts = [], isFetching, isError, isRefetching, refetch } = useQuery({
-        queryKey: ['workouts'],
-        queryFn: () => WorkoutApi.findAll({ userId: user?.id, search: '' })
+        queryKey: ['workouts', { search }],
+        queryFn: () => WorkoutApi.findAll({ search })
     })
 
 
@@ -65,7 +64,13 @@ export default function WorkoutsList() {
                     </MessageView>
 
                     : !workouts.length
-                        ? <EmptyComponent />
+                        ? search ?
+                            <MessageView
+                                icon={Search}
+                                message='Sem resultados'
+                                description={`Não encontramos um resultado para '${search}'`}
+                            />
+                            : <EmptyComponent />
                         : <View style={[s.gap12]}>
                             {workouts.map((workout, i) => (
                                 <WorkoutListCard workout={workout} key={`${i},${workout.id}`} index={i} />

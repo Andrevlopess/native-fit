@@ -82,21 +82,22 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                 {enableExpandImage
                     ? <Pressable
                         onPress={handleToggleExpand}
-                        style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
+                        style={[s.bgWhite, s.shadow3, s.radius12, s.border1, s.borderGray100,
+                        { marginVertical: 'auto', overflow: 'hidden' }]}>
                         <Animated.Image
                             src={exercise.gifurl}
-                            style={[s.radius8, imageAnimation]}
-                            fadeDuration={0}
-                        // defaultSource={require('@/assets/images/icon.png')}                 
+                            style={[imageAnimation]}
+                            fadeDuration={100}
+                            defaultSource={require('@/assets/images/white-waves-bg.svg')}
                         />
                     </Pressable>
-                    : <View style={[s.bgWhite, s.shadow3, s.radius8, s.border1, s.borderGray100]}>
+                    : <View style={[s.bgWhite, s.shadow3, s.radius12, s.border1, s.borderGray100, {marginVertical: 'auto', overflow: 'hidden' }]}>
                         <Image
-                            // placeholder={
-                            //     require('@/assets/images/icon.png')
-                            // }
+                            placeholder={
+                                require('@/assets/images/white-waves-bg.svg')
+                            }
                             source={exercise.gifurl}
-                            style={[s.radius8, { height: DEFAULT_IMAGE_SIZE, width: DEFAULT_IMAGE_SIZE }]} />
+                            style={[{ height: DEFAULT_IMAGE_SIZE, width: DEFAULT_IMAGE_SIZE }]} />
                     </View>
                 }
 
@@ -108,7 +109,7 @@ export default function ExerciseListCard({ exercise, width, showsAddButton = tru
                         numberOfLines={2}>
                         {exercise.name}
                     </Text>
-                    <View style={[s.flexRow, s.gap6, s.itemsCenter, {flexWrap: 'wrap'}]}>
+                    <View style={[s.flexRow, s.gap6, s.itemsCenter, { flexWrap: 'wrap' }]}>
                         <Text style={[s.regular, s.textGray400]}>{exercise.bodypart}</Text>
                         <CircleDivisor />
                         <Text style={[s.regular, s.textGray400]}>{exercise.target}</Text>

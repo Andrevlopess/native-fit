@@ -48,10 +48,10 @@ export default function FeaturedExercices({ exercises, title, itemsPerSection = 
     const renderItem = ({ item }: { item: IExercise[] }) => <FeaturedExercisesSection exercises={item} />
 
     return (
-        <View style={[s.gap4, s.mt24]}>
+        <View style={[s.gap4]}>
 
             <Text style={[s.semibold, s.textXL, s.px12]}>{title}</Text>
-
+           
             <Animated.FlatList
                 // ref={animatedRef}
                 scrollEventThrottle={16}
