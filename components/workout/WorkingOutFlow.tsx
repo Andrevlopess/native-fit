@@ -87,8 +87,8 @@ export default function WorkingOutFlow({ workoutId, onWorkoutCompleted }: IWorki
                                     isResting
                                         ? <RestingWorkoutView
                                             nextExercise={exercises[activeIndex]}
-                                            onTimerEnd={() => {}}
-                                            // onTimerEnd={handleNext}
+                                            // onTimerEnd={() => {}}
+                                            onTimerEnd={handleNext}
                                         />
                                         : <WorkingOutExerciseCard
                                             workoutId={workoutId}

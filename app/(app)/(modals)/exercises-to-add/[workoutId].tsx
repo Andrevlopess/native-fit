@@ -117,7 +117,7 @@ export default function ExericesToAddModal() {
                             hideNavigationBar: false,
                             hideWhenScrolling: false,
                             // placement: `automatic`,
-                            placeholder: 'Encontrar treino',
+                            placeholder: 'Encontrar exercício',
                             onChangeText: ({ nativeEvent }) => setSearch(nativeEvent.text)
                         }
                         : undefined

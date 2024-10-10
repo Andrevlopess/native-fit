@@ -23,8 +23,6 @@ export default function RequestResultsView({
     ...request
 }: RequestResultsViewProps) {
 
-
-
     if (request.isPending)
         return <LoadingView />;
 
