@@ -1,24 +1,20 @@
 import FeaturedExercices from '@/components/exercise/FeaturedExercices'
 import LogoImage from '@/components/LogoImage'
-import WorkoutsCarouselList from '@/components/workout/WorkoutsCarouselList'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
-import Timer from '@/components/ui/Timer'
+import Skeleton from '@/components/ui/Skeleton'
+import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
+import LastWorkoutsDoneList from '@/components/workout/LastWorkoutsDoneList'
+import WorkoutsCarouselList from '@/components/workout/WorkoutsCarouselList'
+import { useAuth } from '@/contexts/AuthContext'
 import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { Redirect, router, Stack, useRouter } from 'expo-router'
+import { Stack } from 'expo-router'
 import React from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import Animated from 'react-native-reanimated'
-import MonthHistoryCalendar from '@/components/workout/MonthHistoryCalendar'
-import { useAuth } from '@/contexts/AuthContext'
-import { Marquee } from '@/components/ui/Marquee'
-import Button from '@/components/ui/Button'
-import { useNavigation } from '@react-navigation/native';
-import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
-import LastWorkoutsDoneList from '@/components/workout/LastWorkoutsDoneList'
 
 const exercises: IExercise[] =
   [
@@ -100,8 +96,6 @@ export default function HomeIndexScreen(navigation: any) {
   const { offset, scrollHandler } = useScrollValue('y');
   const { user } = useAuth()
 
-
-
   return (
 
     <>
@@ -139,6 +133,7 @@ export default function HomeIndexScreen(navigation: any) {
 
         <LastWorkoutsDoneList />
         <FeaturedExercices title='Destaques' exercises={exercises} />
+
       </Animated.ScrollView>
 
       {/* <View style={[s.flex1]}>

@@ -11,6 +11,7 @@ import { LocaleConfig } from 'react-native-calendars';
 import { MarkedDates } from 'react-native-calendars/src/types';
 import Button from '../ui/Button';
 import LoadingView from '../views/LoadingView';
+import Skeleton from '../ui/Skeleton';
 
 LocaleConfig.locales['pt-br'] = {
     monthNames: [
@@ -154,9 +155,8 @@ export const HistoryCalendar = ({ period, workoutId }: HistoryCalendarProps) => 
         <>
             {
                 isPending
-                    ? <LoadingView />
-                    :
-                    <CalendarList
+                    ? <Skeleton style={[s.m24]} height={300} />
+                    : <CalendarList
                         markingType='period'
                         current={today}
                         pastScrollRange={pastScrollRange}

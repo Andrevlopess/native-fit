@@ -49,7 +49,18 @@ export default function MyWorkoutsScreen() {
                             ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />
                             : undefined,
                     headerLargeTitle: true,
-                    headerTitleAlign: 'center'
+                    headerTitleAlign: 'center',
+                    headerSearchBarOptions:
+                        device.ios
+                            ? {
+                                hideNavigationBar: false,
+                                hideWhenScrolling: false,
+                                placement: `automatic`,
+                                placeholder: 'Busque por um treino',
+                                onChangeText: ({ nativeEvent }) => setSearch(nativeEvent.text)
+                            }
+                            : undefined
+
                 }}
             />
 

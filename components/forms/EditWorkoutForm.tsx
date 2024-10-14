@@ -1,13 +1,11 @@
 import { WorkoutApi } from '@/api/workout-api'
-import COLORS from '@/constants/Colors'
 import { s } from '@/styles/global'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { LinearGradient } from 'expo-linear-gradient'
 import { router } from 'expo-router'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { ScrollView, Text, View } from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
@@ -55,6 +53,7 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
         onError: console.error,
         onSuccess: (data) => {
             clientela.invalidateQueries({ queryKey: ["workouts", workoutId] })
+            clientela.invalidateQueries({ queryKey: ["workouts", { search: '' }] })
             router.back();
 
             // router.setParams({ name, description })
@@ -62,7 +61,7 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
     })
 
     const handleSubmitForm = (data: NewWorkoutValues) => {
-    
+
         mutate(data)
     }
 
@@ -106,17 +105,17 @@ export default function EditWorkoutForm({ workoutId }: EditWorkoutFormProps) {
                 { bottom: 0, left: 0, right: 0, paddingTop: 24 }]}
             > */}
 
-                <Button
-                    text='Salvar'
-                    size='small'
-                    style={[s.mx12, s.my24]}
-                    variant='secondary'
-                    isLoading={isPending}
-                    disabled={!(dirtyFields.name || dirtyFields.description)}
+            <Button
+                text='Salvar'
+                size='small'
+                style={[s.mx12, s.my24]}
+                variant='secondary'
+                isLoading={isPending}
+                disabled={!(dirtyFields.name || dirtyFields.description)}
 
-                    onPress={handleSubmit(handleSubmitForm)}
+                onPress={handleSubmit(handleSubmitForm)}
 
-                />
+            />
             {/* </LinearGradient> */}
         </>
 

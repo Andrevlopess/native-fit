@@ -9,6 +9,7 @@ import { ImageBackground, Pressable, Text, View } from 'react-native'
 import Button from '../ui/Button'
 import { CarouselList } from '../ui/CarouselList'
 import LoadingView from '../views/LoadingView'
+import Skeleton from '../ui/Skeleton'
 
 
 const MARGIN_X = 0;
@@ -69,8 +70,7 @@ export default function WorkoutsCarouselList() {
             </View>
 
             {isFetching
-
-                ? <LoadingView />
+                ? <Skeleton style={[s.m24]} height={300}/>
                 : <CarouselList
                     data={workouts}
                     renderItem={renderItem}

@@ -1,12 +1,9 @@
-import ExerciseListCard from '@/components/exercise/ExerciseListCard'
-import CredentialsLoginForm from '@/components/forms/CredentialsLoginForm'
 import Button from '@/components/ui/Button'
 import { GoogleAuthButton } from '@/components/ui/GoogleAuthButton'
 import { s } from '@/styles/global'
-import { BottomSheetModal } from '@gorhom/bottom-sheet'
-import { SplashScreen, Stack, router } from 'expo-router'
-import React, { useEffect, useRef, useState } from 'react'
-import Animated from 'react-native-reanimated'
+import { router, Stack } from 'expo-router'
+import React from 'react'
+import { ImageBackground } from 'react-native'
 
 export default function AuthIndexScreen() {
 
@@ -15,14 +12,16 @@ export default function AuthIndexScreen() {
 
             <Stack.Screen
                 options={{
-                    title: ''
+                    title: '',
+                    headerTransparent: true
                 }}
             />
 
-            <Animated.View
-                style={[s.bgWhite, s.flex1, s.p12, s.justifyEnd]}>
-
-                {/* <GoogleAuthButton /> */}
+            <ImageBackground
+                source={require('@/assets/images/splash-black-logo.png')}
+                style={[s.flex1, s.p12, s.justifyEnd]}
+                resizeMode='contain'
+            >
 
                 <Button
                     text="Acessar minha conta"
@@ -30,13 +29,14 @@ export default function AuthIndexScreen() {
                     asLink={'/auth/login'}
                 />
 
+
                 <Button
                     text="Criar minha conta"
                     variant='ghost'
-                    onPress={() => router.push('/(auth)/(sign-up-form)/datas-step')} />
+                    onPress={() => router.push('/auth/signUp')} />
 
 
-            </Animated.View>
+            </ImageBackground>
 
         </>
     )

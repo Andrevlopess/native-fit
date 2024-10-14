@@ -7,6 +7,7 @@ import MessageView from '@/components/views/MessageView';
 import PageNotFound from '@/components/views/PageNotFound';
 import { s } from '@/styles/global';
 import { IExercise } from '@/types/exercise';
+import { device } from '@/utils/device';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { Inbox } from 'lucide-react-native';
@@ -28,7 +29,7 @@ type SearchParams = { id: string }
 export default function DoingWorkoutScreen() {
     const { id } = useLocalSearchParams<SearchParams>();
     const { top } = useSafeAreaInsets();
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
 
     if (!id) return <PageNotFound />
 
@@ -49,14 +50,14 @@ export default function DoingWorkoutScreen() {
         retry: false,
     });
 
-    if (isPending)
+    if (isPending || isStatisticPending ||isExercisesPending )
         return <LoadingView />
 
     if (!workout)
         return <Text>Workout not found</Text>
 
     if (!statistics || !exercises)
-        return <Text>Statistics not found</Text>
+        return <LoadingView />
 
 
     const statisticCards = statistics.map(sts =>
@@ -66,7 +67,7 @@ export default function DoingWorkoutScreen() {
         <>
             <Stack.Screen
                 options={{
-                    title: workout.name,
+                    title: workout.name ?? "",
                     headerTitleAlign: 'center',
                     presentation: 'fullScreenModal',
                     headerBackVisible: false,
@@ -78,7 +79,7 @@ export default function DoingWorkoutScreen() {
                             s.flexRow,
                             s.borderBottom1,
                             s.borderGray200,
-                            { paddingTop: top, paddingLeft: 12 }]}>
+                            { paddingTop: device.android ? top : 12, paddingLeft: 12 }]}>
 
                             <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
                                 {workout.name}

@@ -12,6 +12,7 @@ import Divisor, { LineDivisor } from '../ui/Divisors'
 import { useAuth } from '@/contexts/AuthContext'
 import { Snackbar } from '../ui/Snackbar'
 import { Check, X } from 'lucide-react-native'
+import { GoogleAuthButton } from '../ui/GoogleAuthButton'
 
 const loginShema = z.object({
     email: z.string().email('Insira um email válido').min(1, 'Insira um email'),
@@ -66,6 +67,11 @@ export default function CredentialsLoginForm() {
                 isLoading={isPending}
                 onPress={handleSubmit(handleLogin)} />
 
+
+            <LineDivisor text='OU' />
+            
+            <GoogleAuthButton />
+
             {error &&
                 <>
                     <Snackbar
@@ -83,8 +89,8 @@ export default function CredentialsLoginForm() {
             <Button
                 text='Criar uma conta'
                 variant='ghost'
-                asLink={'/auth/signUp'} 
-                />
+                asLink={'/auth/signUp'}
+            />
 
 
         </View>

@@ -5,12 +5,14 @@ import Button from '@/components/ui/Button';
 import LoadingView from '@/components/views/LoadingView';
 import MessageView from '@/components/views/MessageView';
 import WorkoutExercisesList from '@/components/workout/WorkoutExercisesList';
+import COLORS from '@/constants/Colors';
 import { useScrollValue } from '@/hooks/useScrollValue';
 import { s } from '@/styles/global';
 import { useQuery } from '@tanstack/react-query';
-import { Link, Stack, useLocalSearchParams } from 'expo-router';
+import { Link, router, Stack, useLocalSearchParams } from 'expo-router';
+import { ArrowLeft } from 'lucide-react-native';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 
@@ -49,7 +51,15 @@ export default function WorkoutScreen() {
                             params: { id: workout.id, name: workout.name, description: workout.description }
                         }} style={[s.bold, s.textBlack, s.textBase, s.p12]}>
                             Editar
-                        </Link>
+                        </Link>,
+                    headerLeft: ({ canGoBack }) =>
+                        Platform.select({
+                            ios: <TouchableOpacity onPress={() => canGoBack && router.back()}>
+                                <ArrowLeft color={COLORS.black} size={24} />
+                            </TouchableOpacity>
+                        })
+
+
                 }} />
 
             {isPending
@@ -78,7 +88,7 @@ export default function WorkoutScreen() {
                         {<Button
                             text='Iniciar treino'
                             asLink={{ pathname: `/working-out/${id}` }}
-                            style={[s.px12, s.py6, s.bgWhite,s.mt12,]}
+                            style={[s.px12, s.py6, s.bgWhite, s.mt12,]}
                         />}
 
                         <WorkoutExercisesList workoutId={id} />

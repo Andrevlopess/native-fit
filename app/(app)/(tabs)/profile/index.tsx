@@ -47,6 +47,7 @@ export default function ProfileIndexScreen() {
       <Animated.ScrollView
         onScroll={scrollHandler}
         contentContainerStyle={[s.gap12]}
+        contentInsetAdjustmentBehavior='automatic'
         style={[s.flex1, s.bgWhite]}>
         {device.android &&
           <AnimatedLargeTitle title='Minha conta' offset={offset} style={[s.px12]} />}

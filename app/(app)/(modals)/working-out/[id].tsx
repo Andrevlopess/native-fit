@@ -4,6 +4,7 @@ import LoadingView from '@/components/views/LoadingView';
 import PageNotFound from '@/components/views/PageNotFound';
 import WorkingOutFlow from '@/components/workout/WorkingOutFlow';
 import { s } from '@/styles/global';
+import { device } from '@/utils/device';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
@@ -79,7 +80,7 @@ export default function DoingWorkoutScreen() {
                         s.justifyBetween,
                         s.itemsCenter,
                         s.bgWhite,
-                        s.flexRow, s.py12, { paddingLeft: 12, paddingTop: top }]}>
+                        s.flexRow, s.py12, { paddingLeft: 12, paddingTop: device.android ? top : 12 }]}>
 
                         <Text style={[s.semibold, s.textLG, s.textGray800, s.flex1]} numberOfLines={1}>
                             {workout.name}

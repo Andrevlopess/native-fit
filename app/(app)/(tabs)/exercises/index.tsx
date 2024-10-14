@@ -1,6 +1,6 @@
-import { ExerciseApi } from '@/api/exercise-api'
+import Search from '@/assets/icons/Search'
 import SwipeableExerciseListCard from '@/components/exercise/ExerciseListSwipeableCard'
-import LibraryFeed from '@/components/LibraryFeed'
+import FeaturedExercices from '@/components/exercise/FeaturedExercices'
 import LogoImage from '@/components/LogoImage'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
@@ -10,22 +10,83 @@ import SearchInput from '@/components/ui/SearchInput'
 import MessageView from '@/components/views/MessageView'
 import RequestResultsView from '@/components/views/RequestResultView'
 import { useDebounce } from '@/hooks/useDebounceCallback'
+import { useScrollValue } from '@/hooks/useScrollValue'
 import { useSearchExercise } from '@/hooks/useSearchExercise'
 import { s } from '@/styles/global'
+import { IExercise } from '@/types/exercise'
 import { device } from '@/utils/device'
-import { useInfiniteQuery } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 import { CircleX, SearchX } from 'lucide-react-native'
 import React, { useState } from 'react'
 import { Text, View } from 'react-native'
-import Animated, { useAnimatedRef, useScrollViewOffset } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
+const bestQuadsExercises: IExercise[] =
+
+  [
+    {
+      "bodypart": "Quadriceps/posterior",
+      "equipment": "Kettlebell",
+      "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_0533.gif",
+      "id": "0361bbc2-3b8d-4529-ad22-bd46a5cd163f",
+      "name": "Agachamento frontal com kettlebell",
+      "target": "Glúteos"
+    },
+    {
+      "bodypart": "Quadriceps/posterior",
+      "equipment": "Peso do corpo",
+      "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_0668.gif",
+      "id": "047cddd7-867f-45aa-a00f-6ce19b045da6",
+      "name": "Ponte posterior declinada",
+      "target": "Glúteos"
+    },
+    {
+      "bodypart": "Quadriceps/posterior",
+      "equipment": "Barra",
+      "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_2810.gif",
+      "id": "05aec223-5019-466c-8b13-6fe1cc50b5e2",
+      "name": "Afundo com barra v. 2",
+      "target": "Quadríceps"
+    },
+    {
+      "bodypart": "Quadriceps/posterior",
+      "equipment": "Barra",
+      "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_0127.gif",
+      "id": "06a98d6d-e84f-473b-8058-d7ff637131e8",
+      "name": "Agachamento zercher com barra",
+      "target": "Glúteos"
+    },
+    {
+      "bodypart": "Quadriceps/posterior",
+      "equipment": "Elástico",
+      "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_3007.gif",
+      "id": "0775d6d0-0b82-41b8-aa87-d1df35ea7ea2",
+      "name": "Extensão de perna com banda de resistência",
+      "target": "Quadríceps"
+    },
+    {
+      "bodypart": "Quadriceps/posterior",
+      "equipment": "Bola de estabiliade",
+      "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_1417.gif",
+      "id": "07ee0633-9989-4311-8f25-ca53c1dfc6fd",
+      "name": "Flexão diagonal com chute de isquiotibiais com uma perna na bola de exercício",
+      "target": "Glúteos"
+    },
+    {
+      "bodypart": "Quadriceps/posterior",
+      "equipment": "Peso do corpo",
+      "gifurl": "https://xjnbjevqrawvgiesutug.supabase.co/storage/v1/object/public/exercises-demos/exercise_3470.gif",
+      "id": "0b34e7fb-83c4-4c44-8271-f8457ce16e9c",
+      "name": "Avanço para frente (masculino)",
+      "target": "Glúteos"
+    }
+  ]
+
 
 const badges = ['Cardio', 'Quadríceps', 'Costas', 'Peito', 'Ombro', 'Panturrilha'];
 
 export default function LibraryIndexScreen() {
 
-  const scrollRef = useAnimatedRef<Animated.ScrollView>()
-  const offset = useScrollViewOffset(scrollRef);
+  const { offset, scrollHandler } = useScrollValue('y')
 
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('');
@@ -47,18 +108,21 @@ export default function LibraryIndexScreen() {
     })
 
 
-  const NotFoundComponent = () =>
-    <MessageView
-      icon={SearchX}
-      message='Sem resultados'
-      description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
-    />
+  // const NotFoundComponent = () =>
+  //   <MessageView
+  //     icon={SearchX}
+  //     message='Sem resultados'
+  //     description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
+  //   />
 
-  const ErrorComponent = () =>
-    <MessageView
-      icon={CircleX}
-      message="Ocorreu um erro!"
-      description={error?.message || 'Estamos tentando resolver este problema!'} />
+  // const ErrorComponent = () =>
+  //   <MessageView
+  //     icon={CircleX}
+  //     message="Ocorreu um erro!"
+  //     description={error?.message || 'Estamos tentando resolver este problema!'} />
+
+
+  console.log(exercises);
 
   return (
     <>
@@ -89,7 +153,8 @@ export default function LibraryIndexScreen() {
       <View style={[s.flex1, s.bgWhite, s.gap12]}>
 
         <Animated.ScrollView
-          ref={scrollRef}
+          // ref={scrollRef}
+          onScroll={scrollHandler}
           style={[s.flex1]}
           keyboardDismissMode='on-drag'
           contentContainerStyle={[s.gap8]}
@@ -114,13 +179,25 @@ export default function LibraryIndexScreen() {
 
           <RequestResultsView
             isError={isError}
-            isPending={isFetching}
+            isPending={isFetching && !isFetchingNextPage}
             hasData={!!exercises?.length}
             hasSearch={!!debouncedSearch}
-            EmptyComponent={<LibraryFeed />}
-            NotFoundComponent={<NotFoundComponent />}
-            ErrorComponent={<ErrorComponent />}
+            EmptyComponent={
+              <MessageView icon={Search} message='Busque por um exercício' description='Procure entre as mais de 1300 atividades' />
+              // <LibraryFeed />
+            }
+            NotFoundComponent={
+              <MessageView
+                icon={SearchX}
+                message='Sem resultados'
+                description={`Não econtramos nada para '${debouncedSearch}', tente buscar por outro!`}
+              />}
+            ErrorComponent={<MessageView
+              icon={CircleX}
+              message="Ocorreu um erro!"
+              description={error?.message || 'Estamos tentando resolver este problema!'} />}
           >
+
             <View style={[s.flex1, s.gap12]}>
               <Text style={[s.semibold, s.text2XL, s.px12]}>Resultados</Text>
 
@@ -146,6 +223,8 @@ export default function LibraryIndexScreen() {
             </View>
           </RequestResultsView>
         </Animated.ScrollView>
+
+
       </View>
 
 

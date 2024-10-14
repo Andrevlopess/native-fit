@@ -55,6 +55,11 @@ export default function WorkoutSelectableList({ workouts, exerciseId }: WorkoutS
             data.map(inserted =>
                 queryClient.invalidateQueries({ queryKey: ["workout-exercises", inserted.workout_id] }))
 
+
+            queryClient.invalidateQueries({ queryKey: ['workouts-with-this-ex', exerciseId] })
+
+
+
             router.back();
         },
     })

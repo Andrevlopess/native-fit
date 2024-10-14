@@ -43,8 +43,6 @@ const signIn = async () => {
 export const GoogleAuthButton = () => {
     GoogleSignin.configure();
 
-
-
     GoogleSignin.configure({
         webClientId: '27128953283-siqfms81n9kpqg6per3hqfj94oj1h5pn.apps.googleusercontent.com', // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
         scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile

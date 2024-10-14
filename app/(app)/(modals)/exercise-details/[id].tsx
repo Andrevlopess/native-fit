@@ -1,5 +1,5 @@
 import { ExerciseApi } from '@/api/exercise-api';
-import FeaturedExercices from '@/components/exercise/FeaturedExercices';
+import ExerciseListCard from '@/components/exercise/ExerciseListCard';
 import Button from '@/components/ui/Button';
 import { LineDivisor } from '@/components/ui/Divisors';
 import LoadingView from '@/components/views/LoadingView';
@@ -7,11 +7,14 @@ import { WorkoutListCard } from '@/components/workout/WorkoutListCard';
 import COLORS from '@/constants/Colors';
 import { SCREEN_WIDTH } from '@/constants/Dimensions';
 import { s } from '@/styles/global';
+import { IExercise } from '@/types/exercise';
+import { device } from '@/utils/device';
 import { useQuery } from '@tanstack/react-query';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { ArrowLeft, BicepsFlexed, ChevronUp, Dumbbell, Target } from 'lucide-react-native';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import Animated, { FadeIn, interpolate, interpolateColor, useAnimatedScrollHandler, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -80,6 +83,11 @@ export default function ExerciseDetailsModal() {
             [imageHeight / 2, imageHeight * 0.7],
             ['#FFFFFF00', '#FFFFFF']
         ),
+        shadowColor: interpolateColor(
+            sv.value,
+            [imageHeight / 2, imageHeight * 0.7],
+            ['#FFFFFF00', '#000000']
+        ),
         // borderColor: interpolateColor(
         //     sv.value,
         //     [imageHeight / 2, imageHeight * 0.7],
@@ -88,6 +96,14 @@ export default function ExerciseDetailsModal() {
     }));
 
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity)
+
+
+    const MAX_CARD_WIDTH = SCREEN_WIDTH * 0.9
+    const renderItem = ({ item }: { item: IExercise }) => <ExerciseListCard
+        exercise={item}
+        width={MAX_CARD_WIDTH}
+        enableExpandImage={false}
+    />
 
     return (
         <>
@@ -148,7 +164,7 @@ export default function ExerciseDetailsModal() {
                 entering={FadeIn}
                 onScroll={scrollHandler}
                 style={[s.flex1, s.bgWhite]}
-                contentContainerStyle={{ paddingBottom: 24 }}>
+                contentContainerStyle={{ paddingBottom: 36 }}>
                 <View style={{ paddingTop: 56 }}>
 
                     <Animated.Image
@@ -231,14 +247,24 @@ export default function ExerciseDetailsModal() {
                     {
                         isPending
                             ? <LoadingView />
-                            :
-                            similarExercises?.length && <FeaturedExercices
-                                title='Veja algumas opções similares'
-                                exercises={similarExercises}
-                                itemsPerSection={3} />
+                            : similarExercises?.length
+                            &&
+                            <View style={[s.gap12]}>
+                                <Text style={[s.textXL, s.semibold, s.px12]}>Veja opções similares</Text>
 
+                                <FlatList
+                                    data={similarExercises}
+                                    renderItem={renderItem}
+                                    snapToInterval={MAX_CARD_WIDTH}
+                                    decelerationRate="fast"
+                                    scrollEventThrottle={16}
+                                    horizontal
+                                    showsHorizontalScrollIndicator={false}
+                                />
+                                {/* {similarExercises.map(exercise => <ExerciseListCard exercise={exercise} />)} */}
 
-
+                            </View>
+                        // <FeaturedExercices title='Veja opções similares' exercises={similarExercises} />
                     }
                 </View>
 
