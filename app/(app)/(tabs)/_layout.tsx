@@ -5,7 +5,7 @@ import Search from "@/assets/icons/Search";
 import COLORS from "@/constants/Colors";
 import { device } from "@/utils/device";
 import * as Haptics from 'expo-haptics';
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 import 'react-native-reanimated';
@@ -25,7 +25,7 @@ export default function AppLayout() {
                         borderWidth: 0
                     },
                     title: '',
-                    
+
                     headerShown: false,
                     tabBarHideOnKeyboard: true,
                     tabBarInactiveTintColor: COLORS.textGray,
@@ -58,6 +58,9 @@ export default function AppLayout() {
                 />
                 <Tabs.Screen
                     name="workouts"
+                    listeners={{
+                        tabPress: () => router.navigate('/(app)/(tabs)/workouts')
+                    }}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <Library focused={focused} />

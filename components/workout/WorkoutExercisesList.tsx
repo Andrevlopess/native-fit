@@ -54,6 +54,7 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
             queryClient.invalidateQueries({
                 queryKey: ["workout-exercises", workoutId]
             })
+            queryClient.invalidateQueries({ queryKey: ["workouts", workoutId] })
         }
 
     })
@@ -150,7 +151,7 @@ export default function WorkoutExercisesList({ workoutId }: WorkoutExercisesList
                                 >
                                     <SwipeableExerciseListCard
                                         exercise={exercise}
-                                        onSwipeToRemove={handleRemoveExerciseFromWorkout}
+                                        onSwipeToRemove={handleConfirmRemove}
                                     />
                                 </Animated.View >
 

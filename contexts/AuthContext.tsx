@@ -12,6 +12,7 @@ interface IAuthContext {
     isAuthenticated: boolean;
     user: User | null;
     isLoading: boolean;
+    setUser: React.Dispatch<React.SetStateAction<User | null>>
     Login: (data: LoginParams) => Promise<void>;
     SignUp: (data: SignUpParams) => Promise<void>;
     Logout: () => void;
@@ -49,9 +50,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const Login = async (params: LoginParams) => {
         const data = await AuthApi.login(params);
-        
+    
         setUser(data.user)
-
     }
 
     const Logout = () => {
@@ -60,11 +60,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
 
+
     return (
         <AuthContext.Provider value={{
             isAuthenticated: !!user,
             user,
             isLoading,
+            setUser,
             Login,
             SignUp,
             Logout

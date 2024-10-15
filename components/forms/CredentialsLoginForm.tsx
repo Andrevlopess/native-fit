@@ -68,7 +68,7 @@ export default function CredentialsLoginForm() {
                 onPress={handleSubmit(handleLogin)} />
 
 
-            <LineDivisor text='OU' />
+            <LineDivisor text='ou' />
             
             <GoogleAuthButton />
 

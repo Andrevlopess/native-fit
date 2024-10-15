@@ -2,6 +2,7 @@ import FeaturedExercices from '@/components/exercise/FeaturedExercices'
 import LogoImage from '@/components/LogoImage'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
+import Avatar from '@/components/ui/Avatar'
 import Skeleton from '@/components/ui/Skeleton'
 import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
 import LastWorkoutsDoneList from '@/components/workout/LastWorkoutsDoneList'
@@ -106,6 +107,7 @@ export default function HomeIndexScreen(navigation: any) {
           headerLargeTitle: true,
           headerTitleAlign: 'center',
           headerLeft: () => <LogoImage />,
+          headerRight: () => <Avatar size={40}/>,
           headerTitle:
             device.android
               ? ({ children }) => <AnimatedHeaderTitle title={children} offset={offset} />

@@ -51,6 +51,7 @@ export default function ExericesToAddModal() {
         mutationFn: WorkoutApi.addExercise,
         onMutate: () => {
             queryClient.invalidateQueries({ queryKey: ["workout-exercises", workoutId] })
+            queryClient.invalidateQueries({ queryKey: ["workouts", workoutId] })
         },
         onError: err => console.error(err.message)
     })
@@ -59,7 +60,7 @@ export default function ExericesToAddModal() {
     const {
         data: exercises = [],
         error,
-        hasNextPage,
+        // hasNextPage,
         isFetching,
         isFetchingNextPage,
         isError,
@@ -163,7 +164,7 @@ export default function ExericesToAddModal() {
                 <RequestResultsView
                     isError={isError}
                     isPending={isFetching && !isFetchingNextPage}
-                    hasData={true}
+                    hasData={!!exercises?.length}
                     hasSearch={!!debouncedSearch}
                     EmptyComponent={
                         <MessageView icon={Search} message='Busque por um exercício' description='Procure entre as mais de 1300 atividades' />

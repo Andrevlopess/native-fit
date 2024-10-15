@@ -23,11 +23,6 @@ export const WorkoutListCard = ({ workout: { id, name, description, exercises_co
         // onLayout={({nativeEvent}) => console.log(nativeEvent.layout)}
         >
             <AnimatedPressable>
-
-                {/* <View style={[s.bgBlack, s.radius12, s.itemsCenter,s.shadow6, s.justifyCenter, { height: 60, width: 60 }]}>
-                    <Text style={[s.textXL, s.semibold,s.textWhite, s.textCapitalize]}>{name.charAt(0)}</Text>
-                </View> */}
-
                 <ImageBackground
                     source={require('@/assets/images/waves-bg.png')}
                     resizeMode='contain'

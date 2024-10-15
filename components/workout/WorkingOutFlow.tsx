@@ -12,7 +12,6 @@ import RestingWorkoutView from './RestingWorkoutView'
 
 
 interface IWorkingOutFlowProps {
-    // exercises: IExercise[];
     workoutId: string;
     onWorkoutCompleted: (id: string) => void;
 }

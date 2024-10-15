@@ -1,8 +1,8 @@
 import COLORS from '@/constants/Colors';
 import { s } from '@/styles/global';
-import { Link } from 'expo-router';
-import { LinkProps } from 'expo-router/build/link/Link';
-import { ExpoRouter } from 'expo-router/types/expo-router';
+import { ExpoRouter, Href, Link } from 'expo-router';
+import { LinkComponent, LinkProps } from 'expo-router/build/link/Link';
+
 import React, { ForwardedRef, PropsWithChildren, forwardRef } from 'react';
 import { ActivityIndicator, ColorValue, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
@@ -25,7 +25,7 @@ interface IButton extends TouchableOpacityProps {
     size?: Size;
     rounded?: boolean;
     textStyles?: StyleProp<TextStyle>;
-    asLink?: ExpoRouter.Href;
+    asLink?: Href<LinkProps<any>>
 }
 
 function Button({ text,

@@ -122,8 +122,6 @@ export default function LibraryIndexScreen() {
   //     description={error?.message || 'Estamos tentando resolver este problema!'} />
 
 
-  console.log(exercises);
-
   return (
     <>
       <Stack.Screen

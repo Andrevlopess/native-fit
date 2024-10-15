@@ -68,11 +68,9 @@ export class WorkoutApi {
 
   static async findAll(params: FindAllWorkoutParams): Promise<IWorkout[]> {
     try {
-
       const {
-        data: { session }
-      } = await supabase.auth.getSession()
-
+        data: { session },
+      } = await supabase.auth.getSession();
 
       if (!session?.user.id) throw new Error("User not found");
 
@@ -288,15 +286,20 @@ export class WorkoutApi {
 
   static async fetchLastestWorkoutsDone() {
     try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       const { data, error } = await supabase
         .from("workouts_history")
         .select(
           `
-        done_at, 
-        workouts:workout_id (*)
-      `
+          done_at, 
+           workouts:workout_id (*)
+         `
         )
         .order("done_at", { ascending: false })
+        .eq("user_id", session?.user.id)
         .limit(3)
         .returns<LastestWorkoutsDone[]>();
 

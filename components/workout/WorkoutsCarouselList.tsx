@@ -8,8 +8,9 @@ import React from 'react'
 import { ImageBackground, Pressable, Text, View } from 'react-native'
 import Button from '../ui/Button'
 import { CarouselList } from '../ui/CarouselList'
-import LoadingView from '../views/LoadingView'
 import Skeleton from '../ui/Skeleton'
+import MessageView from '../views/MessageView'
+import { Dumbbell, Newspaper } from 'lucide-react-native'
 
 
 const MARGIN_X = 0;
@@ -34,8 +35,8 @@ const WorkoutCard = ({ name, id }: IWorkout) => {
                         { height: ITEM_WIDTH, width: ITEM_WIDTH }]}
 
                 >
-                    <Text style={[s.text6XL,s.textWhite, s.bold, s.textCapitalize]}>{name.charAt(0)}</Text>
-                    <Text style={[s.text2XL,s.textWhite, s.semibold, s.textCapitalize, s.textCenter]}>{name}</Text>
+                    <Text style={[s.text6XL, s.textWhite, s.bold, s.textCapitalize]}>{name.charAt(0)}</Text>
+                    <Text style={[s.text2XL, s.textWhite, s.semibold, s.textCapitalize, s.textCenter]}>{name}</Text>
                 </ImageBackground>
             </Pressable>
         </Link>
@@ -70,13 +71,20 @@ export default function WorkoutsCarouselList() {
             </View>
 
             {isFetching
-                ? <Skeleton style={[s.m24]} height={300}/>
-                : <CarouselList
-                    data={workouts}
-                    renderItem={renderItem}
-                    itemWidth={ITEM_WIDTH}
-                    marginHorizontal={MARGIN_X}
-                />
+                ? <Skeleton style={[s.m24]} height={300} />
+                : workouts.length
+                    ? <CarouselList
+                        data={workouts}
+                        renderItem={renderItem}
+                        itemWidth={ITEM_WIDTH}
+                        marginHorizontal={MARGIN_X}
+                    />
+                    : <MessageView
+                        icon={Dumbbell}
+                        message='Comece criando um treino'
+                        description='Você ainda não tem nenhum treino'>
+                        <Button asLink={'/(app)/(modals)/new-workout'} text='Criar treino' />
+                    </MessageView>
 
             }
 

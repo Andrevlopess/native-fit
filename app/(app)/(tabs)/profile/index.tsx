@@ -1,6 +1,7 @@
 import LogoImage from '@/components/LogoImage'
 import AnimatedHeaderTitle from '@/components/ui/AnimatedHeaderTitle'
 import AnimatedLargeTitle from '@/components/ui/AnimatedLargeTitle'
+import Avatar from '@/components/ui/Avatar'
 import Button from '@/components/ui/Button'
 import { LineDivisor } from '@/components/ui/Divisors'
 import { HistoryCalendar } from '@/components/workout/HistoryCalendar'
@@ -9,6 +10,7 @@ import { AuthContext, useAuth } from '@/contexts/AuthContext'
 import { useScrollValue } from '@/hooks/useScrollValue'
 import { s } from '@/styles/global'
 import { device } from '@/utils/device'
+import { Image } from 'expo-image'
 import { Stack } from 'expo-router'
 import { ChevronRight, Instagram, Mail } from 'lucide-react-native'
 import React, { useContext } from 'react'
@@ -23,8 +25,6 @@ export default function ProfileIndexScreen() {
   const { user } = useAuth()
   const { offset, scrollHandler } = useScrollValue('y');
 
-
-  console.log(device.android);
 
   return (
 
@@ -52,9 +52,13 @@ export default function ProfileIndexScreen() {
         {device.android &&
           <AnimatedLargeTitle title='Minha conta' offset={offset} style={[s.px12]} />}
 
-        <View style={[s.p12]}>
-          <Text style={[s.text2XL, s.semibold, s.mt12]}>{user?.user_metadata.username}</Text>
-          <Text style={[s.textLG, s.textGray800, s.medium]}>{user?.email}</Text>
+        <View style={[s.p12, s.flexRow, s.gap12]}>
+          <Avatar size={100} />
+          <View>
+            <Text style={[s.text2XL, s.semibold, s.mt12]}>
+              {user?.user_metadata.full_name ?? user?.user_metadata.username}</Text>
+            <Text style={[s.textLG, s.textGray800, s.medium]}>{user?.email}</Text>
+          </View>
         </View>
 
         <LineDivisor />

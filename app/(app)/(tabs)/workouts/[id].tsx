@@ -35,6 +35,9 @@ export default function WorkoutScreen() {
         // retry: false,    
     });
 
+    console.log(workout?.exercises_count);
+    
+
     return (
         <>
             <Stack.Screen
@@ -85,11 +88,13 @@ export default function WorkoutScreen() {
                             }
                         </View>
 
-                        {<Button
-                            text='Iniciar treino'
-                            asLink={{ pathname: `/working-out/${id}` }}
-                            style={[s.px12, s.py6, s.bgWhite, s.mt12,]}
-                        />}
+                        {
+                            !!workout.exercises_count && <Button
+                                text='Iniciar treino'
+                                asLink={{ pathname: `/working-out/${id}` }}
+                                style={[s.px12, s.py6, s.bgWhite, s.mt12,]}
+                            />
+                        }
 
                         <WorkoutExercisesList workoutId={id} />
                     </Animated.ScrollView>

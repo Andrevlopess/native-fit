@@ -1,11 +1,13 @@
 import { WorkoutApi } from '@/api/workout-api'
 import { s } from '@/styles/global'
 import { useQuery } from '@tanstack/react-query'
+import { Boxes, Dumbbell } from 'lucide-react-native'
 import React from 'react'
 import { Text, View } from 'react-native'
-import LoadingView from '../views/LoadingView'
-import { WorkoutListCard } from './WorkoutListCard'
+import Button from '../ui/Button'
 import SkeletonList from '../ui/SkeletonList'
+import MessageView from '../views/MessageView'
+import { WorkoutListCard } from './WorkoutListCard'
 
 export default function LastWorkoutsDoneList() {
 
@@ -29,7 +31,12 @@ export default function LastWorkoutsDoneList() {
 
                         </View>
                     )
-                    : <Text> Você ainda nao fez nenhum treino</Text>
+                    : <MessageView
+                        icon={Boxes}
+                        message='Comece criando um treino'
+                        description='Seus ultimos treinos aparecerão aqui'>
+                        <Button asLink={'/(app)/(modals)/new-workout'} text='Criar treino' />
+                    </MessageView>
             }
         </View>
     )
