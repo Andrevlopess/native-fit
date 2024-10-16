@@ -1,18 +1,17 @@
-import { AuthApi } from '@/api/auth-api'
+import { useAuth } from '@/contexts/AuthContext'
 import { s } from '@/styles/global'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import React, { useState } from 'react'
+import { X } from 'lucide-react-native'
+import React from 'react'
 import { useForm } from 'react-hook-form'
-import { Text, View } from 'react-native'
+import { KeyboardAvoidingView, ScrollView } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
-import Divisor, { LineDivisor } from '../ui/Divisors'
-import { useAuth } from '@/contexts/AuthContext'
-import { Snackbar } from '../ui/Snackbar'
-import { Check, X } from 'lucide-react-native'
+import { LineDivisor } from '../ui/Divisors'
 import { GoogleAuthButton } from '../ui/GoogleAuthButton'
+import { Snackbar } from '../ui/Snackbar'
 
 const loginShema = z.object({
     email: z.string().email('Insira um email válido').min(1, 'Insira um email'),
@@ -45,7 +44,10 @@ export default function CredentialsLoginForm() {
 
 
     return (
-        <View style={[s.flex1, s.gap24]}>
+        <KeyboardAvoidingView
+            keyboardVerticalOffset={-24}
+            behavior='height'
+            style={[s.flex1, s.gap24]}>
             <ControlledInput
                 name='email'
                 label='Email'
@@ -69,7 +71,7 @@ export default function CredentialsLoginForm() {
 
 
             <LineDivisor text='ou' />
-            
+
             <GoogleAuthButton />
 
             {error &&
@@ -88,11 +90,12 @@ export default function CredentialsLoginForm() {
 
             <Button
                 text='Criar uma conta'
-                variant='ghost'
+
+                variant='secondary'
                 asLink={'/auth/signUp'}
             />
 
 
-        </View>
+        </KeyboardAvoidingView>
     )
 }

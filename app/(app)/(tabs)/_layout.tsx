@@ -5,13 +5,14 @@ import Search from "@/assets/icons/Search";
 import COLORS from "@/constants/Colors";
 import { device } from "@/utils/device";
 import * as Haptics from 'expo-haptics';
-import { router, Tabs } from "expo-router";
+import { router, Tabs, useSegments } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 import 'react-native-reanimated';
 
 export default function AppLayout() {
 
+    const segments = useSegments()
 
     return (
         <>
@@ -25,13 +26,11 @@ export default function AppLayout() {
                         borderWidth: 0
                     },
                     title: '',
-
                     headerShown: false,
                     tabBarHideOnKeyboard: true,
                     tabBarInactiveTintColor: COLORS.textGray,
                     tabBarActiveTintColor: COLORS.black,
                     headerShadowVisible: false,
-                    // tabBarShowLabel: false,
                 }}
                 screenListeners={{
                     tabPress: () =>
@@ -42,6 +41,13 @@ export default function AppLayout() {
             >
                 <Tabs.Screen
                     name="home"
+                    listeners={{
+                        tabPress: () => {
+                            const canGoBack = segments[segments.length - 1] !== 'home';
+                            canGoBack && router.replace('/(app)/(tabs)/home')
+                        }
+
+                    }}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <Home focused={focused} />
@@ -50,6 +56,13 @@ export default function AppLayout() {
                 />
                 <Tabs.Screen
                     name="exercises"
+                     listeners={{
+                        tabPress: () => {
+                            const canGoBack = segments[segments.length - 1] !== 'exercises';
+                            canGoBack && router.replace('/(app)/(tabs)/exercises')
+                        }
+
+                    }}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <Search focused={focused} />
@@ -59,7 +72,11 @@ export default function AppLayout() {
                 <Tabs.Screen
                     name="workouts"
                     listeners={{
-                        tabPress: () => router.navigate('/(app)/(tabs)/workouts')
+                        tabPress: () => {
+                            const canGoBack = segments[segments.length - 1] !== 'workouts';
+                            canGoBack && router.replace('/(app)/(tabs)/workouts')
+                        }
+
                     }}
                     options={{
                         tabBarIcon: ({ focused }) => (
@@ -69,6 +86,13 @@ export default function AppLayout() {
                 />
                 <Tabs.Screen
                     name="profile"
+                     listeners={{
+                        tabPress: () => {
+                            const canGoBack = segments[segments.length - 1] !== 'profile';
+                            canGoBack && router.replace('/(app)/(tabs)/profile')
+                        }
+
+                    }}
                     options={{
                         tabBarIcon: ({ focused }) => (
                             <Account focused={focused} />

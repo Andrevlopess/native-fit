@@ -3,7 +3,7 @@ import { s } from '@/styles/global';
 import { ExpoRouter, Href, Link } from 'expo-router';
 import { LinkComponent, LinkProps } from 'expo-router/build/link/Link';
 
-import React, { ForwardedRef, PropsWithChildren, forwardRef } from 'react';
+import React, { Children, ForwardedRef, PropsWithChildren, forwardRef } from 'react';
 import { ActivityIndicator, ColorValue, StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps, ViewStyle } from 'react-native';
 
 
@@ -66,6 +66,7 @@ function Button({ text,
                 disabled ? s.bgStone200 : s.bgBlack,
                 rounded ? s.radiusFull : s.radius12,
                 sizedStyles[size],
+                s.flexRow,
                 s.itemsCenter,
                 s.justifyCenter,
             ],
@@ -77,6 +78,7 @@ function Button({ text,
                 disabled ? s.bgStone50 : s.bgGray200,
                 rounded ? s.radiusFull : s.radius12,
                 sizedStyles[size],
+                s.flexRow,
                 s.itemsCenter,
                 s.justifyCenter,
             ],
@@ -88,6 +90,7 @@ function Button({ text,
                 sizedStyles[size],
                 s.itemsCenter,
                 s.justifyCenter,
+                s.flexRow,
             ],
             text: [textStylesBySize[size], s.px12, disabled ? s.textStone300 : s.textBlack],
             activityIndicator: { color: COLORS.black }
@@ -132,17 +135,16 @@ function Button({ text,
                 variantStyles[variant].container,
                 style
             ]}>
-            {props.children
-                ? props.children
-                : text &&
-                    isLoading
-                    ? <ActivityIndicator
-                        color={variantStyles[variant].activityIndicator.color}
-                        size={activityIndicatorSizes[size]} />
-                    : <Text style={[variantStyles[variant].text, textStyles]}>
-                        {text}
-                    </Text>}
-        </TouchableOpacity>
+            {text &&
+                isLoading
+                ? <ActivityIndicator
+                    color={variantStyles[variant].activityIndicator.color}
+                    size={activityIndicatorSizes[size]} />
+                : <>
+                    {props.children}
+                    <Text style={[variantStyles[variant].text, textStyles]}>{text}</Text>
+                </>}
+        </TouchableOpacity >
     )
 
 }

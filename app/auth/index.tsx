@@ -19,7 +19,7 @@ export default function AuthIndexScreen() {
 
             <ImageBackground
                 source={require('@/assets/images/splash-black-logo.png')}
-                style={[s.flex1, s.p12, s.justifyEnd]}
+                style={[s.flex1, s.p12, s.gap12, s.justifyEnd]}
                 resizeMode='contain'
             >
 
@@ -31,9 +31,13 @@ export default function AuthIndexScreen() {
 
 
                 <Button
-                    text="Criar minha conta"
+                    text="Criar conta"
                     variant='ghost'
-                    onPress={() => router.push('/auth/signUp')} />
+                    asLink={'/auth/signUp'}
+                />
+
+
+
 
 
             </ImageBackground>

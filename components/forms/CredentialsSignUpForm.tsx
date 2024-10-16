@@ -4,11 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { View } from 'react-native'
+import { ScrollView } from 'react-native'
 import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
 import { LineDivisor } from '../ui/Divisors'
+import { GoogleAuthButton } from '../ui/GoogleAuthButton'
 
 const signUpSchema = z.object({
     name: z.string().min(1, 'Nome obrigatório'),
@@ -49,7 +50,10 @@ export default function CredentialsSignUpForm() {
 
 
     return (
-        <View style={[s.flex1, s.gap24]}>
+        <ScrollView
+
+            contentContainerStyle={[s.gap24, s.p12]}
+            style={[s.flex1]}>
             <ControlledInput
                 name='name'
                 label='Qual o seu nome?'
@@ -83,16 +87,20 @@ export default function CredentialsSignUpForm() {
                 text='Criar conta'
                 // variant='secondary'
                 isLoading={isPending}
-                size="small"
+                // size="small"
                 onPress={handleSubmit(handleLogin)} />
 
-            <LineDivisor text='Já tem uma conta?' styles={[s.mtAuto]} />
+            <LineDivisor text='ou' />
+
+            <GoogleAuthButton />
+
+            <LineDivisor text='Já tem uma conta?' styles={[s.mt24]} />
 
             <Button
                 text='Acessar minha conta'
-                variant='ghost'
+                variant='secondary'
                 asLink={'/auth/signUp'} />
 
-        </View>
+        </ScrollView>
     )
 }

@@ -55,8 +55,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     const Logout = () => {
-        setUser(null);
         AuthApi.logout();
+        setUser(null);
     }
 
 

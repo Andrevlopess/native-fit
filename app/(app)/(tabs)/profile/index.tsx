@@ -21,8 +21,7 @@ export default function ProfileIndexScreen() {
 
 
   // const handleMoveTouch = useCallback(() => { }, [])
-  const { Logout } = useContext(AuthContext)
-  const { user } = useAuth()
+  const { user, Logout } = useAuth()
   const { offset, scrollHandler } = useScrollValue('y');
 
 
