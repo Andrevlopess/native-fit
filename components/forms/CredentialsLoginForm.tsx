@@ -10,7 +10,7 @@ import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
 import { LineDivisor } from '../ui/Divisors'
-import { GoogleAuthButton } from '../ui/GoogleAuthButton'
+// import { GoogleAuthButton } from '../ui/GoogleAuthButton'
 import { Snackbar } from '../ui/Snackbar'
 
 const loginShema = z.object({
@@ -70,9 +70,9 @@ export default function CredentialsLoginForm() {
                 onPress={handleSubmit(handleLogin)} />
 
 
-            <LineDivisor text='ou' />
+            {/* <LineDivisor text='ou' />
 
-            <GoogleAuthButton />
+            <GoogleAuthButton /> */}
 
             {error &&
                 <>

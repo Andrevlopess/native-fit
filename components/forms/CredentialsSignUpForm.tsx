@@ -9,7 +9,7 @@ import { z } from 'zod'
 import { ControlledInput } from '../controllers/ControlledInput'
 import Button from '../ui/Button'
 import { LineDivisor } from '../ui/Divisors'
-import { GoogleAuthButton } from '../ui/GoogleAuthButton'
+// import { GoogleAuthButton } from '../ui/GoogleAuthButton'
 
 const signUpSchema = z.object({
     name: z.string().min(1, 'Nome obrigatório'),
@@ -90,9 +90,9 @@ export default function CredentialsSignUpForm() {
                 // size="small"
                 onPress={handleSubmit(handleLogin)} />
 
-            <LineDivisor text='ou' />
+            {/* <LineDivisor text='ou' />
 
-            <GoogleAuthButton />
+            <GoogleAuthButton /> */}
 
             <LineDivisor text='Já tem uma conta?' styles={[s.mt24]} />
 
